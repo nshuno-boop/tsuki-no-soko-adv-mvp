@@ -1,4 +1,4 @@
-# Phase 2 UI screens.
+# Phase 3 UI screens.
 # 冷たい月面都市風の見た目に寄せつつ、Ren'Py標準機能だけで読める画面を優先する。
 
 style tsuki_frame:
@@ -33,6 +33,22 @@ style alma_log_text:
     size 20
 
 
+screen objective_overlay():
+    zorder 20
+
+    frame:
+        xalign 0.02
+        yalign 0.02
+        xmaximum 560
+        padding (14, 10)
+        background "#020617cc"
+
+        vbox:
+            spacing 2
+            text "現在の目的" color "#67e8f9" size 16
+            text current_objective color "#f8fafc" size 18
+
+
 screen investigation_hub_screen():
     modal True
 
@@ -54,6 +70,7 @@ screen investigation_hub_screen():
                     spacing 2
                     text "聞き込み / 調査メニュー" style "tsuki_title_text"
                     text "第[chapter]章  [chapter_title]" style "tsuki_subtle_text"
+                    text "目的: [current_objective]" color "#f8fafc" size 19
                 text "SHIROWA AUDIT" xalign 1.0 color "#67e8f9" size 18
 
             hbox:
@@ -70,6 +87,13 @@ screen investigation_hub_screen():
                         for person_id in INTERVIEW_TARGETS:
                             $ person = person_profiles[person_id]
                             $ done = person_id in interview_done
+                            $ stage_count = 0
+                            if (person_id + "_initial") in interview_flags:
+                                $ stage_count += 1
+                            if (person_id + "_additional") in interview_flags:
+                                $ stage_count += 1
+                            if (person_id + "_core") in interview_flags:
+                                $ stage_count += 1
                             frame:
                                 style "tsuki_panel"
                                 xfill True
@@ -83,7 +107,7 @@ screen investigation_hub_screen():
                                         text person["name"] color "#f8fafc" size 24
                                         text person["label"] color "#93c5fd" size 18
                                         if done:
-                                            text "聞き込み済み" color "#fbbf24" size 16
+                                            text "聞き込み段階: [stage_count]/3" color "#fbbf24" size 16
                                         else:
                                             text "未確認" color "#94a3b8" size 16
                                     textbutton "聞く":
@@ -103,9 +127,14 @@ screen investigation_hub_screen():
                         action Return("alma")
                         xfill True
                     null height 12
-                    textbutton "最終推理へ進む":
-                        action Return("final")
-                        xfill True
+                    if chapter < 4:
+                        textbutton "次の調査へ進む":
+                            action Return("final")
+                            xfill True
+                    else:
+                        textbutton "最終推理へ進む":
+                            action Return("final")
+                            xfill True
 
 
 screen evidence_screen():
@@ -129,6 +158,7 @@ screen evidence_screen():
                 xfill True
                 text "証拠品一覧" style "tsuki_title_text"
                 text "第[chapter]章  [chapter_title]" xalign 1.0 color "#cbd5e1"
+            text "目的: [current_objective]" color "#f8fafc" size 19
 
             if len(evidence_unlocked) == 0:
                 text "まだ証拠品はありません。" color "#cbd5e1"
@@ -302,6 +332,87 @@ screen evidence_choice_screen(question, hint_text):
 
                 textbutton "考え直す":
                     action Return("__cancel__")
+
+
+screen person_choice_screen(question, hint_text):
+    modal True
+
+    add Solid("#020617")
+
+    frame:
+        style "tsuki_frame"
+        xalign 0.5
+        yalign 0.5
+        xsize 1080
+        ysize 620
+
+        vbox:
+            spacing 16
+            text question size 30 color "#f8fafc"
+            text "人物を選んでください。" color "#cbd5e1"
+
+            grid 2 3:
+                spacing 12
+                for person_id in INTERVIEW_TARGETS:
+                    $ person = person_profiles[person_id]
+                    frame:
+                        style "tsuki_panel"
+                        xsize 490
+                        ysize 145
+
+                        hbox:
+                            spacing 12
+                            add person["image"] xysize (74, 112)
+                            vbox:
+                                spacing 4
+                                text person["name"] color "#f8fafc" size 22
+                                text person["label"] color "#93c5fd" size 16
+                                textbutton "指摘する":
+                                    action Return(person_id)
+
+            hbox:
+                spacing 12
+                textbutton "ヒントを見る":
+                    action Return("__hint__")
+
+                textbutton "考え直す":
+                    action Return("__cancel__")
+
+
+screen missing_evidence_screen(missing_names):
+    modal True
+
+    add Solid("#020617")
+
+    frame:
+        style "tsuki_frame"
+        xalign 0.5
+        yalign 0.5
+        xsize 980
+        ysize 560
+
+        vbox:
+            spacing 14
+            text "証拠が不足しています" style "tsuki_title_text"
+            text "このまま最終推理へ進むと、重要な真相に届かない可能性があります。" color "#fecaca"
+            text "不足している重要証拠:" color "#fbbf24"
+
+            viewport:
+                ysize 280
+                mousewheel True
+                scrollbars "vertical"
+
+                vbox:
+                    spacing 6
+                    for evidence_name in missing_names:
+                        text "・[evidence_name]" color "#e5e7eb"
+
+            hbox:
+                spacing 12
+                textbutton "聞き込みに戻る":
+                    action Return("back")
+                textbutton "それでも進む":
+                    action Return("continue")
 
 
 screen alma_log_screen(title, lines):

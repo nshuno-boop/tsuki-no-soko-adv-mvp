@@ -1,119 +1,269 @@
 # 証拠・人物メモ・進行・推理問題のデータ層。
-# 章や証拠を増やすときは、まずこのファイルにIDを追加する。
+# Phase 3では「最初から最後まで遊べるMVP」を優先し、章と証拠の導線をここで一元管理する。
 
 default chapter = 0
-default chapter_title = "プロローグ"
+default chapter_title = "プロローグ：シロワへようこそ"
+default current_objective = "徹との約束の時間まで、シロワの中を確認する"
 default evidence_unlocked = set()
 default interview_done = set()
+default interview_flags = set()
 default deduction_score = 0
 default deduction_mistakes = 0
 default deduction_hint_count = 0
+default deduction_key_failures = 0
+default final_forced_bad = False
 
 init python:
-    EVIDENCE_ORDER = [
+    REQUIRED_EVIDENCE_IDS = [
         "e_r7_decompression_log",
+        "e_personnel_location_log",
+        "e_autopsy_record",
+        "e_manual_bulkhead_blood",
+        "e_white_rabbit_usage_log",
         "e_white_rabbit_co2_absorber",
-        "e_admin_authority_log",
+        "e_white_rabbit_dust_test",
+        "e_thermal_sensor_frost",
+        "e_manual_valve_scratch",
+        "e_maintenance_admin_log",
         "e_earth_meeting_audio",
         "e_noah_testimony",
         "e_toru_audit_file",
+        "e_lunarborn_medical_report",
+        "e_sena_dust_trace",
     ]
+
+    EVIDENCE_ORDER = REQUIRED_EVIDENCE_IDS
 
     evidence_catalog = {
         "e_r7_decompression_log": {
             "id": "e_r7_decompression_log",
             "name": "酸素工房R-7緊急減圧ログ",
             "short_name": "R-7減圧ログ",
-            "description": "酸素工房R-7で、ALMAの安全制御が減圧を許可したように見えるログ。",
-            "summary": "酸素工房R-7で、ALMAの安全制御が減圧を許可したように見えるログ。",
-            "detail": "減圧時刻の直前、区画内に『作業員なし』という状態が記録されている。しかし檜山徹はその時点でR-7内部にいた。",
+            "description": "22:31に酸素工房R-7の緊急減圧が承認された記録。",
+            "summary": "R-7で緊急減圧が起きたことを示す一次ログ。",
+            "detail": "ログ上はALMAが『区画内に人員なし』と判断し、緊急減圧を許可している。檜山徹の死亡時刻と一致する。",
             "category": "log",
             "related_character": "檜山 徹",
             "related_location": "酸素工房R-7",
             "icon": "images/icons/icon_evidence_log.png",
             "chapter": 1,
             "acquired": False,
-            "hint": "アルマは人を見落としたのか。それとも、見せられた現実が偽物だったのか。",
+            "hint": "事件の発生時刻と直接の危険を示す。",
+        },
+        "e_personnel_location_log": {
+            "id": "e_personnel_location_log",
+            "name": "人員位置ログ",
+            "short_name": "位置ログ",
+            "description": "事故時刻、徹のビーコンが外口側にあると記録されたログ。",
+            "summary": "徹がR-7ではなく外口側にいるように見えた記録。",
+            "detail": "R-7内の生体反応と、外口側に移動したビーコン記録が矛盾している。ALMAが無人判定した根拠のひとつ。",
+            "category": "log",
+            "related_character": "檜山 徹",
+            "related_location": "コア",
+            "icon": "images/icons/icon_evidence_log.png",
+            "chapter": 1,
+            "acquired": False,
+            "hint": "ALMAが誰をどこにいると見なしたかを見る。",
+        },
+        "e_autopsy_record": {
+            "id": "e_autopsy_record",
+            "name": "徹の遺体検案記録",
+            "short_name": "検案記録",
+            "description": "徹の死因が真空暴露による急性低酸素であると示す医療記録。",
+            "summary": "死亡原因を医学的に裏づける記録。",
+            "detail": "白兎3号で一定時間耐えた痕跡はなく、R-7内で直接減圧に巻き込まれた可能性が高い。",
+            "category": "medical",
+            "related_character": "白石 アカリ",
+            "related_location": "医療室",
+            "icon": "images/icons/icon_evidence_medical.png",
+            "chapter": 1,
+            "acquired": False,
+            "hint": "死因をログだけでなく身体の記録から確認する。",
+        },
+        "e_manual_bulkhead_blood": {
+            "id": "e_manual_bulkhead_blood",
+            "name": "手動隔壁レバーの血痕",
+            "short_name": "隔壁の血痕",
+            "description": "R-7内の手動隔壁レバーに残った徹の血痕。",
+            "summary": "徹が最後にR-7の隔壁を閉じようとした痕跡。",
+            "detail": "徹は逃げるためではなく、隣接区画へ減圧が広がるのを止めるためにレバーへ手を伸ばしていた。",
+            "category": "physical",
+            "related_character": "檜山 徹",
+            "related_location": "酸素工房R-7",
+            "icon": "images/icons/icon_evidence_medical.png",
+            "chapter": 1,
+            "acquired": False,
+            "hint": "徹が最後に守ろうとしたものを示す。",
+        },
+        "e_white_rabbit_usage_log": {
+            "id": "e_white_rabbit_usage_log",
+            "name": "白兎3号の使用ログ",
+            "short_name": "白兎使用ログ",
+            "description": "白兎3号が事故時刻に外へ出たように見える運用ログ。",
+            "summary": "宇宙服の使用記録。ただし入力元がビーコン情報に偏っている。",
+            "detail": "ログは『外口を通過』と読めるが、スーツ本体の消耗記録とは一致しない。ALMAがビーコン優先仕様で判断した可能性を示す。",
+            "category": "suit",
+            "related_character": "北条 リツ",
+            "related_location": "外口",
+            "icon": "images/icons/icon_evidence_suit.png",
+            "chapter": 2,
+            "acquired": False,
+            "hint": "ALMAが無人と判断した入力のひとつ。",
         },
         "e_white_rabbit_co2_absorber": {
             "id": "e_white_rabbit_co2_absorber",
             "name": "白兎3号のCO2吸収材",
             "short_name": "CO2吸収材",
-            "description": "檜山徹が使ったはずの宇宙服『白兎3号』に、使用時の消耗が残っていない。",
-            "summary": "白兎3号に、使用時の消耗ログが残っていない。",
-            "detail": "酸素消費、関節駆動、内圧維持、CO2吸収材の交換履歴が不自然に空白。徹は宇宙服で退避しようとした、という事故説明と矛盾する。",
+            "description": "白兎3号のCO2吸収材が未使用に近い状態で残っていた。",
+            "summary": "白兎3号が実際には使われていなかったことを示す。",
+            "detail": "宇宙服で船外活動を行えば必ず消耗するはずの吸収材が、事故前点検時とほぼ同じ状態だった。",
             "category": "suit",
             "related_character": "檜山 徹",
             "related_location": "外口",
             "icon": "images/icons/icon_evidence_suit.png",
-            "chapter": 1,
+            "chapter": 4,
             "acquired": False,
-            "hint": "使われたはずの白兎3号に、使われた痕跡がない。",
+            "hint": "使われたはずなのに消耗していないもの。",
         },
-        "e_admin_authority_log": {
-            "id": "e_admin_authority_log",
-            "name": "コア管理者権限ログ",
-            "short_name": "権限ログ",
-            "description": "事故前夜、コアから酸素工房R-7監視系の再同期が行われている。",
-            "summary": "事故前夜、管理者権限でR-7監視系の再同期が行われている。",
-            "detail": "ALMAの中核コード改ざんはない。ただし、外部センサーと区画状態の同期タイミングだけが手動でずらされている。",
-            "category": "log",
+        "e_white_rabbit_dust_test": {
+            "id": "e_white_rabbit_dust_test",
+            "name": "白兎3号関節部の粉塵検査",
+            "short_name": "関節粉塵検査",
+            "description": "白兎3号の関節部から、外口通過時につくはずの月面粉塵が検出されなかった。",
+            "summary": "白兎3号が外へ出ていないことを示す検査。",
+            "detail": "影井戸や外口の粉塵は細かく関節部に残りやすい。だが白兎3号にはそれがない。",
+            "category": "suit",
+            "related_character": "ルカ・ナディム",
+            "related_location": "外口",
+            "icon": "images/icons/icon_evidence_suit.png",
+            "chapter": 4,
+            "acquired": False,
+            "hint": "実際に外へ出たなら、関節部に粉塵が残る。",
+        },
+        "e_thermal_sensor_frost": {
+            "id": "e_thermal_sensor_frost",
+            "name": "熱センサーの氷霜成分",
+            "short_name": "氷霜成分",
+            "description": "R-7熱センサーに付着していた、自然結露では説明しづらい氷霜成分。",
+            "summary": "センサーを一時的に鈍らせた痕跡。",
+            "detail": "冷却剤と影井戸由来の微細粉塵が混ざっている。自然故障ではなく、人の手でセンサーに干渉した可能性が高い。",
+            "category": "physical",
+            "related_character": "ルカ・ナディム",
+            "related_location": "酸素工房R-7",
+            "icon": "images/icons/icon_warning.png",
+            "chapter": 2,
+            "acquired": False,
+            "hint": "自然故障ではない異物の痕跡。",
+        },
+        "e_manual_valve_scratch": {
+            "id": "e_manual_valve_scratch",
+            "name": "手動補助弁の微細傷",
+            "short_name": "補助弁の傷",
+            "description": "R-7の手動補助弁に、新しい工具傷が残っていた。",
+            "summary": "減圧を人為的に誘導した可能性を示す傷。",
+            "detail": "補助弁は通常ALMAの監視対象だが、保守モード中は人間の手動操作が優先される。",
+            "category": "physical",
             "related_character": "北条 リツ",
+            "related_location": "酸素工房R-7",
+            "icon": "images/icons/icon_warning.png",
+            "chapter": 2,
+            "acquired": False,
+            "hint": "人が触った痕跡がある操作部を見る。",
+        },
+        "e_maintenance_admin_log": {
+            "id": "e_maintenance_admin_log",
+            "name": "管理者権限の保守モード記録",
+            "short_name": "保守モード記録",
+            "description": "事故前夜、管理者権限でALMAの区画監視が保守モードへ切り替えられていた記録。",
+            "summary": "ALMAの中核ではなく、入力と優先順位を変えた記録。",
+            "detail": "保守モードでは作業員ビーコンと外部カメラが優先される。ALMAは嘘をついたのではなく、偽の入力を規定通り処理した。",
+            "category": "log",
+            "related_character": "雨宮 セナ",
             "related_location": "コア",
             "icon": "images/icons/icon_evidence_key.png",
             "chapter": 2,
             "acquired": False,
-            "hint": "ALMAそのものではなく、ALMAが参照する入力側に手が入っている。",
+            "hint": "犯人がALMAを騙すために利用した仕様。",
         },
         "e_earth_meeting_audio": {
             "id": "e_earth_meeting_audio",
             "name": "地球会議の音声記録",
             "short_name": "会議音声",
-            "description": "地球側の会議で、セレネ資源開発と白環市の水資源契約をめぐる圧力が記録されている。",
-            "summary": "セレネ社と白環市の水資源契約をめぐる圧力が記録された音声。",
-            "detail": "雨宮セナはシロワ存続のため、檜山の監査告発を止める必要があった。音声には動機につながる発言が含まれる。",
+            "description": "セレネ資源開発と地球側会議で、シロワの採掘量不足が問題視されていた音声。",
+            "summary": "セナのアリバイと動機に関わる遠隔会議の音声。",
+            "detail": "音声にはセナの応答があるが、発言間隔に長い空白がある。遠隔出席を続けながら現場へ移動できた余地が残る。",
             "category": "audio",
             "related_character": "雨宮 セナ",
             "related_location": "セナ執務室",
             "icon": "images/icons/icon_evidence_audio.png",
-            "chapter": 2,
+            "chapter": 4,
             "acquired": False,
-            "hint": "事故の技術的説明だけでは、なぜ檜山が狙われたかは説明できない。",
+            "hint": "セナのアリバイを完全には支えない音声。",
         },
         "e_noah_testimony": {
             "id": "e_noah_testimony",
-            "name": "ノアの証言",
+            "name": "ノアの証言メモ",
             "short_name": "ノア証言",
-            "description": "月面生まれの雨宮ノアは、R-7のカメラ映像と生体センサーが一致していなかったと証言する。",
-            "summary": "R-7のカメラ映像と生体センサーが一致していなかった、という証言。",
-            "detail": "映像上のR-7は無人。生体センサーには微弱な人間反応。ALMA本体は映像側を優先して判断した。",
+            "description": "ノアが外口近くで聞いた足音と、ALMAの見ていたR-7の違和感をまとめたメモ。",
+            "summary": "映像と生体センサー、外口付近の足音が食い違う証言。",
+            "detail": "ノアは母をかばいながらも、事故直前に外口へ向かう足音を聞いていたと認める。",
             "category": "testimony",
             "related_character": "雨宮 ノア",
-            "related_location": "コア",
+            "related_location": "外口",
             "icon": "images/icons/icon_person.png",
-            "chapter": 3,
+            "chapter": 4,
             "acquired": False,
-            "hint": "ALMAは嘘をついたのではない。嘘の入力を信じた。",
+            "hint": "アリバイの空白を人の記憶で埋める。",
         },
         "e_toru_audit_file": {
             "id": "e_toru_audit_file",
             "name": "徹の暗号化監査ファイル",
             "short_name": "監査ファイル",
-            "description": "檜山徹が死の直前に残した監査ファイル。シロワの運用偽装と犯人の手口が暗号化されていた。",
-            "summary": "檜山徹が死の直前に残した、犯人と手口を結ぶ監査ファイル。",
-            "detail": "監査ファイルには、雨宮セナがセンサー同期を操作し、ALMAに『無人のR-7』を認識させた手順が残っている。",
+            "description": "檜山徹が死の直前に残した、シロワ再建のための監査ファイル。",
+            "summary": "セレネ社の圧力、採掘量不足、ALMA運用の抜け穴をつなぐ資料。",
+            "detail": "徹は都市を壊すためではなく、嘘のない再建のために告発を準備していた。",
             "category": "key",
             "related_character": "檜山 徹",
             "related_location": "コア",
             "icon": "images/icons/icon_evidence_key.png",
             "chapter": 3,
             "acquired": False,
-            "hint": "真相を確定する最後の鍵。技術トリックと犯人を同時に結びつける。",
+            "hint": "動機と徹の本心を同時に示す。",
+        },
+        "e_lunarborn_medical_report": {
+            "id": "e_lunarborn_medical_report",
+            "name": "月面生まれ世代の医療評価",
+            "short_name": "月生まれ医療評価",
+            "description": "月面生まれの世代が急な地球移住に耐えにくいことを示す医療評価。",
+            "summary": "セナが都市閉鎖を恐れた理由に関わる資料。",
+            "detail": "ノアを含む月面生まれ世代は、重力・免疫・循環器の面で地球移住に高いリスクを抱えている。",
+            "category": "medical",
+            "related_character": "白石 アカリ",
+            "related_location": "医療室",
+            "icon": "images/icons/icon_evidence_medical.png",
+            "chapter": 3,
+            "acquired": False,
+            "hint": "セナの動機を、政治ではなく家族と住民の身体から見る。",
+        },
+        "e_sena_dust_trace": {
+            "id": "e_sena_dust_trace",
+            "name": "セナの袖口に残る極地粉塵",
+            "short_name": "袖口の粉塵",
+            "description": "セナの袖口から、外口と影井戸周辺に特有の微細粉塵が検出された。",
+            "summary": "セナが会議中に外口近くへ移動した可能性を示す。",
+            "detail": "執務室だけにいたなら付着しない粉塵。ノアの証言と組み合わせることで、セナのアリバイが崩れる。",
+            "category": "physical",
+            "related_character": "雨宮 セナ",
+            "related_location": "外口",
+            "icon": "images/icons/icon_warning.png",
+            "chapter": 4,
+            "acquired": False,
+            "hint": "セナがどこにいたかを衣服の痕跡で見る。",
         },
     }
 
     PERSON_ORDER = ["mio", "sena", "toru", "ritsu", "luka", "akari", "noah", "jin", "alma"]
-    INTERVIEW_TARGETS = ["noah", "sena", "ritsu", "luka", "akari", "jin"]
+    INTERVIEW_TARGETS = ["sena", "ritsu", "luka", "akari", "noah", "jin"]
 
     person_profiles = {
         "mio": {
@@ -125,43 +275,43 @@ init python:
         "sena": {
             "name": "雨宮 セナ",
             "label": "シロワの代表",
-            "memo": "白環市、通称シロワの都市代表。住民からの信頼は厚いが、都市存続のために強引な判断も辞さない。",
+            "memo": "白環市、通称シロワの代表。住民の未来を背負うあまり、真実を押し潰そうとしている。",
             "image": "images/chars/sena_neutral.png",
         },
         "toru": {
             "name": "檜山 徹",
             "label": "空気を守っていた男",
-            "memo": "生命維持主任。酸素工房R-7で死亡した被害者。生前、都市運用の監査ファイルを残していた。",
+            "memo": "生命維持主任。酸素工房R-7で死亡した被害者。都市を壊すのではなく再建するため、監査ファイルを残した。",
             "image": "images/chars/toru_neutral.png",
         },
         "ritsu": {
             "name": "北条 リツ",
             "label": "アルマの技師",
-            "memo": "AI管理技師。ALMAの中核コードに改ざんがないことを確認し、入力側の異常に気づく。",
+            "memo": "AI管理技師。ALMAは嘘をつかない、だからこそ入力の嘘に気づく。",
             "image": "images/chars/ritsu_neutral.png",
         },
         "luka": {
             "name": "ルカ・ナディム",
             "label": "影井戸の採掘屋",
-            "memo": "永久影採掘坑、通称『影井戸』の採掘主任。現場の空気と水の重みをよく知っている。",
+            "memo": "影井戸の採掘主任。徹とは口論していたが、同じ危機を別の角度から見ていた。",
             "image": "images/chars/luka_neutral.png",
         },
         "akari": {
             "name": "白石 アカリ",
             "label": "月生まれを診る医師",
-            "memo": "医療主任。月面生まれの住民の体調管理を担う。檜山の死因にも違和感を抱いている。",
+            "memo": "医療主任。死者の身体と、月面生まれ世代の未来を同じ重さで見ている。",
             "image": "images/chars/akari_neutral.png",
         },
         "noah": {
             "name": "雨宮 ノア",
             "label": "月で生まれた娘",
-            "memo": "シロワで生まれた少女。ALMAを『アルマさん』と呼び、事故直前の違和感を覚えている。",
+            "memo": "シロワで生まれた少女。母をかばい、父の本心を知らないまま傷ついている。",
             "image": "images/chars/noah_neutral.png",
         },
         "jin": {
             "name": "鷹峰 ジン",
             "label": "セレネ社の広報法務",
-            "memo": "セレネ資源開発の企業側担当。事故を企業リスクとして処理しようとする。",
+            "memo": "セレネ資源開発の企業側担当。会社を守る言葉で、現場の痛みを薄めようとする。",
             "image": "images/chars/jin_neutral.png",
         },
         "alma": {
@@ -172,60 +322,122 @@ init python:
         },
     }
 
+    FINAL_REQUIRED_EVIDENCE = [
+        "e_toru_audit_file",
+        "e_lunarborn_medical_report",
+        "e_noah_testimony",
+        "e_maintenance_admin_log",
+        "e_white_rabbit_co2_absorber",
+    ]
+
     deduction_questions = [
         {
             "id": "q1",
-            "prompt": "Q1. 檜山徹が死亡した直接の原因を示す証拠は？",
-            "answer": "e_r7_decompression_log",
-            "hint": "まずは事件そのものを記録したログを示す。",
-            "success": "酸素工房R-7の減圧ログが、死亡時刻と区画状態を示している。",
-            "failure": "それは原因よりも、手口や動機に近い証拠だ。",
+            "kind": "evidence",
+            "prompt": "Q1. 徹の直接の死因を示す証拠は？",
+            "answers": ["e_r7_decompression_log", "e_autopsy_record"],
+            "hint": "事故の発生ログ、または身体に残った死因の記録を見る。",
+            "success": "減圧と真空暴露が、徹の直接の死因を示している。",
+            "failure": "それは死因ではなく、手口や動機に近い。",
+            "key": True,
         },
         {
             "id": "q2",
-            "prompt": "Q2. 『徹は白兎3号で退避しようとした』という説明と矛盾する証拠は？",
-            "answer": "e_white_rabbit_co2_absorber",
-            "hint": "使われたはずなのに、使われた痕跡がないものを探す。",
-            "success": "白兎3号のCO2吸収材に使用痕跡がない。事故説明は崩れた。",
-            "failure": "退避行動の矛盾を直接示すものではない。",
+            "kind": "evidence",
+            "prompt": "Q2. ALMAがR-7を無人と判断した根拠は？",
+            "answers": ["e_personnel_location_log", "e_white_rabbit_usage_log"],
+            "hint": "ALMAが見た『人の位置』と『白兎3号の移動』を確認する。",
+            "success": "ALMAはビーコンと使用ログを優先し、徹が外口側にいると判断した。",
+            "failure": "ALMAの判断材料そのものを示す証拠が必要だ。",
+            "key": True,
         },
         {
             "id": "q3",
-            "prompt": "Q3. ALMA本体ではなく、入力側が操作されたことを示す証拠は？",
-            "answer": "e_admin_authority_log",
-            "hint": "コード改ざんではなく、コアの監視系同期に注目する。",
-            "success": "コア管理者権限ログは、監視系の再同期操作を示している。",
-            "failure": "ALMAが何を見たかではなく、誰が入力をずらせたかが必要だ。",
+            "kind": "evidence",
+            "prompt": "Q3. 徹が実際には船外活動をしていなかった証拠は？",
+            "answers": ["e_white_rabbit_co2_absorber", "e_white_rabbit_dust_test"],
+            "hint": "実際に外へ出たなら、宇宙服には消耗や粉塵が残る。",
+            "success": "白兎3号には外へ出た痕跡がない。",
+            "failure": "白兎3号そのものに残った痕跡を見る。",
+            "key": True,
         },
         {
             "id": "q4",
-            "prompt": "Q4. 雨宮セナに檜山を止める動機があったことを示す証拠は？",
-            "answer": "e_earth_meeting_audio",
-            "hint": "技術ではなく、政治的・経済的な圧力を示す証拠を選ぶ。",
-            "success": "地球会議の音声記録が、シロワとセナの動機を浮かび上がらせる。",
-            "failure": "それは手口の証拠で、動機の説明には弱い。",
+            "kind": "evidence",
+            "prompt": "Q4. R-7の異常が自然故障ではなく人為的だった根拠は？",
+            "answers": ["e_thermal_sensor_frost", "e_manual_valve_scratch"],
+            "hint": "センサーや補助弁に、人が触った痕跡が残っている。",
+            "success": "センサーの氷霜と補助弁の傷が、人為的干渉を示す。",
+            "failure": "自然故障だけでは説明できない物理痕跡を選ぶ。",
+            "key": True,
         },
         {
             "id": "q5",
-            "prompt": "Q5. 『ALMAは偽の現実を見せられた』と説明できる証拠は？",
-            "answer": "e_noah_testimony",
-            "hint": "映像と生体センサーの食い違いを語った人物を思い出す。",
-            "success": "ノアの証言により、ALMAの判断材料が矛盾していたとわかる。",
-            "failure": "偽の現実そのものを説明するには、入力の食い違いが必要だ。",
+            "kind": "evidence",
+            "prompt": "Q5. 犯人がALMAを騙すために利用した仕様は？",
+            "answers": ["e_maintenance_admin_log"],
+            "hint": "ALMAの中核ではなく、保守モード時の優先順位に注目する。",
+            "success": "保守モード中のビーコン優先仕様が、偽の現実を成立させた。",
+            "failure": "ALMAを改ざんした証拠ではなく、ALMAが従った仕様の証拠が必要だ。",
+            "key": True,
         },
         {
             "id": "q6",
-            "prompt": "Q6. 雨宮セナの偽装殺人を最終的に確定する証拠は？",
-            "answer": "e_toru_audit_file",
-            "hint": "犯人・手口・被害者の告発を一本につなぐ最後の証拠を示す。",
-            "success": "徹の監査ファイルが、セナと偽装手口を結びつけた。",
-            "failure": "真相確定には、犯人と手口を同時に結ぶ証拠が必要だ。",
+            "kind": "evidence",
+            "prompt": "Q6. セナのアリバイを崩す証拠は？",
+            "answers": ["e_earth_meeting_audio", "e_noah_testimony", "e_sena_dust_trace"],
+            "hint": "会議音声の空白、ノアの足音、袖口の粉塵を思い出す。",
+            "success": "セナは会議に出ていたように見せながら、外口へ移動できた。",
+            "failure": "セナが執務室にいたという前提を崩す証拠を選ぶ。",
+            "key": True,
+        },
+        {
+            "id": "q7",
+            "kind": "person",
+            "prompt": "Q7. 犯人は誰か？",
+            "answer_person": "sena",
+            "hint": "都市を守る権限と動機を持ち、保守モードを使えた人物。",
+            "success": "雨宮セナ。シロワの代表が、都市を守るために徹を殺した。",
+            "failure": "実行できる権限、動機、アリバイ崩しが揃う人物を選ぶ。",
+            "key": True,
+        },
+        {
+            "id": "q8",
+            "kind": "evidence",
+            "prompt": "Q8. 犯人の動機を示す証拠は？",
+            "answers": ["e_toru_audit_file", "e_lunarborn_medical_report"],
+            "hint": "採掘量不足と、月面生まれ世代の未来を同時に見る。",
+            "success": "セナは都市閉鎖とノアたちの未来を恐れていた。",
+            "failure": "手口ではなく、セナがなぜ止めたかったのかを示す証拠が必要だ。",
+            "key": True,
+        },
+        {
+            "id": "q9",
+            "kind": "evidence",
+            "prompt": "Q9. 徹が最後に守ろうとしたものを示す証拠は？",
+            "answers": ["e_manual_bulkhead_blood"],
+            "hint": "徹が最後に手を伸ばした場所に残ったものを見る。",
+            "success": "徹は自分の命ではなく、隣の区画の空気を守ろうとしていた。",
+            "failure": "徹の最後の行動そのものを示す証拠が必要だ。",
+            "key": False,
         },
     ]
 
     def ordered_unlocked_evidence():
         """入手済み証拠を、カタログで決めた順番に並べて返す。"""
         return [evidence_id for evidence_id in EVIDENCE_ORDER if evidence_id in evidence_unlocked]
+
+    def has_evidence(evidence_id):
+        return evidence_id in evidence_unlocked
+
+    def missing_final_evidence():
+        return [evidence_id for evidence_id in FINAL_REQUIRED_EVIDENCE if evidence_id not in evidence_unlocked]
+
+    def has_final_required_evidence():
+        return len(missing_final_evidence()) == 0
+
+    def evidence_names(evidence_ids):
+        return [evidence_catalog[evidence_id]["name"] for evidence_id in evidence_ids if evidence_id in evidence_catalog]
 
     def add_evidence(evidence_id):
         """証拠品を入手する。存在しないIDなら通知だけ出してFalseを返す。"""
@@ -242,8 +454,9 @@ init python:
         renpy.restart_interaction()
         return True
 
-    def set_chapter(number, title):
-        """章番号と章タイトルを更新する。"""
+    def set_chapter(number, title, objective):
+        """章番号・章タイトル・現在目的を更新する。"""
         store.chapter = number
         store.chapter_title = title
+        store.current_objective = objective
 

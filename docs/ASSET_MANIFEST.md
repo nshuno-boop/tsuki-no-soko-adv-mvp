@@ -1,5 +1,7 @@
 # ASSET MANIFEST
 
+Phase 3時点では、通しプレイMVPで参照している画像はすべて placeholder のまま運用する。
+
 状態:
 
 - placeholder: 今回生成した仮素材
@@ -79,4 +81,3 @@
 | 選択決定 | 控えめなクリック音 | needed |
 | 不正解 | 警告音、短く乾いた音 | needed |
 | エアロック | 圧力扉、空気音 | needed |
-
