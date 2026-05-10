@@ -109,8 +109,11 @@ label chapter3_hub:
         call screen person_memo_screen
         jump chapter3_hub
     elif hub_choice == "alma":
-        $ audit_log_lines = ["CITY: SHIROWA / OFFICIAL: HAKKAN CITY", "AI: ALMA", "MODE: MAINTENANCE PRIORITY WINDOW FOUND", "WARNING: BEACON STREAM AND BIOMETRIC TRACE DO NOT MATCH"]
+        $ audit_log_lines = ["CITY: SHIROWA", "OFFICIAL RECORD: 白環市", "COMMON NAME: シロワ", "AI: ALMA", "MODE: MAINTENANCE PRIORITY WINDOW FOUND", "WARNING: BEACON STREAM AND BIOMETRIC TRACE DO NOT MATCH"]
         call screen alma_log_screen("CURRENT AUDIT SNAPSHOT", audit_log_lines)
+        jump chapter3_hub
+    elif hub_choice == "timeline":
+        call screen timeline_screen
         jump chapter3_hub
     elif hub_choice == "interview:sena":
         call interview_sena
@@ -192,6 +195,9 @@ label chapter5_hub:
     elif hub_choice == "alma":
         $ final_log_lines = ["FINAL AUDIT READY", "ALMA CORE INTEGRITY: CLEAN", "INPUT REALITY: COMPROMISED", "RECOMMENDATION: HUMAN DEDUCTION REQUIRED"]
         call screen alma_log_screen("FINAL ALMA LOG", final_log_lines)
+        jump chapter5_hub
+    elif hub_choice == "timeline":
+        call screen timeline_screen
         jump chapter5_hub
     elif hub_choice == "interview:sena":
         call interview_sena
@@ -386,6 +392,7 @@ label final_reasoning:
     $ deduction_mistakes = 0
     $ deduction_hint_count = 0
     $ deduction_key_failures = 0
+    $ deduction_correct_ids = set()
 
     scene bg core
     show mio neutral at left
@@ -409,6 +416,8 @@ label ask_deduction_question(question_data):
     while not solved and attempts < 2:
         if question_data["kind"] == "person":
             call screen person_choice_screen(question_data["prompt"], question_data["hint"])
+        elif question_data["kind"] == "multi_evidence":
+            call screen multi_evidence_choice_screen(question_data["prompt"], question_data["hint"])
         else:
             call screen evidence_choice_screen(question_data["prompt"], question_data["hint"])
         $ selected_answer = _return
@@ -424,12 +433,21 @@ label ask_deduction_question(question_data):
         elif question_data["kind"] == "person" and selected_answer == question_data["answer_person"]:
             $ solved = True
             $ deduction_score += 1
+            $ deduction_correct_ids.add(question_data["id"])
+            $ success_text = question_data["success"]
+            sysmsg "正解。 [success_text]"
+
+        elif question_data["kind"] == "multi_evidence" and set(selected_answer) == set(question_data["required_answers"]):
+            $ solved = True
+            $ deduction_score += 1
+            $ deduction_correct_ids.add(question_data["id"])
             $ success_text = question_data["success"]
             sysmsg "正解。 [success_text]"
 
         elif question_data["kind"] == "evidence" and selected_answer in question_data["answers"]:
             $ solved = True
             $ deduction_score += 1
+            $ deduction_correct_ids.add(question_data["id"])
             $ success_text = question_data["success"]
             sysmsg "正解。 [success_text]"
 
@@ -454,11 +472,25 @@ label ending_branch:
     scene bg dawn_window
     show mio neutral at left
 
+    $ true_required_questions = {"q6", "q8", "q9"}
+    $ true_question_ok = true_required_questions.issubset(deduction_correct_ids)
+    if final_forced_bad:
+        $ ending_name = "Bad Ending"
+    elif deduction_score >= 8 and deduction_key_failures == 0 and true_question_ok and has_final_required_evidence():
+        $ ending_name = "True Ending"
+    elif deduction_score >= 5 and deduction_key_failures <= 2:
+        $ ending_name = "Normal Ending"
+    else:
+        $ ending_name = "Bad Ending"
+
+    $ result_text = "正解 {} / 不正解 {} / ヒント {} / 重要失敗 {}".format(deduction_score, deduction_mistakes, deduction_hint_count, deduction_key_failures)
+    call screen deduction_result_screen(result_text, ending_name)
+
     if final_forced_bad:
         jump bad_ending
-    elif deduction_score >= 8 and deduction_key_failures == 0 and deduction_mistakes <= 3 and has_final_required_evidence():
+    elif ending_name == "True Ending":
         jump true_ending
-    elif deduction_score >= 5 and deduction_key_failures <= 2:
+    elif ending_name == "Normal Ending":
         jump normal_ending
     else:
         jump bad_ending
@@ -466,13 +498,20 @@ label ending_branch:
 
 label true_ending:
     scene bg dawn_window
-    show mio neutral at left
+    show mio pained at left
+    show noah tears at center
     show sena broken at right
     sysmsg "True Ending: 月の底で、息をする"
     m "ALMAは殺していない。あなたは、ALMAに偽の現実を見せた。"
     sena "都市が閉じれば、ノアたちは生きる場所を失う。私は、それが怖かった。"
+    sysmsg "徹の監査ファイルには、最後の一文が残されていた。"
+    t "シロワを告発する。シロワを終わらせるためではない。嘘の上では、誰も長く息をできないから。"
     noah "父さんは、シロワを壊そうとしてたんじゃないんだね。"
-    m "嘘を取り除いて、作り直そうとしていた。君たちが、ここで息を続けられるように。"
+    m "違う。徹さんは、嘘を取り除いて、君たちがここで息を続けられるようにしようとしていた。"
+    alma "登録住民数386。呼吸確認385。"
+    alma "檜山徹。生命維持主任。最終作業、居住区隔壁保護。記録しました。"
+    noah "……ひとりぶん、忘れないで。"
+    alma "記録しました。"
     sysmsg "シロワは閉鎖されず、住民自治と安全監査の道へ進む。夜明けの窓に、細い光が差した。"
     return
 
@@ -497,3 +536,42 @@ label bad_ending:
     noah "……母さんの足跡、どうしてここにあるの。"
     sysmsg "プレイヤーだけが、届かなかった真相の形を知っている。"
     return
+
+
+label debug_menu:
+    if not config.developer:
+        sysmsg "このメニューは開発用です。"
+        return
+
+    sysmsg "開発用デバッグメニュー"
+    menu:
+        "すべての証拠を入手":
+            $ evidence_unlocked.update(REQUIRED_EVIDENCE_IDS)
+            $ renpy.notify("すべての証拠を入手しました")
+            jump debug_menu
+
+        "重要証拠だけ入手":
+            $ evidence_unlocked.update(FINAL_REQUIRED_EVIDENCE)
+            $ renpy.notify("重要証拠を入手しました")
+            jump debug_menu
+
+        "第3章へジャンプ":
+            jump chapter3_hub
+
+        "第5章へジャンプ":
+            jump chapter5_hub
+
+        "最終推理へジャンプ":
+            jump pre_final_reasoning
+
+        "True Endingへジャンプ":
+            jump true_ending
+
+        "Normal Endingへジャンプ":
+            jump normal_ending
+
+        "Bad Endingへジャンプ":
+            jump bad_ending
+
+        "戻る":
+            return

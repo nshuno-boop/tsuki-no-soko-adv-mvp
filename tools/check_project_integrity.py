@@ -26,6 +26,8 @@ REQUIRED_FILES = [
     "docs/IMAGE_PROMPTS.md",
     "docs/PLAYTEST_CHECKLIST.md",
     "tools/generate_placeholder_assets.py",
+    "tools/check_project_integrity.py",
+    ".github/workflows/static-check.yml",
 ]
 
 REQUIRED_EVIDENCE_IDS = [
@@ -68,6 +70,21 @@ OLD_TERMS = [
     "白石ユナ",
     "九条 カイ",
     "白石 ルイ",
+    "HAKKAN CITY",
+    "HAKKAN",
+]
+
+REQUIRED_SCREENS = [
+    "objective_overlay",
+    "investigation_hub_screen",
+    "evidence_screen",
+    "person_memo_screen",
+    "evidence_choice_screen",
+    "multi_evidence_choice_screen",
+    "person_choice_screen",
+    "missing_evidence_screen",
+    "alma_log_screen",
+    "timeline_screen",
 ]
 
 
@@ -89,6 +106,23 @@ def check_image_paths(errors: list[str]) -> None:
             errors.append(f"missing image referenced by images.rpy: game/{path}")
 
 
+def check_image_definitions(errors: list[str]) -> None:
+    images_text = read_text("game/images.rpy")
+    required_defs = [
+        "image bg lander_interior",
+        "image bg shirowa_hab_ring",
+        "image bg core",
+        "image bg oxygen_workshop_r7",
+        "image mio neutral",
+        "image sena broken",
+        "image noah tears",
+        "image alma speaking",
+    ]
+    for image_def in required_defs:
+        if image_def not in images_text:
+            errors.append(f"missing image definition: {image_def}")
+
+
 def check_manifest_assets(errors: list[str]) -> None:
     manifest = read_text("docs/ASSET_MANIFEST.md")
     paths = re.findall(r"(game/images/[^\s|]+\.png)", manifest)
@@ -107,6 +141,28 @@ def check_evidence_ids(errors: list[str]) -> None:
             errors.append(f"evidence id missing from script.rpy: {evidence_id}")
 
 
+def check_screens_and_labels(errors: list[str]) -> None:
+    screens_text = read_text("game/screens.rpy")
+    script_text = read_text("game/script.rpy")
+
+    defined_screens = set(re.findall(r"^screen\s+([A-Za-z_][A-Za-z0-9_]*)\s*\(", screens_text, re.MULTILINE))
+    for screen_name in REQUIRED_SCREENS:
+        if screen_name not in defined_screens:
+            errors.append(f"required screen missing: {screen_name}")
+
+    called_screens = set(re.findall(r"call\s+screen\s+([A-Za-z_][A-Za-z0-9_]*)", script_text))
+    for screen_name in called_screens:
+        if screen_name not in defined_screens:
+            errors.append(f"script calls missing screen: {screen_name}")
+
+    labels = set(re.findall(r"^label\s+([A-Za-z_][A-Za-z0-9_]*)(?:\s*\([^)]*\))?\s*:", script_text, re.MULTILINE))
+    called_labels = set(re.findall(r"^\s*call\s+(?!screen\b)([A-Za-z_][A-Za-z0-9_]*)", script_text, re.MULTILINE))
+    jumped_labels = set(re.findall(r"^\s*jump\s+([A-Za-z_][A-Za-z0-9_]*)", script_text, re.MULTILINE))
+    for label_name in sorted(called_labels | jumped_labels):
+        if label_name not in labels:
+            errors.append(f"script references missing label: {label_name}")
+
+
 def check_names(errors: list[str], warnings: list[str]) -> None:
     combined = "\n".join(
         read_text(path)
@@ -120,9 +176,18 @@ def check_names(errors: list[str], warnings: list[str]) -> None:
             warnings.append(f"old term remains: {term}")
 
 
+def check_data_hygiene(warnings: list[str]) -> None:
+    evidence_text = read_text("game/evidence.rpy")
+    screens_text = read_text("game/screens.rpy")
+    if '"acquired"' in evidence_text:
+        warnings.append("evidence_catalog still contains acquired fields; use evidence_unlocked instead")
+    if "第[chapter]章" in screens_text:
+        warnings.append("screens.rpy may duplicate chapter numbers via 第[chapter]章")
+
+
 def check_readme(errors: list[str]) -> None:
     readme = read_text("README.md")
-    for term in ["Phase 3", "通しプレイMVP", "git remote", "check_project_integrity.py"]:
+    for term in ["Phase 3", "Phase 4", "通しプレイMVP", "git remote", "check_project_integrity.py", "GitHub Actions"]:
         if term not in readme:
             errors.append(f"README missing Phase 3 note: {term}")
 
@@ -134,9 +199,12 @@ def main() -> int:
     check_required_files(errors)
     if not errors:
         check_image_paths(errors)
+        check_image_definitions(errors)
         check_manifest_assets(errors)
         check_evidence_ids(errors)
+        check_screens_and_labels(errors)
         check_names(errors, warnings)
+        check_data_hygiene(warnings)
         check_readme(errors)
 
     print("Project integrity check")
@@ -156,4 +224,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     sys.exit(main())
-

@@ -1,4 +1,4 @@
-# 証拠・人物メモ・進行・推理問題のデータ層。
+﻿# 証拠・人物メモ・進行・推理問題のデータ層。
 # Phase 3では「最初から最後まで遊べるMVP」を優先し、章と証拠の導線をここで一元管理する。
 
 default chapter = 0
@@ -11,6 +11,7 @@ default deduction_score = 0
 default deduction_mistakes = 0
 default deduction_hint_count = 0
 default deduction_key_failures = 0
+default deduction_correct_ids = set()
 default final_forced_bad = False
 
 init python:
@@ -47,7 +48,6 @@ init python:
             "related_location": "酸素工房R-7",
             "icon": "images/icons/icon_evidence_log.png",
             "chapter": 1,
-            "acquired": False,
             "hint": "事件の発生時刻と直接の危険を示す。",
         },
         "e_personnel_location_log": {
@@ -62,7 +62,6 @@ init python:
             "related_location": "コア",
             "icon": "images/icons/icon_evidence_log.png",
             "chapter": 1,
-            "acquired": False,
             "hint": "ALMAが誰をどこにいると見なしたかを見る。",
         },
         "e_autopsy_record": {
@@ -77,7 +76,6 @@ init python:
             "related_location": "医療室",
             "icon": "images/icons/icon_evidence_medical.png",
             "chapter": 1,
-            "acquired": False,
             "hint": "死因をログだけでなく身体の記録から確認する。",
         },
         "e_manual_bulkhead_blood": {
@@ -92,7 +90,6 @@ init python:
             "related_location": "酸素工房R-7",
             "icon": "images/icons/icon_evidence_medical.png",
             "chapter": 1,
-            "acquired": False,
             "hint": "徹が最後に守ろうとしたものを示す。",
         },
         "e_white_rabbit_usage_log": {
@@ -107,7 +104,6 @@ init python:
             "related_location": "外口",
             "icon": "images/icons/icon_evidence_suit.png",
             "chapter": 2,
-            "acquired": False,
             "hint": "ALMAが無人と判断した入力のひとつ。",
         },
         "e_white_rabbit_co2_absorber": {
@@ -122,7 +118,6 @@ init python:
             "related_location": "外口",
             "icon": "images/icons/icon_evidence_suit.png",
             "chapter": 4,
-            "acquired": False,
             "hint": "使われたはずなのに消耗していないもの。",
         },
         "e_white_rabbit_dust_test": {
@@ -137,7 +132,6 @@ init python:
             "related_location": "外口",
             "icon": "images/icons/icon_evidence_suit.png",
             "chapter": 4,
-            "acquired": False,
             "hint": "実際に外へ出たなら、関節部に粉塵が残る。",
         },
         "e_thermal_sensor_frost": {
@@ -152,7 +146,6 @@ init python:
             "related_location": "酸素工房R-7",
             "icon": "images/icons/icon_warning.png",
             "chapter": 2,
-            "acquired": False,
             "hint": "自然故障ではない異物の痕跡。",
         },
         "e_manual_valve_scratch": {
@@ -167,7 +160,6 @@ init python:
             "related_location": "酸素工房R-7",
             "icon": "images/icons/icon_warning.png",
             "chapter": 2,
-            "acquired": False,
             "hint": "人が触った痕跡がある操作部を見る。",
         },
         "e_maintenance_admin_log": {
@@ -182,7 +174,6 @@ init python:
             "related_location": "コア",
             "icon": "images/icons/icon_evidence_key.png",
             "chapter": 2,
-            "acquired": False,
             "hint": "犯人がALMAを騙すために利用した仕様。",
         },
         "e_earth_meeting_audio": {
@@ -197,7 +188,6 @@ init python:
             "related_location": "セナ執務室",
             "icon": "images/icons/icon_evidence_audio.png",
             "chapter": 4,
-            "acquired": False,
             "hint": "セナのアリバイを完全には支えない音声。",
         },
         "e_noah_testimony": {
@@ -212,7 +202,6 @@ init python:
             "related_location": "外口",
             "icon": "images/icons/icon_person.png",
             "chapter": 4,
-            "acquired": False,
             "hint": "アリバイの空白を人の記憶で埋める。",
         },
         "e_toru_audit_file": {
@@ -227,7 +216,6 @@ init python:
             "related_location": "コア",
             "icon": "images/icons/icon_evidence_key.png",
             "chapter": 3,
-            "acquired": False,
             "hint": "動機と徹の本心を同時に示す。",
         },
         "e_lunarborn_medical_report": {
@@ -242,7 +230,6 @@ init python:
             "related_location": "医療室",
             "icon": "images/icons/icon_evidence_medical.png",
             "chapter": 3,
-            "acquired": False,
             "hint": "セナの動機を、政治ではなく家族と住民の身体から見る。",
         },
         "e_sena_dust_trace": {
@@ -257,7 +244,6 @@ init python:
             "related_location": "外口",
             "icon": "images/icons/icon_warning.png",
             "chapter": 4,
-            "acquired": False,
             "hint": "セナがどこにいたかを衣服の痕跡で見る。",
         },
     }
@@ -330,6 +316,100 @@ init python:
         "e_white_rabbit_co2_absorber",
     ]
 
+    case_timeline = [
+        {
+            "time": "19:10",
+            "title": "澪がシロワに到着",
+            "description": "地球から来た監査官として白環市に入る。",
+            "related_evidence": [],
+            "chapter": 0,
+        },
+        {
+            "time": "19:40",
+            "title": "セナが監査予定を確認",
+            "description": "セナは都市停止リスクを理由に、調査の短縮を求める。",
+            "related_evidence": ["e_earth_meeting_audio"],
+            "chapter": 0,
+        },
+        {
+            "time": "20:20",
+            "title": "徹とルカが口論",
+            "description": "影井戸の採掘量報告をめぐって対立。",
+            "related_evidence": ["e_toru_audit_file"],
+            "chapter": 3,
+        },
+        {
+            "time": "21:05",
+            "title": "ALMA保守モード開始",
+            "description": "管理者権限でR-7周辺の監視優先順位が切り替わる。",
+            "related_evidence": ["e_maintenance_admin_log"],
+            "chapter": 2,
+        },
+        {
+            "time": "21:32",
+            "title": "熱センサーに氷霜が付着",
+            "description": "R-7熱センサーに、自然結露では説明しにくい成分が残る。",
+            "related_evidence": ["e_thermal_sensor_frost"],
+            "chapter": 2,
+        },
+        {
+            "time": "21:46",
+            "title": "手動補助弁が操作される",
+            "description": "R-7の補助弁に新しい工具傷が残る。",
+            "related_evidence": ["e_manual_valve_scratch"],
+            "chapter": 2,
+        },
+        {
+            "time": "21:52",
+            "title": "ノアが外口付近で足音を聞く",
+            "description": "母セナに似た歩き方だったが、ノアは言い出せなかった。",
+            "related_evidence": ["e_noah_testimony"],
+            "chapter": 4,
+        },
+        {
+            "time": "22:03",
+            "title": "白兎3号のビーコンが移動",
+            "description": "白兎3号が外口側へ移動したようにALMAへ入力される。",
+            "related_evidence": ["e_white_rabbit_usage_log", "e_personnel_location_log"],
+            "chapter": 2,
+        },
+        {
+            "time": "22:08",
+            "title": "セナの会議音声に空白",
+            "description": "地球会議の応答に、移動可能な長い無音が残る。",
+            "related_evidence": ["e_earth_meeting_audio"],
+            "chapter": 4,
+        },
+        {
+            "time": "22:14",
+            "title": "酸素工房R-7が緊急減圧",
+            "description": "ALMAは無人区画と判断し、R-7を隔離・減圧した。",
+            "related_evidence": ["e_r7_decompression_log", "e_personnel_location_log"],
+            "chapter": 1,
+        },
+        {
+            "time": "22:15",
+            "title": "徹が隔壁レバーへ手を伸ばす",
+            "description": "徹は隣接区画を守るため、最後に手動隔壁を閉じようとした。",
+            "related_evidence": ["e_manual_bulkhead_blood"],
+            "chapter": 1,
+        },
+        {
+            "time": "22:40",
+            "title": "白兎3号に未使用痕跡",
+            "description": "CO2吸収材と関節粉塵が、船外活動の説明と矛盾する。",
+            "related_evidence": ["e_white_rabbit_co2_absorber", "e_white_rabbit_dust_test"],
+            "chapter": 4,
+        },
+        {
+            "time": "23:20",
+            "title": "徹の監査ファイルが復号",
+            "description": "徹が都市を壊すのではなく、嘘のない再建を目指していたとわかる。",
+            "related_evidence": ["e_toru_audit_file", "e_lunarborn_medical_report"],
+            "chapter": 5,
+        },
+    ]
+
     deduction_questions = [
         {
             "id": "q1",
@@ -353,22 +433,22 @@ init python:
         },
         {
             "id": "q3",
-            "kind": "evidence",
-            "prompt": "Q3. 徹が実際には船外活動をしていなかった証拠は？",
-            "answers": ["e_white_rabbit_co2_absorber", "e_white_rabbit_dust_test"],
+            "kind": "multi_evidence",
+            "prompt": "Q3. 徹が実際には船外活動をしていなかった証拠の組み合わせは？",
+            "required_answers": ["e_white_rabbit_co2_absorber", "e_white_rabbit_dust_test"],
             "hint": "実際に外へ出たなら、宇宙服には消耗や粉塵が残る。",
             "success": "白兎3号には外へ出た痕跡がない。",
-            "failure": "白兎3号そのものに残った痕跡を見る。",
+            "failure": "白兎3号そのものに残った2つの痕跡を組み合わせる。",
             "key": True,
         },
         {
             "id": "q4",
-            "kind": "evidence",
-            "prompt": "Q4. R-7の異常が自然故障ではなく人為的だった根拠は？",
-            "answers": ["e_thermal_sensor_frost", "e_manual_valve_scratch"],
+            "kind": "multi_evidence",
+            "prompt": "Q4. R-7の異常が人為的だった証拠の組み合わせは？",
+            "required_answers": ["e_thermal_sensor_frost", "e_manual_valve_scratch"],
             "hint": "センサーや補助弁に、人が触った痕跡が残っている。",
             "success": "センサーの氷霜と補助弁の傷が、人為的干渉を示す。",
-            "failure": "自然故障だけでは説明できない物理痕跡を選ぶ。",
+            "failure": "自然故障だけでは説明できない物理痕跡を2つ選ぶ。",
             "key": True,
         },
         {
@@ -383,12 +463,12 @@ init python:
         },
         {
             "id": "q6",
-            "kind": "evidence",
-            "prompt": "Q6. セナのアリバイを崩す証拠は？",
-            "answers": ["e_earth_meeting_audio", "e_noah_testimony", "e_sena_dust_trace"],
+            "kind": "multi_evidence",
+            "prompt": "Q6. セナのアリバイを崩す証拠の組み合わせは？",
+            "required_answers": ["e_earth_meeting_audio", "e_noah_testimony", "e_sena_dust_trace"],
             "hint": "会議音声の空白、ノアの足音、袖口の粉塵を思い出す。",
             "success": "セナは会議に出ていたように見せながら、外口へ移動できた。",
-            "failure": "セナが執務室にいたという前提を崩す証拠を選ぶ。",
+            "failure": "セナが執務室にいたという前提を崩す証拠を組み合わせる。",
             "key": True,
         },
         {
@@ -403,12 +483,12 @@ init python:
         },
         {
             "id": "q8",
-            "kind": "evidence",
-            "prompt": "Q8. 犯人の動機を示す証拠は？",
-            "answers": ["e_toru_audit_file", "e_lunarborn_medical_report"],
+            "kind": "multi_evidence",
+            "prompt": "Q8. セナの動機を示す証拠の組み合わせは？",
+            "required_answers": ["e_toru_audit_file", "e_lunarborn_medical_report"],
             "hint": "採掘量不足と、月面生まれ世代の未来を同時に見る。",
             "success": "セナは都市閉鎖とノアたちの未来を恐れていた。",
-            "failure": "手口ではなく、セナがなぜ止めたかったのかを示す証拠が必要だ。",
+            "failure": "手口ではなく、セナがなぜ止めたかったのかを示す証拠を組み合わせる。",
             "key": True,
         },
         {
@@ -419,7 +499,7 @@ init python:
             "hint": "徹が最後に手を伸ばした場所に残ったものを見る。",
             "success": "徹は自分の命ではなく、隣の区画の空気を守ろうとしていた。",
             "failure": "徹の最後の行動そのものを示す証拠が必要だ。",
-            "key": False,
+            "key": True,
         },
     ]
 

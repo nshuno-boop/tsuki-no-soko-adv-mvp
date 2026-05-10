@@ -1,4 +1,4 @@
-# Phase 3 UI screens.
+# Phase 4 UI screens.
 # 冷たい月面都市風の見た目に寄せつつ、Ren'Py標準機能だけで読める画面を優先する。
 
 style tsuki_frame:
@@ -69,7 +69,7 @@ screen investigation_hub_screen():
                 vbox:
                     spacing 2
                     text "聞き込み / 調査メニュー" style "tsuki_title_text"
-                    text "第[chapter]章  [chapter_title]" style "tsuki_subtle_text"
+                    text chapter_title style "tsuki_subtle_text"
                     text "目的: [current_objective]" color "#f8fafc" size 19
                 text "SHIROWA AUDIT" xalign 1.0 color "#67e8f9" size 18
 
@@ -126,6 +126,9 @@ screen investigation_hub_screen():
                     textbutton "ALMAログ":
                         action Return("alma")
                         xfill True
+                    textbutton "事件タイムライン":
+                        action Return("timeline")
+                        xfill True
                     null height 12
                     if chapter < 4:
                         textbutton "次の調査へ進む":
@@ -157,7 +160,7 @@ screen evidence_screen():
             hbox:
                 xfill True
                 text "証拠品一覧" style "tsuki_title_text"
-                text "第[chapter]章  [chapter_title]" xalign 1.0 color "#cbd5e1"
+                text chapter_title xalign 1.0 color "#cbd5e1"
             text "目的: [current_objective]" color "#f8fafc" size 19
 
             if len(evidence_unlocked) == 0:
@@ -334,6 +337,72 @@ screen evidence_choice_screen(question, hint_text):
                     action Return("__cancel__")
 
 
+screen multi_evidence_choice_screen(question, hint_text):
+    modal True
+    default selected_ids = set()
+
+    add Solid("#020617")
+
+    frame:
+        style "tsuki_frame"
+        xalign 0.5
+        yalign 0.5
+        xsize 1180
+        ysize 660
+
+        vbox:
+            spacing 14
+            text question size 27 color "#f8fafc"
+            text "必要な証拠をすべて選んでから提示してください。余計な証拠を含めると不正解です。" color "#cbd5e1" size 18
+
+            viewport:
+                xfill True
+                ysize 455
+                mousewheel True
+                scrollbars "vertical"
+
+                vbox:
+                    spacing 8
+                    for evidence_id in ordered_unlocked_evidence():
+                        $ item = evidence_catalog[evidence_id]
+                        $ selected = evidence_id in selected_ids
+                        $ choice_label = "選択中" if selected else "選択"
+                        $ related_character = item["related_character"]
+                        $ related_location = item["related_location"]
+                        frame:
+                            style "tsuki_panel"
+                            xfill True
+                            background "#0e7490dd" if selected else "#020617dd"
+
+                            hbox:
+                                spacing 14
+                                add item["icon"] xysize (42, 42)
+                                vbox:
+                                    xfill True
+                                    spacing 4
+                                    text item["name"] size 21 color "#f8fafc"
+                                    text item["description"] color "#cbd5e1" size 17
+                                    text "[related_character] / [related_location]" color "#67e8f9" size 15
+                                textbutton choice_label:
+                                    action If(
+                                        evidence_id in selected_ids,
+                                        SetScreenVariable("selected_ids", selected_ids - set([evidence_id])),
+                                        SetScreenVariable("selected_ids", selected_ids | set([evidence_id])),
+                                    )
+                                    xminimum 100
+
+            hbox:
+                spacing 12
+                textbutton "提示する":
+                    action Return(selected_ids)
+
+                textbutton "ヒントを見る":
+                    action Return("__hint__")
+
+                textbutton "考え直す":
+                    action Return("__cancel__")
+
+
 screen person_choice_screen(question, hint_text):
     modal True
 
@@ -379,6 +448,63 @@ screen person_choice_screen(question, hint_text):
                     action Return("__cancel__")
 
 
+screen timeline_screen():
+    tag menu
+    modal True
+
+    add Solid("#020617")
+
+    frame:
+        style "tsuki_frame"
+        xalign 0.5
+        yalign 0.5
+        xsize 1160
+        ysize 650
+        background Frame("images/ui/ui_timeline_panel.png", 24, 24)
+
+        vbox:
+            spacing 12
+            hbox:
+                xfill True
+                text "事件タイムライン" style "tsuki_title_text"
+                text chapter_title xalign 1.0 color "#cbd5e1"
+            text "入手済み証拠に応じて、関連証拠名が表示されます。" color "#94a3b8" size 18
+
+            viewport:
+                xfill True
+                ysize 505
+                mousewheel True
+                scrollbars "vertical"
+
+                vbox:
+                    spacing 10
+                    for event in case_timeline:
+                        $ related_ids = event["related_evidence"]
+                        $ missing_related = [evidence_id for evidence_id in related_ids if evidence_id not in evidence_unlocked]
+                        frame:
+                            style "tsuki_panel"
+                            xfill True
+
+                            vbox:
+                                spacing 4
+                                hbox:
+                                    spacing 12
+                                    text event["time"] color "#67e8f9" size 22
+                                    text event["title"] color "#f8fafc" size 22
+                                text event["description"] color "#cbd5e1" size 17
+                                if len(related_ids) == 0:
+                                    text "関連証拠: なし" color "#64748b" size 15
+                                elif len(missing_related) > 0:
+                                    text "未入手の関連証拠あり" color "#64748b" size 15
+                                else:
+                                    $ related_names = " / ".join(evidence_catalog[evidence_id]["short_name"] for evidence_id in related_ids)
+                                    text "関連証拠: [related_names]" color "#fbbf24" size 15
+
+            textbutton "閉じる":
+                action Return()
+                xalign 1.0
+
+
 screen missing_evidence_screen(missing_names):
     modal True
 
@@ -413,6 +539,34 @@ screen missing_evidence_screen(missing_names):
                     action Return("back")
                 textbutton "それでも進む":
                     action Return("continue")
+
+
+screen deduction_result_screen(result_text, ending_name):
+    modal True
+
+    add Solid("#020617")
+
+    frame:
+        style "tsuki_frame"
+        xalign 0.5
+        yalign 0.5
+        xsize 900
+        ysize 390
+
+        vbox:
+            spacing 14
+            text "推理結果" style "tsuki_title_text"
+            text result_text color "#f8fafc" size 24
+            text "到達予定: [ending_name]" color "#fbbf24" size 22
+            if ending_name == "True Ending":
+                text "動機と最後の行動まで示せました。真相は、夜明けの窓へ向かいます。" color "#cbd5e1"
+            elif ending_name == "Normal Ending":
+                text "犯人と手口は示せましたが、すべての痛みまではすくいきれていません。" color "#cbd5e1"
+            else:
+                text "重要な証拠が欠けています。真相は記録の底へ沈みます。" color "#cbd5e1"
+            textbutton "エンディングへ":
+                action Return()
+                xalign 1.0
 
 
 screen alma_log_screen(title, lines):

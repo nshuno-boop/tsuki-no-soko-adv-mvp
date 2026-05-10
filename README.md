@@ -25,6 +25,8 @@
 - 証拠提示式の最終推理
 - 正解・不正解・ヒント表示
 - True / Normal / Bad Ending 分岐
+- 事件タイムライン画面
+- 複数証拠提示式の推理問題
 
 ## Phase 2で追加した内容
 
@@ -58,6 +60,20 @@
 - True / Normal / Bad Ending の条件を整理
 - Ren'Pyなしでも使える整合性チェック `tools/check_project_integrity.py` を追加
 - プレイテスト用チェックリスト `docs/PLAYTEST_CHECKLIST.md` を追加
+
+## Phase 4で追加した内容
+
+- MVP表示基準を1280x720に統一
+- 仮背景PNGを1280x720、仮立ち絵・ALMA画像を520x760で再生成
+- 章タイトル表示の重複を避け、UIでは `chapter_title` のみを表示
+- 証拠入手状態を `evidence_unlocked` に一本化し、`acquired` フィールドを削除
+- 調査ハブから開ける「事件タイムライン」画面を追加
+- Q3/Q4/Q6/Q8を複数証拠提示式に変更
+- 最終推理後の短いリザルト表示を追加
+- True Endingにノア、徹の監査ファイル、ALMAの最終記録を追加
+- 開発者用 `label debug_menu` を追加
+- GitHub Actionsの静的チェック `.github/workflows/static-check.yml` を追加
+- `tools/check_project_integrity.py` にscreen / label / jump / call / 旧称 / acquired残存チェックを追加
 
 ## 通しプレイMVPの状態
 
@@ -96,9 +112,22 @@ tsuki-no-soko-adv-mvp/
     ART_DIRECTION.md
     ASSET_MANIFEST.md
     IMAGE_PROMPTS.md
+    PLAYTEST_CHECKLIST.md
   tools/
+    check_project_integrity.py
     generate_placeholder_assets.py
+  .github/
+    workflows/
+      static-check.yml
 ```
+
+## 画面サイズ
+
+MVPでは1280x720を基準にしています。
+
+- 背景: 1280x720
+- 立ち絵・ALMA表示: 520x760
+- 本素材化時は16:9を維持すれば、1920x1080などへ差し替え可能です。
 
 ## 素材生成方法
 
@@ -121,6 +150,34 @@ python tools/check_project_integrity.py
 ```
 
 このチェックはRen'Py構文を完全に解析するものではありません。最終確認にはRen'Py Launcherでの起動と `renpy lint` が必要です。
+
+## 推理UX
+
+事件タイムライン画面では、時刻、出来事、説明、関連証拠を確認できます。関連証拠が未入手の場合は「未入手の関連証拠あり」と表示されます。
+
+最終推理では、単一証拠提示に加えて複数証拠提示があります。複数証拠問題では、必要な証拠だけを過不足なく選ぶ必要があります。True EndingにはQ6、Q8、Q9の正解が必須です。
+
+## 開発者用デバッグ導線
+
+`label debug_menu` を追加しています。`config.developer` がTrueのときだけ使用する開発用導線です。
+
+- すべての証拠を入手
+- 重要証拠だけ入手
+- 第3章 / 第5章 / 最終推理へジャンプ
+- True / Normal / Bad Endingへジャンプ
+
+通常プレイ用の導線ではありません。
+
+## GitHub Actions
+
+push / pull_request で静的チェックが走ります。
+
+- Pillowをインストール
+- 仮素材を再生成
+- `tools/check_project_integrity.py` を実行
+- Pythonスクリプトを `py_compile`
+
+Ren'Py本体の導入はCIに含めていません。Ren'Py Launcherでの手動確認は引き続き必要です。
 
 ## GitHub
 

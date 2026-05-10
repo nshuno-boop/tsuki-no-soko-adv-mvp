@@ -18,6 +18,9 @@ CHAR_DIR = ROOT / "game" / "images" / "chars"
 UI_DIR = ROOT / "game" / "images" / "ui"
 ICON_DIR = ROOT / "game" / "images" / "icons"
 
+SCREEN_SIZE = (1280, 720)
+SPRITE_SIZE = (520, 760)
+
 try:
     from PIL import Image, ImageDraw, ImageFont
 
@@ -121,34 +124,35 @@ def draw_label(draw, xy: tuple[int, int], text: str, fill: str, size: int = 44) 
 
 def make_background(filename: str, title: str, colors: tuple[str, str], accent: str) -> None:
     path = BG_DIR / filename
+    width, height = SCREEN_SIZE
     if not HAS_PILLOW:
-        fallback_image(path, 1920, 1080, colors[0])
+        fallback_image(path, width, height, colors[0])
         return
 
-    img = Image.new("RGB", (1920, 1080), colors[0])
+    img = Image.new("RGB", SCREEN_SIZE, colors[0])
     draw = ImageDraw.Draw(img)
     c1 = hex_to_rgb(colors[0])
     c2 = hex_to_rgb(colors[1])
-    for y in range(1080):
-        ratio = y / 1079
+    for y in range(height):
+        ratio = y / max(height - 1, 1)
         rgb = tuple(int(c1[i] * (1 - ratio) + c2[i] * ratio) for i in range(3))
-        draw.line([(0, y), (1920, y)], fill=rgb)
+        draw.line([(0, y), (width, y)], fill=rgb)
 
-    for i in range(9):
-        x = 120 + i * 210
-        draw.rounded_rectangle((x, 190, x + 120, 860), radius=24, outline="#64748b", width=3)
-    draw.line((120, 820, 1800, 820), fill=accent, width=5)
-    draw.ellipse((1420, 120, 1780, 480), outline=accent, width=6)
-    draw.rectangle((0, 900, 1920, 1080), fill="#020617")
-    draw_label(draw, (80, 70), title, accent, 58)
-    draw_label(draw, (80, 145), "MOON CITY MVP PLACEHOLDER", "#cbd5e1", 28)
+    for i in range(8):
+        x = 70 + i * 150
+        draw.rounded_rectangle((x, 125, x + 76, 570), radius=18, outline="#64748b", width=3)
+    draw.line((80, 550, 1200, 550), fill=accent, width=4)
+    draw.ellipse((930, 80, 1180, 330), outline=accent, width=5)
+    draw.rectangle((0, 600, width, height), fill="#020617")
+    draw_label(draw, (52, 42), title, accent, 42)
+    draw_label(draw, (52, 95), "MOON CITY MVP PLACEHOLDER / 1280x720", "#cbd5e1", 22)
     img.save(path)
 
 
 def make_character(name: str, expression: str, color: str) -> None:
     path = CHAR_DIR / f"{name}_{expression}.png"
     if not HAS_PILLOW:
-        fallback_image(path, 900, 1400, color, 220)
+        fallback_image(path, SPRITE_SIZE[0], SPRITE_SIZE[1], color, 220)
         return
 
     img = Image.new("RGBA", (900, 1400), (0, 0, 0, 0))
@@ -175,13 +179,14 @@ def make_character(name: str, expression: str, color: str) -> None:
         draw.line((475, 240, 525, 240), fill="#ffffff", width=6)
 
     draw_label(draw, (70, 70), f"{name.upper()} / {expression}", "#e5e7eb", 36)
+    img = img.resize(SPRITE_SIZE, Image.Resampling.LANCZOS)
     img.save(path)
 
 
 def make_alma(state: str) -> None:
     path = CHAR_DIR / f"alma_{state}.png"
     if not HAS_PILLOW:
-        fallback_image(path, 900, 1400, "#22d3ee", 190)
+        fallback_image(path, SPRITE_SIZE[0], SPRITE_SIZE[1], "#22d3ee", 190)
         return
 
     img = Image.new("RGBA", (900, 1400), (0, 0, 0, 0))
@@ -194,6 +199,7 @@ def make_alma(state: str) -> None:
         draw.line((x, 690 - h, x, 690 + h), fill=accent, width=8)
     draw.ellipse((320, 390, 580, 650), outline=accent, width=6)
     draw_label(draw, (240, 180), f"ALMA / {state.upper()}", "#e0f2fe", 38)
+    img = img.resize(SPRITE_SIZE, Image.Resampling.LANCZOS)
     img.save(path)
 
 
