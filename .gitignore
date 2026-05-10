@@ -16,3 +16,6 @@ Thumbs.db
 .vscode/
 .idea/
 
+# Python checks
+__pycache__/
+*.pyc
