@@ -1,0 +1,18 @@
+# Ren'Py generated files
+game/cache/
+game/saves/
+game/**.rpyc
+game/**.rpymc
+
+# Build outputs
+build/
+dist/
+*.zip
+*.tar.bz2
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
