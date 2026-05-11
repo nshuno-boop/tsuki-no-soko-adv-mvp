@@ -372,7 +372,7 @@ screen multi_evidence_choice_screen(question, hint_text):
                         frame:
                             style "tsuki_panel"
                             xfill True
-                            background "#0e7490dd" if selected else "#020617dd"
+                            background ("#0e7490dd" if selected else "#020617dd")
 
                             hbox:
                                 spacing 14
