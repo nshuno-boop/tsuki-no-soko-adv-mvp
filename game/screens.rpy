@@ -62,7 +62,11 @@ screen investigation_hub_screen():
         ysize 650
 
         vbox:
-            spacing 18
+            spacing 14
+
+            $ done_count = interview_done_count()
+            $ required_count = 4
+            $ missing_names = missing_interview_names()
 
             hbox:
                 xfill True
@@ -76,43 +80,111 @@ screen investigation_hub_screen():
             hbox:
                 spacing 18
 
-                viewport:
-                    xsize 760
-                    ysize 470
-                    mousewheel True
-                    scrollbars "vertical"
+                frame:
+                    style "tsuki_panel"
+                    xsize 790
+                    ysize 500
 
                     vbox:
-                        spacing 10
-                        for person_id in INTERVIEW_TARGETS:
-                            $ person = person_profiles[person_id]
-                            $ done = person_id in interview_done
-                            $ stage_count = 0
-                            if (person_id + "_initial") in interview_flags:
-                                $ stage_count += 1
-                            if (person_id + "_additional") in interview_flags:
-                                $ stage_count += 1
-                            if (person_id + "_core") in interview_flags:
-                                $ stage_count += 1
-                            frame:
-                                style "tsuki_panel"
-                                xfill True
+                        spacing 7
+                        text "聞き込み対象" color "#f8fafc" size 24
+                        text "聞き込み進捗: [done_count] / [required_count]" color "#fbbf24" size 17
+                        if chapter == 3:
+                            text "第4章へ進むには4人以上への初回聞き込みが必要です。" color "#cbd5e1" size 15 xmaximum 730
+                        else:
+                            text "最終推理前に、核心に近い話も確認できます。" color "#cbd5e1" size 15 xmaximum 730
 
-                                hbox:
-                                    spacing 14
-                                    add person["image"] xysize (72, 112)
-                                    vbox:
-                                        xfill True
-                                        spacing 4
-                                        text person["name"] color "#f8fafc" size 22
-                                        text person["label"] color "#93c5fd" size 16
-                                        if done:
-                                            text "聞き込み段階: [stage_count]/3" color "#fbbf24" size 16
-                                        else:
-                                            text "未確認" color "#94a3b8" size 16
-                                    textbutton "聞く":
-                                        action Return("interview:" + person_id)
-                                        xminimum 100
+                        null height 2
+
+                        frame:
+                            background "#0f172acc"
+                            padding (10, 6)
+                            xfill True
+                            hbox:
+                                spacing 10
+                                vbox:
+                                    xsize 570
+                                    spacing 1
+                                    text "雨宮 セナ" color "#f8fafc" size 18
+                                    text "シロワの代表 / [interview_status_text('sena')]" color "#93c5fd" size 14
+                                textbutton "聞く":
+                                    action Return("interview:sena")
+                                    xminimum 92
+
+                        frame:
+                            background "#0f172acc"
+                            padding (10, 6)
+                            xfill True
+                            hbox:
+                                spacing 10
+                                vbox:
+                                    xsize 570
+                                    spacing 1
+                                    text "北条 リツ" color "#f8fafc" size 18
+                                    text "アルマの技師 / [interview_status_text('ritsu')]" color "#93c5fd" size 14
+                                textbutton "聞く":
+                                    action Return("interview:ritsu")
+                                    xminimum 92
+
+                        frame:
+                            background "#0f172acc"
+                            padding (10, 6)
+                            xfill True
+                            hbox:
+                                spacing 10
+                                vbox:
+                                    xsize 570
+                                    spacing 1
+                                    text "ルカ・ナディム" color "#f8fafc" size 18
+                                    text "影井戸の採掘屋 / [interview_status_text('luka')]" color "#93c5fd" size 14
+                                textbutton "聞く":
+                                    action Return("interview:luka")
+                                    xminimum 92
+
+                        frame:
+                            background "#0f172acc"
+                            padding (10, 6)
+                            xfill True
+                            hbox:
+                                spacing 10
+                                vbox:
+                                    xsize 570
+                                    spacing 1
+                                    text "白石 アカリ" color "#f8fafc" size 18
+                                    text "月生まれを診る医師 / [interview_status_text('akari')]" color "#93c5fd" size 14
+                                textbutton "聞く":
+                                    action Return("interview:akari")
+                                    xminimum 92
+
+                        frame:
+                            background "#0f172acc"
+                            padding (10, 6)
+                            xfill True
+                            hbox:
+                                spacing 10
+                                vbox:
+                                    xsize 570
+                                    spacing 1
+                                    text "雨宮 ノア" color "#f8fafc" size 18
+                                    text "月で生まれた娘 / [interview_status_text('noah')]" color "#93c5fd" size 14
+                                textbutton "聞く":
+                                    action Return("interview:noah")
+                                    xminimum 92
+
+                        frame:
+                            background "#0f172acc"
+                            padding (10, 6)
+                            xfill True
+                            hbox:
+                                spacing 10
+                                vbox:
+                                    xsize 570
+                                    spacing 1
+                                    text "鷹峰 ジン" color "#f8fafc" size 18
+                                    text "セレネ社の広報法務 / [interview_status_text('jin')]" color "#93c5fd" size 14
+                                textbutton "聞く":
+                                    action Return("interview:jin")
+                                    xminimum 92
 
                 vbox:
                     spacing 10
@@ -134,6 +206,11 @@ screen investigation_hub_screen():
                         textbutton "次の調査へ進む":
                             action Return("final")
                             xfill True
+                        if chapter == 3 and done_count < required_count:
+                            text "不足: [done_count] / [required_count]" color "#fbbf24" size 15
+                            if len(missing_names) > 0:
+                                $ missing_text = "、".join(missing_names)
+                                text "未聞き込み: [missing_text]" color "#94a3b8" size 14 xmaximum 310
                     else:
                         textbutton "最終推理へ進む":
                             action Return("final")
@@ -539,6 +616,33 @@ screen missing_evidence_screen(missing_names):
                     action Return("back")
                 textbutton "それでも進む":
                     action Return("continue")
+
+
+screen interview_progress_warning_screen(done_count, required_count, missing_names):
+    modal True
+
+    add Solid("#020617")
+
+    frame:
+        style "tsuki_frame"
+        xalign 0.5
+        yalign 0.5
+        xsize 900
+        ysize 420
+
+        vbox:
+            spacing 18
+            text "聞き込みが不足しています" style "tsuki_title_text"
+            text "第4章へ進むには、最低4人への初回聞き込みが必要です。" color "#f8fafc" size 20 xmaximum 820
+            text "現在の聞き込み済み: [done_count] / [required_count]" color "#fbbf24" size 20
+
+            if len(missing_names) > 0:
+                $ missing_text = "、".join(missing_names)
+                text "未聞き込み: [missing_text]" color "#cbd5e1" size 18 xmaximum 820
+
+            textbutton "聞き込みに戻る":
+                action Return("back")
+                xalign 0.5
 
 
 screen deduction_result_screen(result_text, ending_name):

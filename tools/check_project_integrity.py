@@ -88,8 +88,18 @@ REQUIRED_SCREENS = [
     "multi_evidence_choice_screen",
     "person_choice_screen",
     "missing_evidence_screen",
+    "interview_progress_warning_screen",
     "alma_log_screen",
     "timeline_screen",
+]
+
+REQUIRED_INTERVIEW_RETURNS = [
+    "interview:sena",
+    "interview:ritsu",
+    "interview:luka",
+    "interview:akari",
+    "interview:noah",
+    "interview:jin",
 ]
 
 
@@ -192,6 +202,15 @@ def check_screens_and_labels(errors: list[str]) -> None:
             errors.append(f"script references missing label: {label_name}")
 
 
+def check_investigation_hub_routes(errors: list[str]) -> None:
+    screens_text = read_text("game/screens.rpy")
+    if "聞き込み対象" not in screens_text:
+        errors.append("investigation hub missing visible heading: 聞き込み対象")
+    for route in REQUIRED_INTERVIEW_RETURNS:
+        if route not in screens_text:
+            errors.append(f"investigation hub missing interview route: {route}")
+
+
 def check_names(errors: list[str], warnings: list[str]) -> None:
     combined = "\n".join(
         read_text(path)
@@ -233,6 +252,7 @@ def main() -> int:
         check_manifest_assets(errors)
         check_evidence_ids(errors)
         check_screens_and_labels(errors)
+        check_investigation_hub_routes(errors)
         check_names(errors, warnings)
         check_data_hygiene(warnings)
         check_readme(errors)

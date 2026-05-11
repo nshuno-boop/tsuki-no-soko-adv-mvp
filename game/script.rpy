@@ -91,7 +91,7 @@ label chapter3_hub:
     show mio neutral at left
     sysmsg "徹が残した違和感は、シロワの人間関係と資源問題へつながっていく。"
 
-    if len(interview_done) >= 4 and not has_evidence("e_toru_audit_file"):
+    if has_enough_interviews_for_chapter4() and not has_evidence("e_toru_audit_file"):
         scene bg core
         show toru recording at center
         sysmsg "聞き込みで得た断片がつながり、徹の暗号化監査ファイルの一部が復号された。"
@@ -134,10 +134,13 @@ label chapter3_hub:
         call interview_jin
         jump chapter3_hub
     elif hub_choice == "final":
-        if len(interview_done) >= 4:
+        if has_enough_interviews_for_chapter4():
             jump chapter4
         else:
-            m "まだ聞ける相手が多い。このまま白兎3号へ進むには、材料が足りない。"
+            $ done_count = interview_done_count()
+            $ required_count = CHAPTER4_REQUIRED_INTERVIEWS
+            $ missing_names = missing_interview_names()
+            call screen interview_progress_warning_screen(done_count, required_count, missing_names)
             jump chapter3_hub
     else:
         jump chapter3_hub

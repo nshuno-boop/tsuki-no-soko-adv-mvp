@@ -250,6 +250,7 @@ init python:
 
     PERSON_ORDER = ["mio", "sena", "toru", "ritsu", "luka", "akari", "noah", "jin", "alma"]
     INTERVIEW_TARGETS = ["sena", "ritsu", "luka", "akari", "noah", "jin"]
+    CHAPTER4_REQUIRED_INTERVIEWS = 4
 
     person_profiles = {
         "mio": {
@@ -307,6 +308,24 @@ init python:
             "image": "images/chars/alma_idle.png",
         },
     }
+
+    def interview_done_count():
+        return len([person_id for person_id in INTERVIEW_TARGETS if person_id in interview_done])
+
+    def missing_interview_names():
+        return [
+            person_profiles[person_id]["name"]
+            for person_id in INTERVIEW_TARGETS
+            if person_id not in interview_done
+        ]
+
+    def has_enough_interviews_for_chapter4():
+        return interview_done_count() >= CHAPTER4_REQUIRED_INTERVIEWS
+
+    def interview_status_text(person_id):
+        if person_id in interview_done:
+            return "聞き込み済み"
+        return "未聞き込み"
 
     FINAL_REQUIRED_EVIDENCE = [
         "e_toru_audit_file",
