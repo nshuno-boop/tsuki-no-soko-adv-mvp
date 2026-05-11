@@ -86,10 +86,13 @@ label chapter2:
 
 label chapter3_hub:
     $ set_chapter(3, "第3章：影井戸の数字", "住民たちから徹の人間関係を聞き出す")
+    $ synced_count = sync_story_evidence_for_chapter(3)
 
     scene bg shirowa_hab_ring
     show mio neutral at left
     sysmsg "徹が残した違和感は、シロワの人間関係と資源問題へつながっていく。"
+    if synced_count > 0:
+        sysmsg "これまでの調査記録を証拠品一覧に同期した。"
 
     if has_enough_interviews_for_chapter4() and not has_evidence("e_toru_audit_file"):
         scene bg core
@@ -148,10 +151,13 @@ label chapter3_hub:
 
 label chapter4:
     $ set_chapter(4, "第4章：白兎は外へ出なかった", "白兎3号が本当に外へ出たのか確かめる")
+    $ synced_count = sync_story_evidence_for_chapter(4)
 
     scene bg outer_port
     show mio thinking at left
     show ritsu anxious at right
+    if synced_count > 0:
+        sysmsg "これまでの調査記録を証拠品一覧に同期した。"
     sysmsg "外口。正式型番HAKU-3、通称『白兎3号』は、事故当時に船外活動へ出たことになっている。"
     ritsu "CO2吸収材は未使用に近い。白兎3号は、徹さんを守るほど動いていません。"
     $ add_evidence("e_white_rabbit_co2_absorber")
@@ -180,10 +186,13 @@ label chapter4:
 
 label chapter5_hub:
     $ set_chapter(5, "最終章：だれのための空", "証拠を揃え、最後の推理に進む")
+    $ synced_count = sync_story_evidence_for_chapter(5)
 
     scene bg core
     show mio neutral at left
     show alma speaking at right
+    if synced_count > 0:
+        sysmsg "章の進行に合わせて、これまでの調査記録を証拠品一覧に同期した。"
     sysmsg "管制核。証拠はそろいつつある。あとは、誰のために空気が奪われたのかを示すだけだ。"
 
     call screen investigation_hub_screen
@@ -371,6 +380,7 @@ label interview_jin:
 
 label pre_final_reasoning:
     $ set_chapter(5, "最終章：だれのための空", "証拠を揃え、最後の推理に進む")
+    $ synced_count = sync_story_evidence_for_chapter(5)
     scene bg core
     show mio thinking at left
     show alma alert at right

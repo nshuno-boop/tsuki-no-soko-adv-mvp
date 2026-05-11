@@ -335,6 +335,28 @@ init python:
         "e_white_rabbit_co2_absorber",
     ]
 
+    STORY_EVIDENCE_BY_PHASE = {
+        1: [
+            "e_r7_decompression_log",
+            "e_personnel_location_log",
+            "e_autopsy_record",
+            "e_manual_bulkhead_blood",
+        ],
+        2: [
+            "e_white_rabbit_usage_log",
+            "e_maintenance_admin_log",
+            "e_thermal_sensor_frost",
+            "e_manual_valve_scratch",
+        ],
+        4: [
+            "e_white_rabbit_co2_absorber",
+            "e_white_rabbit_dust_test",
+            "e_earth_meeting_audio",
+            "e_noah_testimony",
+            "e_sena_dust_trace",
+        ],
+    }
+
     case_timeline = [
         {
             "time": "19:10",
@@ -537,6 +559,31 @@ init python:
 
     def evidence_names(evidence_ids):
         return [evidence_catalog[evidence_id]["name"] for evidence_id in evidence_ids if evidence_id in evidence_catalog]
+
+    def sync_story_evidence_for_chapter(target_chapter):
+        """章進行上すでに入手済みであるべき証拠を復元する。
+
+        セーブ互換、デバッグジャンプ、途中修正後の再開で証拠セットだけが空に
+        なると最終推理で詰むため、章到達時に安全側へ同期する。
+        """
+        before_count = len(evidence_unlocked)
+
+        if target_chapter >= 3:
+            for evidence_id in STORY_EVIDENCE_BY_PHASE[1] + STORY_EVIDENCE_BY_PHASE[2]:
+                evidence_unlocked.add(evidence_id)
+
+        if target_chapter >= 4 and has_enough_interviews_for_chapter4():
+            evidence_unlocked.add("e_toru_audit_file")
+
+        if target_chapter >= 5:
+            for evidence_id in STORY_EVIDENCE_BY_PHASE[1] + STORY_EVIDENCE_BY_PHASE[2] + STORY_EVIDENCE_BY_PHASE[4]:
+                evidence_unlocked.add(evidence_id)
+            if has_enough_interviews_for_chapter4():
+                evidence_unlocked.add("e_toru_audit_file")
+            if "akari_additional" in interview_flags:
+                evidence_unlocked.add("e_lunarborn_medical_report")
+
+        return len(evidence_unlocked) - before_count
 
     def add_evidence(evidence_id):
         """証拠品を入手する。存在しないIDなら通知だけ出してFalseを返す。"""
