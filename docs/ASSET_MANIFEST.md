@@ -64,6 +64,13 @@ MVP表示基準は1280x720。仮背景は1280x720、仮立ち絵とALMA UI画像
 | game/images/icons/icon_location.png | 場所 | placeholder |
 | game/images/icons/icon_warning.png | 警告 | placeholder |
 
+## Fonts
+
+| File | Description | Status |
+| --- | --- | --- |
+| game/fonts/NotoSansJP-Regular.otf | 日本語本文用フォント / SIL OFL 1.1 | final |
+| game/fonts/NotoSansJP-Bold.otf | 日本語名前欄・強調用フォント / SIL OFL 1.1 | final |
+
 ## BGM Candidates
 
 | Use | Direction | Status |

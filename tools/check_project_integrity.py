@@ -20,9 +20,14 @@ REQUIRED_FILES = [
     "game/screens.rpy",
     "game/characters.rpy",
     "game/options.rpy",
+    "game/font_config.rpy",
     "game/images.rpy",
+    "game/fonts/README.md",
+    "game/fonts/NotoSansJP-Regular.otf",
+    "game/fonts/NotoSansJP-Bold.otf",
     "docs/ASSET_MANIFEST.md",
     "docs/ART_DIRECTION.md",
+    "docs/FONT_LICENSE.md",
     "docs/IMAGE_PROMPTS.md",
     "docs/PLAYTEST_CHECKLIST.md",
     "tools/generate_placeholder_assets.py",
@@ -104,6 +109,30 @@ def check_image_paths(errors: list[str]) -> None:
     for path in paths:
         if not (ROOT / "game" / path).exists():
             errors.append(f"missing image referenced by images.rpy: game/{path}")
+
+
+def check_font_config(errors: list[str], warnings: list[str]) -> None:
+    font_config = read_text("game/font_config.rpy")
+    required = [
+        'define gui.language = "japanese-normal"',
+        'define gui.text_font = "fonts/NotoSansJP-Regular.otf"',
+        "define gui.interface_text_font",
+        'language "japanese-normal"',
+    ]
+    for item in required:
+        if item not in font_config:
+            errors.append(f"font config missing: {item}")
+
+    font_dir = ROOT / "game" / "fonts"
+    regular = font_dir / "NotoSansJP-Regular.otf"
+    if not regular.exists():
+        errors.append("Japanese font missing: game/fonts/NotoSansJP-Regular.otf")
+
+    suspicious = ["meiryo", "msgothic", "ms gothic", "yu gothic", "yugothic"]
+    for path in font_dir.glob("*"):
+        lower = path.name.lower()
+        if any(term in lower for term in suspicious):
+            warnings.append(f"possible OS-bundled font committed: {path.name}")
 
 
 def check_image_definitions(errors: list[str]) -> None:
@@ -199,6 +228,7 @@ def main() -> int:
     check_required_files(errors)
     if not errors:
         check_image_paths(errors)
+        check_font_config(errors, warnings)
         check_image_definitions(errors)
         check_manifest_assets(errors)
         check_evidence_ids(errors)

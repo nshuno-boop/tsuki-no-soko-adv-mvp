@@ -119,6 +119,7 @@ def font(size: int):
 
 
 def draw_label(draw, xy: tuple[int, int], text: str, fill: str, size: int = 44) -> None:
+    # Kept for future debugging, but Phase 4 placeholders avoid embedding text.
     draw.text(xy, text, fill=fill, font=font(size))
 
 
@@ -140,12 +141,22 @@ def make_background(filename: str, title: str, colors: tuple[str, str], accent: 
 
     for i in range(8):
         x = 70 + i * 150
-        draw.rounded_rectangle((x, 125, x + 76, 570), radius=18, outline="#64748b", width=3)
-    draw.line((80, 550, 1200, 550), fill=accent, width=4)
-    draw.ellipse((930, 80, 1180, 330), outline=accent, width=5)
+        draw.rounded_rectangle((x, 120, x + 76, 565), radius=18, outline="#64748b", width=2)
+        draw.line((x + 14, 145, x + 62, 145), fill="#334155", width=2)
+        draw.line((x + 14, 535, x + 62, 535), fill="#334155", width=2)
+
+    draw.line((80, 555, 1200, 555), fill=accent, width=3)
+    draw.line((80, 600, 1200, 600), fill="#1e293b", width=2)
+    draw.ellipse((930, 78, 1180, 328), outline=accent, width=4)
+    draw.ellipse((980, 128, 1130, 278), outline="#334155", width=2)
+    for i in range(6):
+        y = 225 + i * 48
+        draw.line((120, y, 420, y), fill="#1f2937", width=2)
+    draw.rounded_rectangle((760, 420, 1130, 535), radius=18, outline="#475569", width=2, fill="#020617")
+    draw.line((790, 455, 1100, 455), fill=accent, width=2)
+    draw.line((790, 488, 1040, 488), fill="#334155", width=2)
     draw.rectangle((0, 600, width, height), fill="#020617")
-    draw_label(draw, (52, 42), title, accent, 42)
-    draw_label(draw, (52, 95), "MOON CITY MVP PLACEHOLDER / 1280x720", "#cbd5e1", 22)
+    draw.line((0, 600, width, 600), fill=accent, width=2)
     img.save(path)
 
 
@@ -158,27 +169,66 @@ def make_character(name: str, expression: str, color: str) -> None:
     img = Image.new("RGBA", (900, 1400), (0, 0, 0, 0))
     draw = ImageDraw.Draw(img)
     accent = hex_to_rgb(color)
-    body = accent + (225,)
-    dark = tuple(max(c - 45, 0) for c in accent) + (235,)
+    body = tuple(max(c - 55, 0) for c in accent) + (238,)
+    coat = tuple(min(c + 38, 255) for c in accent) + (210,)
+    line = (226, 242, 255, 210)
 
-    draw.ellipse((325, 125, 575, 375), fill=body, outline=(230, 245, 255, 230), width=5)
-    draw.rounded_rectangle((260, 360, 640, 1100), radius=130, fill=dark, outline=(230, 245, 255, 210), width=5)
-    draw.polygon([(260, 500), (130, 930), (260, 960)], fill=body)
-    draw.polygon([(640, 500), (770, 930), (640, 960)], fill=body)
-    draw.rectangle((330, 1080, 410, 1320), fill=dark)
-    draw.rectangle((490, 1080, 570, 1320), fill=dark)
+    profile = {
+        "mio": (335, 150, 565, 365, 255, 400, 645, 1130),
+        "sena": (330, 135, 570, 365, 245, 390, 655, 1125),
+        "toru": (320, 145, 580, 380, 235, 410, 665, 1135),
+        "ritsu": (325, 135, 575, 360, 250, 405, 650, 1125),
+        "luka": (310, 150, 590, 390, 220, 420, 680, 1150),
+        "akari": (330, 145, 570, 370, 250, 400, 650, 1130),
+        "noah": (350, 175, 550, 370, 290, 420, 610, 1080),
+        "jin": (325, 140, 575, 365, 250, 395, 650, 1130),
+    }.get(name, (330, 145, 570, 370, 250, 400, 650, 1130))
 
-    if expression in ["surprised", "shaken", "anxious", "alert"]:
-        draw.ellipse((380, 225, 410, 255), fill="#ffffff")
-        draw.ellipse((490, 225, 520, 255), fill="#ffffff")
-    elif expression in ["pained", "sad", "tired", "broken", "defeated"]:
-        draw.line((375, 250, 425, 235), fill="#ffffff", width=6)
-        draw.line((475, 235, 525, 250), fill="#ffffff", width=6)
+    hx1, hy1, hx2, hy2, bx1, by1, bx2, by2 = profile
+    draw.ellipse((hx1, hy1, hx2, hy2), fill=(28, 38, 52, 245), outline=line, width=5)
+    draw.pieslice((hx1 - 30, hy1 - 35, hx2 + 35, hy2 + 45), 185, 355, fill=body)
+    draw.rounded_rectangle((bx1, by1, bx2, by2), radius=110, fill=body, outline=line, width=5)
+    draw.polygon([(bx1 + 25, by1 + 80), (145, 930), (bx1 + 55, 980)], fill=coat)
+    draw.polygon([(bx2 - 25, by1 + 80), (755, 930), (bx2 - 55, 980)], fill=coat)
+    draw.line((bx1 + 95, by1 + 70, bx1 + 170, by2 - 80), fill=coat, width=10)
+    draw.line((bx2 - 95, by1 + 70, bx2 - 170, by2 - 80), fill=coat, width=10)
+    draw.rectangle((340, 1085, 420, 1320), fill=body)
+    draw.rectangle((480, 1085, 560, 1320), fill=body)
+
+    if name == "sena":
+        draw.line((310, 435, 590, 435), fill="#f9a8d4", width=8)
+    elif name == "akari":
+        draw.rounded_rectangle((270, 430, 630, 1060), radius=70, outline="#e2e8f0", width=8)
+    elif name == "jin":
+        draw.line((405, 410, 450, 610), fill="#f8fafc", width=10)
+        draw.line((495, 410, 450, 610), fill="#f8fafc", width=10)
+    elif name == "noah":
+        draw.line((310, 500, 590, 500), fill="#86efac", width=6)
+    elif name == "luka":
+        draw.line((260, 520, 640, 520), fill="#f59e0b", width=7)
+    elif name == "ritsu":
+        draw.rectangle((600, 620, 675, 780), outline="#93c5fd", width=5)
+
+    eye_y = 260
+    if expression in ["surprised", "shaken", "anxious"]:
+        draw.ellipse((380, eye_y, 410, eye_y + 28), fill="#e0f2fe")
+        draw.ellipse((490, eye_y, 520, eye_y + 28), fill="#e0f2fe")
+    elif expression in ["pained", "sad", "tired", "broken", "defeated", "tears"]:
+        draw.line((374, eye_y + 15, 424, eye_y), fill="#e0f2fe", width=6)
+        draw.line((476, eye_y, 526, eye_y + 15), fill="#e0f2fe", width=6)
+        if expression == "tears":
+            draw.line((510, eye_y + 35, 505, eye_y + 95), fill="#93c5fd", width=5)
+    elif expression in ["smile", "gentle", "relieved", "business_smile"]:
+        draw.arc((370, eye_y - 10, 430, eye_y + 45), 20, 160, fill="#e0f2fe", width=5)
+        draw.arc((470, eye_y - 10, 530, eye_y + 45), 20, 160, fill="#e0f2fe", width=5)
     else:
-        draw.line((375, 240, 425, 240), fill="#ffffff", width=6)
-        draw.line((475, 240, 525, 240), fill="#ffffff", width=6)
+        draw.line((375, eye_y + 5, 425, eye_y + 5), fill="#e0f2fe", width=6)
+        draw.line((475, eye_y + 5, 525, eye_y + 5), fill="#e0f2fe", width=6)
 
-    draw_label(draw, (70, 70), f"{name.upper()} / {expression}", "#e5e7eb", 36)
+    if expression in ["angry", "rebellious", "irritated"]:
+        draw.line((365, 245, 425, 225), fill="#f8fafc", width=5)
+        draw.line((475, 225, 535, 245), fill="#f8fafc", width=5)
+
     img = img.resize(SPRITE_SIZE, Image.Resampling.LANCZOS)
     img.save(path)
 
@@ -192,13 +242,13 @@ def make_alma(state: str) -> None:
     img = Image.new("RGBA", (900, 1400), (0, 0, 0, 0))
     draw = ImageDraw.Draw(img)
     accent = "#f59e0b" if state == "alert" else "#22d3ee"
-    draw.rounded_rectangle((170, 260, 730, 1080), radius=90, outline=accent, width=8, fill=(2, 6, 23, 190))
+    draw.rounded_rectangle((190, 330, 710, 980), radius=90, outline=accent, width=6, fill=(2, 6, 23, 120))
+    draw.ellipse((300, 430, 600, 730), outline=accent, width=5)
+    draw.ellipse((360, 490, 540, 670), outline=(148, 163, 184, 180), width=3)
     for i in range(14):
         x = 230 + i * 34
         h = 80 + int(55 * math.sin(i * 0.9 + len(state)))
-        draw.line((x, 690 - h, x, 690 + h), fill=accent, width=8)
-    draw.ellipse((320, 390, 580, 650), outline=accent, width=6)
-    draw_label(draw, (240, 180), f"ALMA / {state.upper()}", "#e0f2fe", 38)
+        draw.line((x, 1030 - h, x, 1030 + h), fill=accent, width=6)
     img = img.resize(SPRITE_SIZE, Image.Resampling.LANCZOS)
     img.save(path)
 
@@ -212,9 +262,9 @@ def make_ui(filename: str, size: tuple[int, int], fill: str, accent: str, label:
     img = Image.new("RGBA", size, (0, 0, 0, 0))
     draw = ImageDraw.Draw(img)
     w, h = size
-    draw.rounded_rectangle((6, 6, w - 6, h - 6), radius=24, fill=hex_to_rgb(fill) + (238,), outline=accent, width=4)
-    draw.line((26, h - 28, w - 26, h - 28), fill=accent, width=3)
-    draw_label(draw, (30, 24), label, accent, 30)
+    draw.rounded_rectangle((6, 6, w - 6, h - 6), radius=24, fill=hex_to_rgb(fill) + (238,), outline=accent, width=3)
+    draw.line((26, h - 28, w - 26, h - 28), fill=accent, width=2)
+    draw.line((26, 28, min(w - 26, 260), 28), fill=accent, width=2)
     img.save(path)
 
 
@@ -226,10 +276,35 @@ def make_icon(filename: str, color: str, label: str) -> None:
 
     img = Image.new("RGBA", (256, 256), (0, 0, 0, 0))
     draw = ImageDraw.Draw(img)
-    draw.rounded_rectangle((18, 18, 238, 238), radius=42, fill="#0f172a", outline=color, width=8)
-    draw.ellipse((74, 58, 182, 166), outline=color, width=8)
-    draw.line((64, 190, 192, 190), fill=color, width=8)
-    draw_label(draw, (54, 104), label, "#e5e7eb", 28)
+    draw.rounded_rectangle((18, 18, 238, 238), radius=42, fill="#0f172a", outline=color, width=7)
+    if "log" in filename:
+        draw.rectangle((72, 58, 184, 188), outline=color, width=7)
+        for y in [88, 116, 144]:
+            draw.line((92, y, 165, y), fill=color, width=5)
+    elif "suit" in filename:
+        draw.ellipse((84, 50, 172, 138), outline=color, width=7)
+        draw.rounded_rectangle((68, 130, 188, 210), radius=28, outline=color, width=7)
+    elif "audio" in filename:
+        for x in [78, 104, 130, 156, 182]:
+            draw.line((x, 74, x, 182), fill=color, width=7)
+    elif "medical" in filename:
+        draw.line((128, 62, 128, 194), fill=color, width=12)
+        draw.line((62, 128, 194, 128), fill=color, width=12)
+    elif "key" in filename:
+        draw.ellipse((66, 76, 136, 146), outline=color, width=8)
+        draw.line((130, 138, 196, 204), fill=color, width=9)
+        draw.line((168, 176, 194, 150), fill=color, width=7)
+    elif "person" in filename:
+        draw.ellipse((86, 58, 170, 142), outline=color, width=7)
+        draw.arc((64, 140, 192, 232), 200, 340, fill=color, width=8)
+    elif "location" in filename:
+        draw.polygon([(128, 46), (196, 190), (128, 158), (60, 190)], outline=color, fill=None)
+        draw.line((128, 46, 196, 190), fill=color, width=7)
+        draw.line((128, 46, 60, 190), fill=color, width=7)
+    else:
+        draw.polygon([(128, 50), (210, 198), (46, 198)], outline=color, fill=None)
+        draw.line((128, 92, 128, 148), fill=color, width=8)
+        draw.ellipse((122, 165, 134, 177), fill=color)
     img.save(path)
 
 

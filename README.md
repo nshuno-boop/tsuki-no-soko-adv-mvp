@@ -75,6 +75,16 @@
 - GitHub Actionsの静的チェック `.github/workflows/static-check.yml` を追加
 - `tools/check_project_integrity.py` にscreen / label / jump / call / 旧称 / acquired残存チェックを追加
 
+## Hotfix: 日本語フォントと仮素材
+
+- Ren'Py標準フォントでは日本語グリフが不足し、文字が四角の豆腐表示になることがあります。
+- 日本語表示には `game/fonts/NotoSansJP-Regular.otf` が必要です。
+- 名前欄などの強調用に `game/fonts/NotoSansJP-Bold.otf` も同梱しています。
+- フォント設定はCSSではなく、Ren'Pyの `.rpy` ファイルで行います。このプロジェクトでは `game/font_config.rpy` に `gui.text_font`、`gui.interface_text_font`、`gui.language = "japanese-normal"`、各style設定をまとめています。
+- OS付属フォント、たとえば Meiryo、MS Gothic、Yu Gothic はリポジトリに含めない方針です。
+- 文字が四角に化ける場合は、フォントファイル未配置または `game/font_config.rpy` の設定ミスを確認してください。
+- 仮素材はプレイ確認用であり、最終素材ではありません。Phase 4 Hotfixでは、画像内の大きな英字ラベルを削除し、背景・立ち絵・ALMA表示を雰囲気確認に耐える控えめなプレースホルダーへ寄せています。
+
 ## 通しプレイMVPの状態
 
 現在のMVPは、仮背景・仮立ち絵・テキストのみで以下を確認できます。
@@ -96,6 +106,9 @@ tsuki-no-soko-adv-mvp/
     audio/
       bgm/
       se/
+    fonts/
+      NotoSansJP-Regular.otf
+      NotoSansJP-Bold.otf
     images/
       bg/
       chars/
@@ -111,6 +124,7 @@ tsuki-no-soko-adv-mvp/
   docs/
     ART_DIRECTION.md
     ASSET_MANIFEST.md
+    FONT_LICENSE.md
     IMAGE_PROMPTS.md
     PLAYTEST_CHECKLIST.md
   tools/

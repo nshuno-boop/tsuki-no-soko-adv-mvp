@@ -11,11 +11,11 @@ style tsuki_panel:
 
 style tsuki_title_text:
     color "#f8fafc"
-    size 34
+    size 30
 
 style tsuki_subtle_text:
     color "#94a3b8"
-    size 20
+    size 18
 
 style tsuki_button:
     background "#1f2937"
@@ -39,14 +39,14 @@ screen objective_overlay():
     frame:
         xalign 0.02
         yalign 0.02
-        xmaximum 560
-        padding (14, 10)
+        xmaximum 620
+        padding (12, 8)
         background "#020617cc"
 
         vbox:
             spacing 2
-            text "現在の目的" color "#67e8f9" size 16
-            text current_objective color "#f8fafc" size 18
+            text "現在の目的" color "#67e8f9" size 14
+            text current_objective color "#f8fafc" size 17 xmaximum 585
 
 
 screen investigation_hub_screen():
@@ -70,7 +70,7 @@ screen investigation_hub_screen():
                     spacing 2
                     text "聞き込み / 調査メニュー" style "tsuki_title_text"
                     text chapter_title style "tsuki_subtle_text"
-                    text "目的: [current_objective]" color "#f8fafc" size 19
+                    text "目的: [current_objective]" color "#f8fafc" size 17 xmaximum 700
                 text "SHIROWA AUDIT" xalign 1.0 color "#67e8f9" size 18
 
             hbox:
@@ -104,8 +104,8 @@ screen investigation_hub_screen():
                                     vbox:
                                         xfill True
                                         spacing 4
-                                        text person["name"] color "#f8fafc" size 24
-                                        text person["label"] color "#93c5fd" size 18
+                                        text person["name"] color "#f8fafc" size 22
+                                        text person["label"] color "#93c5fd" size 16
                                         if done:
                                             text "聞き込み段階: [stage_count]/3" color "#fbbf24" size 16
                                         else:
@@ -161,7 +161,7 @@ screen evidence_screen():
                 xfill True
                 text "証拠品一覧" style "tsuki_title_text"
                 text chapter_title xalign 1.0 color "#cbd5e1"
-            text "目的: [current_objective]" color "#f8fafc" size 19
+            text "目的: [current_objective]" color "#f8fafc" size 17 xmaximum 1040
 
             if len(evidence_unlocked) == 0:
                 text "まだ証拠品はありません。" color "#cbd5e1"
@@ -203,10 +203,10 @@ screen evidence_screen():
                                     spacing 14
                                     add selected["icon"] xysize (52, 52)
                                     vbox:
-                                        text selected["name"] size 28 color "#f8fafc"
-                                        text "入手章: 第[selected_chapter]章 / [selected_category]" color "#93c5fd"
-                                text selected["description"] color "#e5e7eb"
-                                text selected["detail"] color "#cbd5e1"
+                                        text selected["name"] size 25 color "#f8fafc" xmaximum 560
+                                        text "入手章: 第[selected_chapter]章 / [selected_category]" color "#93c5fd" size 17
+                                text selected["description"] color "#e5e7eb" size 18 xmaximum 600
+                                text selected["detail"] color "#cbd5e1" size 17 xmaximum 600
                                 null height 4
                                 text "関連人物: [selected_character]" color "#fbbf24"
                                 text "関連施設: [selected_location]" color "#67e8f9"
@@ -260,9 +260,9 @@ screen person_memo_screen():
                         add person["image"] xysize (250, 390)
                         vbox:
                             spacing 14
-                            text person["name"] size 34 color "#f8fafc"
-                            text person["label"] size 22 color "#67e8f9"
-                            text person["memo"] color "#cbd5e1"
+                            text person["name"] size 30 color "#f8fafc"
+                            text person["label"] size 20 color "#67e8f9"
+                            text person["memo"] color "#cbd5e1" size 18 xmaximum 485
                             if selected_person in interview_done:
                                 text "聞き込み済み" color "#fbbf24"
                             elif selected_person in INTERVIEW_TARGETS:
@@ -291,8 +291,8 @@ screen evidence_choice_screen(question, hint_text):
         vbox:
             spacing 16
 
-            text question size 28 color "#f8fafc"
-            text "提示する証拠を選んでください。" color "#cbd5e1"
+            text question size 25 color "#f8fafc" xmaximum 1080
+            text "提示する証拠を選んでください。" color "#cbd5e1" size 18
 
             if len(evidence_unlocked) == 0:
                 text "提示できる証拠がありません。" color "#fecaca"
@@ -320,8 +320,8 @@ screen evidence_choice_screen(question, hint_text):
                                     vbox:
                                         xfill True
                                         spacing 5
-                                        text item["name"] size 22 color "#f8fafc"
-                                        text item["description"] color "#cbd5e1"
+                                        text item["name"] size 20 color "#f8fafc" xmaximum 760
+                                        text item["description"] color "#cbd5e1" size 17 xmaximum 760
                                         text "[related_character] / [related_location]" color "#67e8f9" size 16
 
                                     textbutton "提示":
@@ -352,7 +352,7 @@ screen multi_evidence_choice_screen(question, hint_text):
 
         vbox:
             spacing 14
-            text question size 27 color "#f8fafc"
+            text question size 24 color "#f8fafc" xmaximum 1080
             text "必要な証拠をすべて選んでから提示してください。余計な証拠を含めると不正解です。" color "#cbd5e1" size 18
 
             viewport:
@@ -380,8 +380,8 @@ screen multi_evidence_choice_screen(question, hint_text):
                                 vbox:
                                     xfill True
                                     spacing 4
-                                    text item["name"] size 21 color "#f8fafc"
-                                    text item["description"] color "#cbd5e1" size 17
+                                    text item["name"] size 19 color "#f8fafc" xmaximum 760
+                                    text item["description"] color "#cbd5e1" size 16 xmaximum 760
                                     text "[related_character] / [related_location]" color "#67e8f9" size 15
                                 textbutton choice_label:
                                     action If(
@@ -417,8 +417,8 @@ screen person_choice_screen(question, hint_text):
 
         vbox:
             spacing 16
-            text question size 30 color "#f8fafc"
-            text "人物を選んでください。" color "#cbd5e1"
+            text question size 26 color "#f8fafc" xmaximum 980
+            text "人物を選んでください。" color "#cbd5e1" size 18
 
             grid 2 3:
                 spacing 12
@@ -434,8 +434,8 @@ screen person_choice_screen(question, hint_text):
                             add person["image"] xysize (74, 112)
                             vbox:
                                 spacing 4
-                                text person["name"] color "#f8fafc" size 22
-                                text person["label"] color "#93c5fd" size 16
+                                text person["name"] color "#f8fafc" size 20
+                                text person["label"] color "#93c5fd" size 15
                                 textbutton "指摘する":
                                     action Return(person_id)
 
@@ -491,7 +491,7 @@ screen timeline_screen():
                                     spacing 12
                                     text event["time"] color "#67e8f9" size 22
                                     text event["title"] color "#f8fafc" size 22
-                                text event["description"] color "#cbd5e1" size 17
+                                text event["description"] color "#cbd5e1" size 16 xmaximum 1030
                                 if len(related_ids) == 0:
                                     text "関連証拠: なし" color "#64748b" size 15
                                 elif len(missing_related) > 0:
