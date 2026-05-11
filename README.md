@@ -173,6 +173,8 @@ python tools/check_project_integrity.py
 
 最終推理では、単一証拠提示に加えて複数証拠提示があります。複数証拠問題では、必要な証拠だけを過不足なく選ぶ必要があります。True EndingにはQ6、Q8、Q9の正解が必須です。
 
+最終推理中は「調査に戻る」から第5章の調査ハブへ戻れます。証拠不足のまま進む場合は、空の証拠選択で止まらずBad Endingへ分岐します。
+
 ## 開発者用デバッグ導線
 
 `label debug_menu` を追加しています。`config.developer` がTrueのときだけ使用する開発用導線です。

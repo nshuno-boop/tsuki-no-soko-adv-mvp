@@ -383,6 +383,7 @@ label pre_final_reasoning:
         if missing_choice == "back":
             jump chapter5_hub
         $ final_forced_bad = True
+        jump ending_branch
     else:
         $ final_forced_bad = False
 
@@ -407,6 +408,8 @@ label final_reasoning:
     while question_index < len(deduction_questions):
         $ current_question = deduction_questions[question_index]
         call ask_deduction_question(current_question)
+        if _return == "back_to_investigation":
+            jump chapter5_hub
         $ question_index += 1
 
     jump ending_branch
@@ -432,6 +435,10 @@ label ask_deduction_question(question_data):
 
         elif selected_answer == "__cancel__":
             m "ここで引くわけにはいかない。もう一度考えよう。"
+
+        elif selected_answer == "__back_to_investigation__":
+            m "証拠が足りないまま押し切るより、もう一度記録を洗い直そう。"
+            return "back_to_investigation"
 
         elif question_data["kind"] == "person" and selected_answer == question_data["answer_person"]:
             $ solved = True

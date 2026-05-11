@@ -34,7 +34,7 @@ style alma_log_text:
 
 
 screen objective_overlay():
-    zorder 20
+    zorder 5
 
     frame:
         xalign 0.02
@@ -354,6 +354,7 @@ screen person_memo_screen():
 
 
 screen evidence_choice_screen(question, hint_text):
+    zorder 30
     modal True
 
     add Solid("#020617")
@@ -372,7 +373,7 @@ screen evidence_choice_screen(question, hint_text):
             text "提示する証拠を選んでください。" color "#cbd5e1" size 18
 
             if len(evidence_unlocked) == 0:
-                text "提示できる証拠がありません。" color "#fecaca"
+                text "提示できる証拠がありません。調査に戻って、証拠品一覧や聞き込みを確認してください。" color "#fecaca" size 20 xmaximum 1020
             else:
                 viewport:
                     xfill True
@@ -413,8 +414,12 @@ screen evidence_choice_screen(question, hint_text):
                 textbutton "考え直す":
                     action Return("__cancel__")
 
+                textbutton "調査に戻る":
+                    action Return("__back_to_investigation__")
+
 
 screen multi_evidence_choice_screen(question, hint_text):
+    zorder 30
     modal True
     default selected_ids = set()
 
@@ -432,46 +437,51 @@ screen multi_evidence_choice_screen(question, hint_text):
             text question size 24 color "#f8fafc" xmaximum 1080
             text "必要な証拠をすべて選んでから提示してください。余計な証拠を含めると不正解です。" color "#cbd5e1" size 18
 
-            viewport:
-                xfill True
-                ysize 455
-                mousewheel True
-                scrollbars "vertical"
+            if len(evidence_unlocked) == 0:
+                text "提示できる証拠がありません。調査に戻って、必要な証拠を集めてください。" color "#fecaca" size 20 xmaximum 1020
+                null height 360
+            else:
+                viewport:
+                    xfill True
+                    ysize 455
+                    mousewheel True
+                    scrollbars "vertical"
 
-                vbox:
-                    spacing 8
-                    for evidence_id in ordered_unlocked_evidence():
-                        $ item = evidence_catalog[evidence_id]
-                        $ selected = evidence_id in selected_ids
-                        $ choice_label = "選択中" if selected else "選択"
-                        $ related_character = item["related_character"]
-                        $ related_location = item["related_location"]
-                        frame:
-                            style "tsuki_panel"
-                            xfill True
-                            background ("#0e7490dd" if selected else "#020617dd")
+                    vbox:
+                        spacing 8
+                        for evidence_id in ordered_unlocked_evidence():
+                            $ item = evidence_catalog[evidence_id]
+                            $ selected = evidence_id in selected_ids
+                            $ choice_label = "選択中" if selected else "選択"
+                            $ related_character = item["related_character"]
+                            $ related_location = item["related_location"]
+                            frame:
+                                style "tsuki_panel"
+                                xfill True
+                                background ("#0e7490dd" if selected else "#020617dd")
 
-                            hbox:
-                                spacing 14
-                                add item["icon"] xysize (42, 42)
-                                vbox:
-                                    xfill True
-                                    spacing 4
-                                    text item["name"] size 19 color "#f8fafc" xmaximum 760
-                                    text item["description"] color "#cbd5e1" size 16 xmaximum 760
-                                    text "[related_character] / [related_location]" color "#67e8f9" size 15
-                                textbutton choice_label:
-                                    action If(
-                                        evidence_id in selected_ids,
-                                        SetScreenVariable("selected_ids", selected_ids - set([evidence_id])),
-                                        SetScreenVariable("selected_ids", selected_ids | set([evidence_id])),
-                                    )
-                                    xminimum 100
+                                hbox:
+                                    spacing 14
+                                    add item["icon"] xysize (42, 42)
+                                    vbox:
+                                        xfill True
+                                        spacing 4
+                                        text item["name"] size 19 color "#f8fafc" xmaximum 760
+                                        text item["description"] color "#cbd5e1" size 16 xmaximum 760
+                                        text "[related_character] / [related_location]" color "#67e8f9" size 15
+                                    textbutton choice_label:
+                                        action If(
+                                            evidence_id in selected_ids,
+                                            SetScreenVariable("selected_ids", selected_ids - set([evidence_id])),
+                                            SetScreenVariable("selected_ids", selected_ids | set([evidence_id])),
+                                        )
+                                        xminimum 100
 
             hbox:
                 spacing 12
                 textbutton "提示する":
                     action Return(selected_ids)
+                    sensitive len(evidence_unlocked) > 0 and len(selected_ids) > 0
 
                 textbutton "ヒントを見る":
                     action Return("__hint__")
@@ -479,8 +489,12 @@ screen multi_evidence_choice_screen(question, hint_text):
                 textbutton "考え直す":
                     action Return("__cancel__")
 
+                textbutton "調査に戻る":
+                    action Return("__back_to_investigation__")
+
 
 screen person_choice_screen(question, hint_text):
+    zorder 30
     modal True
 
     add Solid("#020617")
@@ -523,6 +537,9 @@ screen person_choice_screen(question, hint_text):
 
                 textbutton "考え直す":
                     action Return("__cancel__")
+
+                textbutton "調査に戻る":
+                    action Return("__back_to_investigation__")
 
 
 screen timeline_screen():
@@ -614,7 +631,7 @@ screen missing_evidence_screen(missing_names):
                 spacing 12
                 textbutton "聞き込みに戻る":
                     action Return("back")
-                textbutton "それでも進む":
+                textbutton "証拠不足のまま進む":
                     action Return("continue")
 
 

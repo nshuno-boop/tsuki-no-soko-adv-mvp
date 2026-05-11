@@ -204,11 +204,16 @@ def check_screens_and_labels(errors: list[str]) -> None:
 
 def check_investigation_hub_routes(errors: list[str]) -> None:
     screens_text = read_text("game/screens.rpy")
+    script_text = read_text("game/script.rpy")
     if "聞き込み対象" not in screens_text:
         errors.append("investigation hub missing visible heading: 聞き込み対象")
     for route in REQUIRED_INTERVIEW_RETURNS:
         if route not in screens_text:
             errors.append(f"investigation hub missing interview route: {route}")
+    if "__back_to_investigation__" not in screens_text:
+        errors.append("deduction screens missing route back to investigation hub")
+    if "back_to_investigation" not in script_text:
+        errors.append("script does not handle returning from final deduction to investigation hub")
 
 
 def check_names(errors: list[str], warnings: list[str]) -> None:
