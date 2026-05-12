@@ -235,8 +235,11 @@ def check_names(errors: list[str], warnings: list[str]) -> None:
 def check_data_hygiene(warnings: list[str]) -> None:
     evidence_text = read_text("game/evidence.rpy")
     screens_text = read_text("game/screens.rpy")
+    script_text = read_text("game/script.rpy")
     if '"acquired"' in evidence_text:
         warnings.append("evidence_catalog still contains acquired fields; use evidence_unlocked instead")
+    if "evidence_unlocked.add" in evidence_text or "evidence_unlocked.update" in script_text:
+        warnings.append("evidence_unlocked is mutated in-place; assign a new set for Ren'Py screen/save reliability")
     if "第[chapter]章" in screens_text:
         warnings.append("screens.rpy may duplicate chapter numbers via 第[chapter]章")
 

@@ -546,13 +546,15 @@ init python:
 
     def ordered_unlocked_evidence():
         """入手済み証拠を、カタログで決めた順番に並べて返す。"""
-        return [evidence_id for evidence_id in EVIDENCE_ORDER if evidence_id in evidence_unlocked]
+        unlocked = set(store.evidence_unlocked)
+        return [evidence_id for evidence_id in EVIDENCE_ORDER if evidence_id in unlocked]
 
     def has_evidence(evidence_id):
-        return evidence_id in evidence_unlocked
+        return evidence_id in set(store.evidence_unlocked)
 
     def missing_final_evidence():
-        return [evidence_id for evidence_id in FINAL_REQUIRED_EVIDENCE if evidence_id not in evidence_unlocked]
+        unlocked = set(store.evidence_unlocked)
+        return [evidence_id for evidence_id in FINAL_REQUIRED_EVIDENCE if evidence_id not in unlocked]
 
     def has_final_required_evidence():
         return len(missing_final_evidence()) == 0
@@ -566,24 +568,26 @@ init python:
         セーブ互換、デバッグジャンプ、途中修正後の再開で証拠セットだけが空に
         なると最終推理で詰むため、章到達時に安全側へ同期する。
         """
-        before_count = len(evidence_unlocked)
+        unlocked = set(store.evidence_unlocked)
+        before_count = len(unlocked)
 
         if target_chapter >= 3:
             for evidence_id in STORY_EVIDENCE_BY_PHASE[1] + STORY_EVIDENCE_BY_PHASE[2]:
-                evidence_unlocked.add(evidence_id)
+                unlocked.add(evidence_id)
 
         if target_chapter >= 4 and has_enough_interviews_for_chapter4():
-            evidence_unlocked.add("e_toru_audit_file")
+            unlocked.add("e_toru_audit_file")
 
         if target_chapter >= 5:
             for evidence_id in STORY_EVIDENCE_BY_PHASE[1] + STORY_EVIDENCE_BY_PHASE[2] + STORY_EVIDENCE_BY_PHASE[4]:
-                evidence_unlocked.add(evidence_id)
+                unlocked.add(evidence_id)
             if has_enough_interviews_for_chapter4():
-                evidence_unlocked.add("e_toru_audit_file")
+                unlocked.add("e_toru_audit_file")
             if "akari_additional" in interview_flags:
-                evidence_unlocked.add("e_lunarborn_medical_report")
+                unlocked.add("e_lunarborn_medical_report")
 
-        return len(evidence_unlocked) - before_count
+        store.evidence_unlocked = unlocked
+        return len(unlocked) - before_count
 
     def add_evidence(evidence_id):
         """証拠品を入手する。存在しないIDなら通知だけ出してFalseを返す。"""
@@ -591,11 +595,13 @@ init python:
             renpy.notify("未登録の証拠ID: {}".format(evidence_id))
             return False
 
-        if evidence_id in evidence_unlocked:
+        unlocked = set(store.evidence_unlocked)
+        if evidence_id in unlocked:
             renpy.notify("入手済み: {}".format(evidence_catalog[evidence_id]["name"]))
             return False
 
-        evidence_unlocked.add(evidence_id)
+        unlocked.add(evidence_id)
+        store.evidence_unlocked = unlocked
         renpy.notify("証拠品を入手: {}".format(evidence_catalog[evidence_id]["name"]))
         renpy.restart_interaction()
         return True

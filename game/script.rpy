@@ -566,12 +566,12 @@ label debug_menu:
     sysmsg "開発用デバッグメニュー"
     menu:
         "すべての証拠を入手":
-            $ evidence_unlocked.update(REQUIRED_EVIDENCE_IDS)
+            $ evidence_unlocked = set(evidence_unlocked) | set(REQUIRED_EVIDENCE_IDS)
             $ renpy.notify("すべての証拠を入手しました")
             jump debug_menu
 
         "重要証拠だけ入手":
-            $ evidence_unlocked.update(FINAL_REQUIRED_EVIDENCE)
+            $ evidence_unlocked = set(evidence_unlocked) | set(FINAL_REQUIRED_EVIDENCE)
             $ renpy.notify("重要証拠を入手しました")
             jump debug_menu
 
