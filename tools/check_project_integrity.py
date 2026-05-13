@@ -32,6 +32,7 @@ REQUIRED_FILES = [
     "docs/FONT_LICENSE.md",
     "docs/IMAGE_PROMPTS.md",
     "docs/PLAYTEST_CHECKLIST.md",
+    "docs/PHASE5_REVIEW_REPORT.md",
     "tools/generate_placeholder_assets.py",
     "tools/check_project_integrity.py",
     ".github/workflows/static-check.yml",
@@ -242,13 +243,17 @@ def check_data_hygiene(warnings: list[str]) -> None:
         warnings.append("evidence_catalog still contains acquired fields; use evidence_unlocked instead")
     if "evidence_unlocked.add" in evidence_text or "evidence_unlocked.update" in script_text:
         warnings.append("evidence_unlocked is mutated in-place; assign a new set for Ren'Py screen/save reliability")
+    if "interview_flags.add" in script_text or "interview_done.add" in script_text:
+        warnings.append("interview state is mutated in-place; use mark_interview_flag/mark_interview_done helpers")
+    if "deduction_correct_ids.add" in script_text:
+        warnings.append("deduction_correct_ids is mutated in-place; use mark_deduction_correct helper")
     if "第[chapter]章" in screens_text:
         warnings.append("screens.rpy may duplicate chapter numbers via 第[chapter]章")
 
 
 def check_readme(errors: list[str]) -> None:
     readme = read_text("README.md")
-    for term in ["Phase 3", "Phase 4", "Phase 5", "v0.5-alpha", "通しプレイMVP", "git remote", "check_project_integrity.py", "GitHub Actions"]:
+    for term in ["Phase 3", "Phase 4", "Phase 5", "v0.5-alpha", "通しプレイMVP", "git remote", "check_project_integrity.py", "GitHub Actions", "PHASE5_REVIEW_REPORT.md"]:
         if term not in readme:
             errors.append(f"README missing Phase 3 note: {term}")
 

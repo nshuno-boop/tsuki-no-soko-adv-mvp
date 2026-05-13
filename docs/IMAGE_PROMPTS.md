@@ -6,6 +6,13 @@
 
 No existing anime, movie, game, celebrity, or known character references. No direct imitation of a specific artist. Avoid excessive cyberpunk neon, fantasy city design, full glass dome moon city, unreadable UI, overdesigned costumes, glossy toy-like surfaces.
 
+## VN用共通構図
+
+- 背景は下部テキストボックス領域を暗く潰しすぎず、左右に立ち絵を置いても主要モチーフが隠れない構図にする。
+- 中央には調査対象や奥行きの焦点を置き、左右端は人物表示用の余白を残す。
+- キャラクター立ち絵は同一キャラ内で顔・体格・服の比率を固定し、transparent PNG、足元または腰位置のアンカーを揃える。
+- ALMA UIは no eyes, no mouth, no mascot, no humanoid assistant avatar を必ず入れる。
+
 ## 背景プロンプト
 
 | ファイル名 | 用途 | 推奨サイズ | プロンプト |
@@ -46,7 +53,19 @@ No existing anime, movie, game, celebrity, or known character references. No dir
 | ui_timeline_panel.png | タイムライン | 900x320 | Investigation timeline panel, dark lunar operations UI, violet-cyan accents, no text. |
 | ui_alma_panel.png | ALMAパネル | 900x520 | AI operations panel, cyan waveform motif, dark background, non-humanoid, no text. |
 
+## アイコン素材プロンプト
+
+| ファイル名 | 用途 | 推奨サイズ | プロンプト |
+| --- | --- | --- | --- |
+| icon_evidence_log.png | ログ証拠 | 256x256 | Minimal evidence log icon, dark navy tile, cyan terminal lines, no text, readable at small size. |
+| icon_evidence_suit.png | 宇宙服証拠 | 256x256 | Minimal spacesuit evidence icon, white suit silhouette, cyan outline, dark lunar UI tile, no text. |
+| icon_evidence_audio.png | 音声証拠 | 256x256 | Minimal audio waveform evidence icon, cyan waveform and amber marker, dark tile, no text. |
+| icon_evidence_medical.png | 医療証拠 | 256x256 | Minimal medical record evidence icon, clean cross-like form without real-world logo, blue-white palette, no text. |
+| icon_evidence_key.png | 権限証拠 | 256x256 | Minimal admin key evidence icon, access token shape, cyan and amber accents, no text. |
+| icon_person.png | 人物 | 256x256 | Minimal person profile icon, neutral silhouette, dark navy tile, cyan line, no text. |
+| icon_location.png | 場所 | 256x256 | Minimal location marker icon for lunar city investigation, cyan map pin, dark tile, no text. |
+| icon_warning.png | 警告 | 256x256 | Minimal warning icon, amber triangle, dark navy tile, clean functional UI, no text. |
+
 ## ファイル名対応表
 
 背景、立ち絵、ALMA、UI、アイコンの現在のファイル名は `docs/ASSET_MANIFEST.md` を正とする。
-

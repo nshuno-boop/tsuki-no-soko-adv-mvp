@@ -29,7 +29,8 @@
 - True / Normal / Bad Ending 分岐
 - 事件タイムライン画面
 - 複数証拠提示式の推理問題
-- 実機でプロローグから3エンディングまで通しプレイ可能であることを確認済み
+- Phase 4時点では、実機でプロローグから3エンディングまで通しプレイ可能であることを確認済み
+- Phase 5変更後の再通しプレイは未確認
 
 ## Phase 2で追加した内容
 
@@ -99,6 +100,7 @@
 - 証拠品一覧で重要証拠が分かるように表示を追加
 - `config.version` を `v0.5-alpha` に更新
 - Alpha向けの `docs/ALPHA_GOALS.md` と `docs/CREDITS.md` を追加
+- Phase 5品質監査の結果を `docs/PHASE5_REVIEW_REPORT.md` に追加
 
 ## 通しプレイMVPの状態
 
@@ -111,7 +113,7 @@
 - 最終推理
 - 3種類のエンディング分岐
 
-実機で最後までプレイ可能であることを確認済みです。本格的な演出、BGM/SE、本素材、長い会話分岐は未実装です。
+Phase 4時点では実機で最後までプレイ可能であることを確認済みです。Phase 5の文章・UI微調整後は、再度の通しプレイ確認が必要です。本格的な演出、BGM/SE、本素材、長い会話分岐は未実装です。
 
 ## ファイル構成
 
@@ -144,13 +146,21 @@ tsuki-no-soko-adv-mvp/
     FONT_LICENSE.md
     IMAGE_PROMPTS.md
     PLAYTEST_CHECKLIST.md
+    PHASE5_REVIEW_REPORT.md
   tools/
     check_project_integrity.py
     generate_placeholder_assets.py
+  Start_TsukiNoSoko_ADV_MVP.cmd
   .github/
     workflows/
       static-check.yml
 ```
+
+## ローカル起動ショートカット
+
+Windowsでは、ルートにある `Start_TsukiNoSoko_ADV_MVP.cmd` からRen'Py SDKを探して起動します。デスクトップショートカットを作っている場合も、このcmdを呼び出す想定です。
+
+Ren'Py SDKを移動した場合は、cmd内のSDK探索パスを確認してください。
 
 ## 画面サイズ
 
@@ -184,7 +194,7 @@ python tools/check_project_integrity.py
 
 ## 推理UX
 
-事件タイムライン画面では、時刻、出来事、説明、関連証拠を確認できます。関連証拠が未入手の場合は「未入手の関連証拠あり」と表示されます。
+事件タイムライン画面では、時刻、出来事、説明を確認できます。関連証拠の入手状態に応じた段階表示は、Beta向けの改善候補として `docs/PHASE5_REVIEW_REPORT.md` に記録しています。
 
 第3章の調査ハブでは、左カラムに6人の聞き込み対象を固定表示します。第4章へ進むには4人以上への初回聞き込みが必要で、条件未達時は不足人数と未聞き込み対象を表示します。
 

@@ -24,3 +24,7 @@ Noto Sans CJK is distributed under the SIL Open Font License, Version 1.1.
 
 Do not commit OS-bundled fonts such as Meiryo, MS Gothic, or Yu Gothic to this repository.
 
+## Japanese Note
+
+日本語表示のため、再配布可能なOFLフォントのみを同梱する。Windows標準フォントなど、再配布権が不明なOS付属フォントはコミットしない。
+

@@ -62,8 +62,8 @@ label chapter1:
     sysmsg "手動隔壁レバーの根元に、乾いた血痕が残っていた。"
     m "徹さんは、最後に逃げようとしたんじゃない。隔壁を閉じようとした。"
     $ add_evidence("e_manual_bulkhead_blood")
-    sysmsg "調査まとめ: 徹の死は減圧事故に見える。だが、位置ログと遺体の場所が噛み合わない。"
-    sysmsg "調査まとめ: ALMAの判断そのものより、ALMAに届いた入力情報を疑う必要がある。"
+    sysmsg "澪のメモ: 徹の死は減圧事故に見える。だが、位置ログと遺体の場所が噛み合わない。"
+    sysmsg "澪のメモ: ALMAの判断そのものより、ALMAに届いた入力情報を疑う必要がある。"
 
     jump chapter2
 
@@ -91,8 +91,8 @@ label chapter2:
     $ add_evidence("e_thermal_sensor_frost")
     ritsu "それと、手動補助弁に新しい工具傷があります。自然故障だけでは説明できません。"
     $ add_evidence("e_manual_valve_scratch")
-    sysmsg "調査まとめ: ALMAは嘘をついたのではなく、嘘の入力を正しく処理した可能性が高い。"
-    sysmsg "調査まとめ: 保守モード、ビーコン優先、R-7の物理痕跡。この3つが同じ方向を示している。"
+    sysmsg "澪のメモ: ALMAは嘘をついたのではなく、嘘の入力を正しく処理した可能性が高い。"
+    sysmsg "澪のメモ: 保守モード、ビーコン優先、R-7の物理痕跡。この3つが同じ方向を示している。"
 
     jump chapter3_hub
 
@@ -167,8 +167,8 @@ label chapter3_hub:
 label chapter4:
     $ set_chapter(4, "第4章：白兎は外へ出なかった", "白兎3号が本当に外へ出たのか確かめる")
     $ synced_count = sync_story_evidence_for_chapter(4)
-    sysmsg "調査まとめ: 住民たちの証言はばらばらに見えたが、徹が都市を壊そうとしていなかったことだけは一致している。"
-    sysmsg "調査まとめ: 次に確かめるべきは、ALMAに見えていた『徹の居場所』そのものだ。"
+    sysmsg "澪のメモ: 住民たちの証言はばらばらに見えたが、徹が都市を壊そうとしていなかったことだけは一致している。"
+    sysmsg "澪のメモ: 次に確かめるべきは、ALMAに見えていた『徹の居場所』そのものだ。"
 
     scene bg outer_port
     show mio thinking at left
@@ -201,8 +201,8 @@ label chapter4:
     show luka sad at right
     luka "この粉塵は影井戸側のものだ。執務室だけにいた人間の袖につく粉じゃない。"
     $ add_evidence("e_sena_dust_trace")
-    sysmsg "調査まとめ: 白兎3号は外へ出ていない。徹の居場所を示した入力は、誰かが作った偽の現実だった。"
-    sysmsg "調査まとめ: 会議音声、ノアの証言、袖口の粉塵が、セナのアリバイに同じ傷をつけている。"
+    sysmsg "澪のメモ: 白兎3号は外へ出ていない。徹の居場所を示した入力は、誰かが作った偽の現実だった。"
+    sysmsg "澪のメモ: 会議音声、ノアの証言、袖口の粉塵が、セナのアリバイに同じ傷をつけている。"
 
     jump chapter5_hub
 
@@ -269,18 +269,18 @@ label interview_sena:
         m "事故と決めるには早すぎます。徹さんは22:30に、私へ話したいと言っていました。"
         sena "……檜山さんは、いつも空気の薄い話をする人でした。"
         sena "でも、この街では薄い空気でも吸い続けるしかない。綺麗な正論だけでは、人は守れません。"
-        $ interview_flags.add("sena_initial")
-        $ interview_done.add("sena")
+        $ mark_interview_flag("sena_initial")
+        $ mark_interview_done("sena")
     elif "sena_additional" not in interview_flags and has_evidence("e_toru_audit_file"):
         sena "檜山さんが告発を準備していたことは知っていました。ですが、告発は都市を救うとは限りません。"
         m "隠すことも、救うこととは限らない。"
         sena "分かっています。分かっているからこそ、私は代表の顔を外せなかった。"
-        $ interview_flags.add("sena_additional")
+        $ mark_interview_flag("sena_additional")
     elif chapter >= 5 and "sena_core" not in interview_flags:
         show sena shaken at right
         sena "都市が閉じれば、ノアたちは地球で生きられない。私は代表で、母親でもあるんです。"
         m "その恐れが、徹さんを殺す理由にはなりません。"
-        $ interview_flags.add("sena_core")
+        $ mark_interview_flag("sena_core")
     else:
         sena "監査官。シロワには、正しさだけでは守れない空気があります。"
     return
@@ -295,17 +295,17 @@ label interview_ritsu:
     if "ritsu_initial" not in interview_flags:
         ritsu "ALMAは規定通り動きました。少なくとも、ログを自分で書き換えるようなAIではありません。"
         alma "自己改ざんの記録はありません。"
-        $ interview_flags.add("ritsu_initial")
-        $ interview_done.add("ritsu")
+        $ mark_interview_flag("ritsu_initial")
+        $ mark_interview_done("ritsu")
     elif "ritsu_additional" not in interview_flags and has_evidence("e_maintenance_admin_log"):
         ritsu "保守モード中はビーコン優先です。現場の作業員を守るための仕様でした。"
         m "でも今回は、ビーコンが嘘の居場所を作った。"
-        $ interview_flags.add("ritsu_additional")
+        $ mark_interview_flag("ritsu_additional")
     elif chapter >= 5 and "ritsu_core" not in interview_flags:
         show ritsu relieved at right
         ritsu "ALMAは嘘をついていません。嘘の入力を、正しく信じたんです。"
         m "犯人はAIではなく、AIの目を塞いだ人間。"
-        $ interview_flags.add("ritsu_core")
+        $ mark_interview_flag("ritsu_core")
     else:
         ritsu "アルマさんを疑うなら、まず入力の流れを見てください。"
     return
@@ -321,16 +321,16 @@ label interview_luka:
         m "あなたには、徹さんを黙らせる理由があった？"
         luka "あったかもな。でも殺す理由はない。空気を守るやつを殺して、誰が得する。"
         luka "俺は数字を誤魔化した。徹はそれを嫌った。だからって、あいつが嫌いだったわけじゃない。"
-        $ interview_flags.add("luka_initial")
-        $ interview_done.add("luka")
+        $ mark_interview_flag("luka_initial")
+        $ mark_interview_done("luka")
     elif "luka_additional" not in interview_flags and has_evidence("e_toru_audit_file"):
         show luka sad at right
         luka "採掘量不足は本当だ。セレネ社に見せる数字は、きれいに磨かれてた。"
-        $ interview_flags.add("luka_additional")
+        $ mark_interview_flag("luka_additional")
     elif chapter >= 5 and "luka_core" not in interview_flags:
         show luka sad at right
         luka "徹とは対立してた。でも友人でもあった。あいつは街を売る気なんかなかったよ。"
-        $ interview_flags.add("luka_core")
+        $ mark_interview_flag("luka_core")
     else:
         luka "影井戸は嘘を嫌う。暗い場所ほど、数字だけは正直でないと死ぬ。"
     return
@@ -344,16 +344,16 @@ label interview_akari:
     if "akari_initial" not in interview_flags:
         akari "徹さんの死因は真空暴露。宇宙服で耐えた痕跡はありません。"
         m "外で倒れたのではなく、R-7の中で空気を奪われた。"
-        $ interview_flags.add("akari_initial")
-        $ interview_done.add("akari")
+        $ mark_interview_flag("akari_initial")
+        $ mark_interview_done("akari")
     elif "akari_additional" not in interview_flags:
         akari "月面生まれの世代は、急な地球移住に耐えられない子がいます。ノアも、その評価対象です。"
         akari "代表が恐れているのは、政治的な失点だけではありません。子どもたちの身体が、地球を拒むかもしれないんです。"
         $ add_evidence("e_lunarborn_medical_report")
-        $ interview_flags.add("akari_additional")
+        $ mark_interview_flag("akari_additional")
     elif chapter >= 5 and "akari_core" not in interview_flags:
         akari "徹さんは都市を壊したかったんじゃありません。嘘を外して、作り直したかったんです。"
-        $ interview_flags.add("akari_core")
+        $ mark_interview_flag("akari_core")
     else:
         akari "医療記録は、政治より残酷です。でも、ときどき政治より優しい。"
     return
@@ -368,17 +368,17 @@ label interview_noah:
         noah "父さんはシロワを壊そうとしてた。母さんは街を守ってる。だから、わたしは母さんの味方。"
         m "徹さんが本当に壊そうとしていたのは、街ではなく嘘かもしれない。"
         noah "嘘でも、街が残るならいいじゃん。……そう思っちゃだめなの？"
-        $ interview_flags.add("noah_initial")
-        $ interview_done.add("noah")
+        $ mark_interview_flag("noah_initial")
+        $ mark_interview_done("noah")
     elif "noah_additional" not in interview_flags and has_evidence("e_earth_meeting_audio"):
         show noah tears at right
         noah "外口の近くで足音を聞いた。母さんに似てた。でも、そうだって言いたくなかった。"
-        $ interview_flags.add("noah_additional")
+        $ mark_interview_flag("noah_additional")
     elif chapter >= 5 and "noah_core" not in interview_flags:
         show noah tears at right
         noah "父さんは、わたしを地球に捨てようとしてたんじゃないの？"
         m "違う。徹さんは、君が嘘のない街で息をできるようにしたかった。"
-        $ interview_flags.add("noah_core")
+        $ mark_interview_flag("noah_core")
     else:
         noah "アルマさんは、嘘を嫌うよ。人間よりずっと。"
     return
@@ -393,16 +393,16 @@ label interview_jin:
         jin "セレネ資源開発としては、事故調査に全面的に協力します。企業責任とは別の話ですが。"
         m "その線引きで、人が死んでも？"
         jin "線を引かなければ、会社は何も認められません。認めた瞬間、ここにある生活全部が訴訟の材料になる。"
-        $ interview_flags.add("jin_initial")
-        $ interview_done.add("jin")
+        $ mark_interview_flag("jin_initial")
+        $ mark_interview_done("jin")
     elif "jin_additional" not in interview_flags and has_evidence("e_toru_audit_file"):
         show jin irritated at right
         jin "採掘量報告に問題があったことは認めます。ですが、それは殺人の指示ではありません。"
-        $ interview_flags.add("jin_additional")
+        $ mark_interview_flag("jin_additional")
     elif chapter >= 5 and "jin_core" not in interview_flags:
         show jin defeated at right
         jin "会社の圧力はありました。けれど、檜山徹を殺す判断は、企業会議の議事録にはない。"
-        $ interview_flags.add("jin_core")
+        $ mark_interview_flag("jin_core")
     else:
         jin "言葉は便利です。責任を遠ざけるには、特に。"
     return
@@ -464,7 +464,7 @@ label ask_deduction_question(question_data):
         if question_data["kind"] == "person":
             call screen person_choice_screen(question_data["prompt"], question_data["hint"])
         elif question_data["kind"] == "multi_evidence":
-            call screen multi_evidence_choice_screen(question_data["prompt"], question_data["hint"])
+            call screen multi_evidence_choice_screen(question_data["prompt"], question_data["hint"], len(question_data["required_answers"]))
         else:
             call screen evidence_choice_screen(question_data["prompt"], question_data["hint"])
         $ selected_answer = _return
@@ -484,21 +484,21 @@ label ask_deduction_question(question_data):
         elif question_data["kind"] == "person" and selected_answer == question_data["answer_person"]:
             $ solved = True
             $ deduction_score += 1
-            $ deduction_correct_ids.add(question_data["id"])
+            $ mark_deduction_correct(question_data["id"])
             $ success_text = question_data["success"]
             sysmsg "正解。 [success_text]"
 
         elif question_data["kind"] == "multi_evidence" and set(selected_answer) == set(question_data["required_answers"]):
             $ solved = True
             $ deduction_score += 1
-            $ deduction_correct_ids.add(question_data["id"])
+            $ mark_deduction_correct(question_data["id"])
             $ success_text = question_data["success"]
             sysmsg "正解。 [success_text]"
 
         elif question_data["kind"] == "evidence" and selected_answer in question_data["answers"]:
             $ solved = True
             $ deduction_score += 1
-            $ deduction_correct_ids.add(question_data["id"])
+            $ mark_deduction_correct(question_data["id"])
             $ success_text = question_data["success"]
             sysmsg "正解。 [success_text]"
 
@@ -555,6 +555,8 @@ label true_ending:
     sysmsg "True Ending: 月の底で、息をする"
     m "ALMAは殺していない。あなたは、ALMAに偽の現実を見せた。"
     sena "都市が閉じれば、ノアたちは生きる場所を失う。私は、それが怖かった。"
+    sena "ノア、私は……。"
+    sysmsg "セナの言葉は、夜明けの窓の前で途切れた。"
     sena "怖さを理由にして、取り返しのつかないことをした。代表としても、母親としても。"
     sysmsg "徹の監査ファイルには、最後の一文が残されていた。"
     t "シロワを告発する。シロワを終わらせるためではない。嘘の上では、誰も長く息をできないから。"
@@ -575,6 +577,7 @@ label normal_ending:
     show sena shaken at right
     sysmsg "Normal Ending: 白い報告書"
     m "犯人と手口は示せた。けれど、徹さんが何を守ろうとしたのかまでは届かなかった。"
+    sysmsg "ノアは報告書を閉じたまま、父の名前だけを何度も見ていた。"
     sysmsg "セナは拘束される。だが、セレネ社の責任追及は曖昧なまま、シロワの住民には重い沈黙が残った。"
     sysmsg "事件は解決した。それでも、夜明けの窓に立つ人々の呼吸は、まだ少し浅い。"
     return
@@ -588,7 +591,7 @@ label bad_ending:
     alma "R-7事故はALMA運用上の重大エラーとして処理されます。停止手続きに入ります。"
     sysmsg "真犯人は明らかにならない。外口の床に残る粉塵を、ノアだけが見つめていた。"
     noah "……母さんの足跡、どうしてここにあるの。"
-    sysmsg "プレイヤーだけが、届かなかった真相の形を知っている。けれど、シロワの記録には何も残らない。"
+    sysmsg "外口の足跡も、ノアの疑問も、シロワの公式記録には残らない。"
     return
 
 

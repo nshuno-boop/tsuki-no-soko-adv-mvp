@@ -56,7 +56,7 @@ init python:
             "short_name": "位置ログ",
             "description": "事故時刻、徹のビーコンが外口側にあると記録されたログ。",
             "summary": "徹がR-7ではなく外口側にいるように見えた記録。",
-            "detail": "R-7内の生体反応と、外口側に移動したビーコン記録が矛盾している。ALMAが無人判定した根拠のひとつ。",
+            "detail": "保守モード中はビーコンと外部カメラが優先され、R-7内の弱い生体反応は後解析で矛盾として浮かんだ。ALMAが無人判定した根拠のひとつ。",
             "category": "log",
             "related_character": "檜山 徹",
             "related_location": "コア",
@@ -168,7 +168,7 @@ init python:
             "short_name": "保守モード記録",
             "description": "事故前夜、管理者権限でALMAの区画監視が保守モードへ切り替えられていた記録。",
             "summary": "ALMAの中核ではなく、入力と優先順位を変えた記録。",
-            "detail": "保守モードでは作業員ビーコンと外部カメラが優先される。ALMAは嘘をついたのではなく、偽の入力を規定通り処理した。",
+            "detail": "保守モードでは作業員ビーコンと外部カメラが優先される。切替は代表権限IDから発行され、会議音声の空白時間と重なる。ALMAは嘘をついたのではなく、偽の入力を規定通り処理した。",
             "category": "log",
             "related_character": "雨宮 セナ",
             "related_location": "コア",
@@ -346,7 +346,7 @@ init python:
         if chapter >= 5:
             if len(missing_final_evidence()) > 0:
                 return "おすすめ: 不足している重要証拠を確認し、人物メモと証拠品一覧を見直す。"
-            return "おすすめ: Q6・Q8・Q9はTrue Endingに重要。アリバイ、動機、徹の最後の行動を整理する。"
+            return "おすすめ: セナのアリバイ、動機、徹の最後の行動を証拠品一覧で整理する。"
         if chapter == 4:
             return "おすすめ: 白兎3号の消耗、会議音声、ノアの証言、袖口の粉塵をつなげる。"
         return "おすすめ: 現在の目的に沿って、証拠品一覧と人物メモを確認する。"
@@ -357,6 +357,9 @@ init python:
         "e_noah_testimony",
         "e_maintenance_admin_log",
         "e_white_rabbit_co2_absorber",
+        "e_earth_meeting_audio",
+        "e_sena_dust_trace",
+        "e_manual_bulkhead_blood",
     ]
 
     STORY_EVIDENCE_BY_PHASE = {
@@ -446,14 +449,14 @@ init python:
             "chapter": 4,
         },
         {
-            "time": "22:14",
+            "time": "22:31",
             "title": "酸素工房R-7が緊急減圧",
             "description": "ALMAは無人区画と判断し、R-7を隔離・減圧した。",
             "related_evidence": ["e_r7_decompression_log", "e_personnel_location_log"],
             "chapter": 1,
         },
         {
-            "time": "22:15",
+            "time": "22:32",
             "title": "徹が隔壁レバーへ手を伸ばす",
             "description": "徹は隣接区画を守るため、最後に手動隔壁を閉じようとした。",
             "related_evidence": ["e_manual_bulkhead_blood"],
@@ -539,7 +542,7 @@ init python:
         {
             "id": "q7",
             "kind": "person",
-            "prompt": "Q7. ここまでの証拠が指している実行者は誰か？",
+            "prompt": "Q7. 動機の全体像は次に詰める。まず、権限と移動痕跡が指す実行者は誰か？",
             "answer_person": "sena",
             "hint": "権限、動機、移動の痕跡が同じ人物に集まっている。",
             "success": "雨宮セナ。都市を守る立場の人間が、都市のために徹を殺した。",
@@ -585,6 +588,20 @@ init python:
 
     def evidence_names(evidence_ids):
         return [evidence_catalog[evidence_id]["name"] for evidence_id in evidence_ids if evidence_id in evidence_catalog]
+
+    def add_to_store_set(store_name, value):
+        current = set(getattr(store, store_name))
+        current.add(value)
+        setattr(store, store_name, current)
+
+    def mark_interview_flag(flag_id):
+        add_to_store_set("interview_flags", flag_id)
+
+    def mark_interview_done(person_id):
+        add_to_store_set("interview_done", person_id)
+
+    def mark_deduction_correct(question_id):
+        add_to_store_set("deduction_correct_ids", question_id)
 
     def sync_story_evidence_for_chapter(target_chapter):
         """章進行上すでに入手済みであるべき証拠を復元する。

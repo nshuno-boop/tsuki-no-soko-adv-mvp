@@ -50,6 +50,7 @@ screen objective_overlay():
 
 
 screen investigation_hub_screen():
+    zorder 20
     modal True
 
     add Solid("#030712")
@@ -65,7 +66,7 @@ screen investigation_hub_screen():
             spacing 14
 
             $ done_count = interview_done_count()
-            $ required_count = 4
+            $ required_count = CHAPTER4_REQUIRED_INTERVIEWS
             $ missing_names = missing_interview_names()
             $ recommended_action = recommended_action_text()
 
@@ -205,7 +206,7 @@ screen investigation_hub_screen():
                         xfill True
                     null height 12
                     if chapter < 4:
-                        textbutton "白兎3号を調べる":
+                        textbutton "第4章へ進む: 白兎3号を調べる":
                             action Return("final")
                             xfill True
                         if chapter == 3 and done_count < required_count:
@@ -221,6 +222,7 @@ screen investigation_hub_screen():
 
 screen evidence_screen():
     tag menu
+    zorder 20
     modal True
     default selected_id = None
 
@@ -330,6 +332,7 @@ screen evidence_screen():
 
 screen person_memo_screen():
     tag menu
+    zorder 20
     modal True
     default selected_person = "mio"
 
@@ -463,7 +466,7 @@ screen evidence_choice_screen(question, hint_text):
                     action Return("__back_to_investigation__")
 
 
-screen multi_evidence_choice_screen(question, hint_text):
+screen multi_evidence_choice_screen(question, hint_text, required_count=0):
     zorder 30
     modal True
     default selected_ids = set()
@@ -480,7 +483,12 @@ screen multi_evidence_choice_screen(question, hint_text):
         vbox:
             spacing 14
             text question size 24 color "#f8fafc" xmaximum 1080
-            text "必要な証拠をすべて選んでから提示してください。余計な証拠を含めると不正解です。" color "#cbd5e1" size 18
+            if required_count > 0:
+                text "この問題は[required_count]つの証拠を組み合わせます。関係する証拠だけを選んで提示してください。" color "#cbd5e1" size 18
+            else:
+                text "この問題は複数の証拠を組み合わせます。関係する証拠だけを選んで提示してください。" color "#cbd5e1" size 18
+            $ selected_count = len(selected_ids)
+            text "選択中: [selected_count]件" color "#fbbf24" size 17
 
             if len(evidence_unlocked) == 0:
                 text "提示できる証拠がありません。調査に戻って、必要な証拠を集めてください。" color "#fecaca" size 20 xmaximum 1020
@@ -630,6 +638,7 @@ screen person_choice_screen(question, hint_text):
 
 screen timeline_screen():
     tag menu
+    zorder 20
     modal True
 
     add Solid("#020617")
@@ -659,10 +668,10 @@ screen timeline_screen():
                 text "21:32  熱センサーに氷霜 - 自然結露では説明しにくい成分が残る。" color "#cbd5e1" size 17
                 text "21:46  手動補助弁が操作 - R-7の補助弁に新しい工具傷が残る。" color "#cbd5e1" size 17
                 text "21:52  ノアが外口付近で足音を聞く - 母に似た歩き方だった。" color "#cbd5e1" size 17
-                text "22:05  地球会議の長い空白 - セナの遠隔出席に移動の余地が残る。" color "#cbd5e1" size 17
-                text "22:14  酸素工房R-7が緊急減圧 - ALMAは無人区画と判断した。" color "#cbd5e1" size 17
-                text "22:18  徹が隔壁レバーへ手を伸ばす - 隣接区画を守ろうとした。" color "#cbd5e1" size 17
-                text "22:31  徹の死亡を確認 - 死因は真空暴露による急性低酸素。" color "#cbd5e1" size 17
+                text "22:08  地球会議の長い空白 - セナの遠隔出席に移動の余地が残る。" color "#cbd5e1" size 17
+                text "22:31  酸素工房R-7が緊急減圧 - ALMAは無人区画と判断した。" color "#cbd5e1" size 17
+                text "22:32  徹が隔壁レバーへ手を伸ばす - 隣接区画を守ろうとした。" color "#cbd5e1" size 17
+                text "22:34  徹の死亡を確認 - 死因は真空暴露による急性低酸素。" color "#cbd5e1" size 17
                 text "翌朝   白兎3号の未使用痕跡 - 船外活動は偽装だったと分かる。" color "#cbd5e1" size 17
 
             textbutton "閉じる":
@@ -671,6 +680,7 @@ screen timeline_screen():
 
 
 screen missing_evidence_screen(missing_names):
+    zorder 20
     modal True
 
     add Solid("#020617")
@@ -703,6 +713,7 @@ screen missing_evidence_screen(missing_names):
 
 
 screen interview_progress_warning_screen(done_count, required_count, missing_names):
+    zorder 20
     modal True
 
     add Solid("#020617")
@@ -730,6 +741,7 @@ screen interview_progress_warning_screen(done_count, required_count, missing_nam
 
 
 screen deduction_result_screen(result_text, ending_name):
+    zorder 20
     modal True
 
     add Solid("#020617")
@@ -758,6 +770,7 @@ screen deduction_result_screen(result_text, ending_name):
 
 
 screen alma_log_screen(title, lines):
+    zorder 20
     modal True
 
     add Solid("#01050a")
