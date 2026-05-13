@@ -1,6 +1,6 @@
 # ASSET MANIFEST
 
-Phase 6 Playable Art Pass時点では、通しプレイMVPで参照している主要画像を playable art として更新した。追加のReference Polishでは、提示された生成画像の方向性をもとに、澪の立ち絵、タイトル/メニュー背景、推理画面背景、UIフレーム、証拠アイコンを再ブラッシュアップした。
+Phase 6 Playable Art Pass時点では、通しプレイMVPで参照している主要画像を playable art として更新した。追加のReference Polishでは、提示された生成画像の方向性をもとに、澪とセナの立ち絵、背景、タイトル/メニュー背景、推理画面背景、UIフレーム、証拠アイコンを再ブラッシュアップした。さらにPlayer View QA後、セナは澪の色替えに見えないよう、顔立ち、髪型、衣装シルエットを作り直した。
 
 MVP表示基準は1280x720。背景とCGは1920x1080で制作し、Ren'Py側で1280x720へスケールして表示する。立ち絵とALMA UI画像は520x760の透明PNGとして維持する。
 
@@ -10,6 +10,7 @@ MVP表示基準は1280x720。背景とCGは1920x1080で制作し、Ren'Py側で1
 
 - placeholder: 今回生成した仮素材
 - playable: 本素材寄りのプレイテスト用素材
+- reference-polished: 提示された生成画像の方向性を反映して再調整した素材
 - needed: まだ必要
 - final: 本素材化済み
 - unused: 未使用候補
@@ -18,15 +19,15 @@ MVP表示基準は1280x720。背景とCGは1920x1080で制作し、Ren'Py側で1
 
 | File | Description | Status |
 | --- | --- | --- |
-| game/images/bg/bg_lander_interior.png | 月面降下船内部 | playable |
-| game/images/bg/bg_shirowa_hab_ring.png | シロワ中央居住環 | playable |
-| game/images/bg/bg_core.png | コア | playable |
-| game/images/bg/bg_oxygen_workshop_r7.png | 酸素工房R-7 | playable |
-| game/images/bg/bg_outer_port.png | 外口 | playable |
-| game/images/bg/bg_medbay.png | 医療室 | playable |
-| game/images/bg/bg_sena_office.png | セナ執務室 | playable |
-| game/images/bg/bg_dawn_window.png | 夜明けの窓 | playable |
-| game/images/bg/bg_shadow_well.png | 影井戸 | playable |
+| game/images/bg/bg_lander_interior.png | 月面降下船内部 | reference-polished |
+| game/images/bg/bg_shirowa_hab_ring.png | シロワ中央居住環 | reference-polished |
+| game/images/bg/bg_core.png | コア | reference-polished |
+| game/images/bg/bg_oxygen_workshop_r7.png | 酸素工房R-7 | reference-polished |
+| game/images/bg/bg_outer_port.png | 外口 | reference-polished |
+| game/images/bg/bg_medbay.png | 医療室 | reference-polished |
+| game/images/bg/bg_sena_office.png | セナ執務室 | reference-polished |
+| game/images/bg/bg_dawn_window.png | 夜明けの窓 | reference-polished |
+| game/images/bg/bg_shadow_well.png | 影井戸 | reference-polished |
 
 ## CG
 
@@ -42,7 +43,7 @@ MVP表示基準は1280x720。背景とCGは1920x1080で制作し、Ren'Py側で1
 | Character | Files | Status |
 | --- | --- | --- |
 | 佐伯澪 | mio_neutral.png, mio_thinking.png, mio_surprised.png, mio_pained.png | reference-polished |
-| 雨宮セナ | sena_neutral.png, sena_smile.png, sena_calm.png, sena_shaken.png, sena_broken.png | playable |
+| 雨宮セナ | sena_neutral.png, sena_smile.png, sena_calm.png, sena_shaken.png, sena_broken.png | reference-polished / redesigned face |
 | 檜山徹 | toru_neutral.png, toru_tired.png, toru_gentle.png, toru_recording.png | playable |
 | 北条リツ | ritsu_neutral.png, ritsu_anxious.png, ritsu_angry.png, ritsu_relieved.png | playable |
 | ルカ・ナディム | luka_neutral.png, luka_sarcastic.png, luka_angry.png, luka_sad.png | playable |
@@ -50,6 +51,21 @@ MVP表示基準は1280x720。背景とCGは1920x1080で制作し、Ren'Py側で1
 | 雨宮ノア | noah_neutral.png, noah_rebellious.png, noah_tears.png, noah_smile.png | playable |
 | 鷹峰ジン | jin_neutral.png, jin_business_smile.png, jin_irritated.png, jin_defeated.png | playable |
 | ALMA | alma_idle.png, alma_alert.png, alma_speaking.png | playable |
+
+## Dialogue Portraits
+
+| File | Description | Status |
+| --- | --- | --- |
+| game/images/portraits/portrait_mio.png | 会話窓用・澪顔アップ | playable |
+| game/images/portraits/portrait_sena.png | 会話窓用・セナ顔アップ | reference-polished |
+| game/images/portraits/portrait_toru.png | 会話窓用・徹顔アップ | playable |
+| game/images/portraits/portrait_ritsu.png | 会話窓用・リツ顔アップ | playable |
+| game/images/portraits/portrait_luka.png | 会話窓用・ルカ顔アップ | playable |
+| game/images/portraits/portrait_akari.png | 会話窓用・アカリ顔アップ | playable |
+| game/images/portraits/portrait_noah.png | 会話窓用・ノア顔アップ | playable |
+| game/images/portraits/portrait_jin.png | 会話窓用・ジン顔アップ | playable |
+| game/images/portraits/portrait_alma.png | 会話窓用・ALMA表示 | playable |
+| game/images/portraits/portrait_system.png | 会話窓用・システム表示 | playable |
 
 ## UI
 

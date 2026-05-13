@@ -33,6 +33,23 @@ style alma_log_text:
     size 20
 
 
+init python:
+    def speaker_portrait(who):
+        portrait_map = {
+            "佐伯 澪": "images/portraits/portrait_mio.png",
+            "雨宮 セナ": "images/portraits/portrait_sena.png",
+            "檜山 徹": "images/portraits/portrait_toru.png",
+            "北条 リツ": "images/portraits/portrait_ritsu.png",
+            "ルカ・ナディム": "images/portraits/portrait_luka.png",
+            "白石 アカリ": "images/portraits/portrait_akari.png",
+            "雨宮 ノア": "images/portraits/portrait_noah.png",
+            "鷹峰 ジン": "images/portraits/portrait_jin.png",
+            "ALMA": "images/portraits/portrait_alma.png",
+            "SYSTEM": "images/portraits/portrait_system.png",
+        }
+        return portrait_map.get(who, "images/portraits/portrait_system.png")
+
+
 style playable_menu_button:
     background Frame("images/ui/ui_choice_button.png", 24, 24)
     hover_background "#164e63"
@@ -78,22 +95,46 @@ screen say(who, what):
         background Frame("images/ui/ui_textbox.png", 34, 34)
         xalign 0.5
         yalign 0.985
-        xsize 1160
+        xsize 1120
         ysize 190
-        padding (38, 28)
+        padding (0, 0)
 
-        if who is not None:
-            window:
-                id "namebox"
-                background Frame("images/ui/ui_nameplate.png", 22, 22)
-                xpos 14
-                ypos -50
-                xsize 340
-                ysize 58
-                padding (22, 9)
-                text who id "who" color "#f8fafc" size 24
+        fixed:
+            xfill True
+            yfill True
 
-        text what id "what" color "#f8fafc" size 24 xmaximum 1080 line_spacing 5
+            if who is not None:
+                window:
+                    id "namebox"
+                    background Frame("images/ui/ui_nameplate.png", 22, 22)
+                    xpos 38
+                    ypos -48
+                    xsize 306
+                    ysize 58
+                    padding (22, 9)
+                    text who id "who" color "#f8fafc" size 23
+
+                add speaker_portrait(who):
+                    xpos 928
+                    ypos 18
+                    xysize (132, 132)
+
+                text what id "what":
+                    xpos 42
+                    ypos 54
+                    xmaximum 840
+                    color "#f8fafc"
+                    size 24
+                    line_spacing 5
+
+            else:
+                text what id "what":
+                    xpos 42
+                    ypos 46
+                    xmaximum 1030
+                    color "#f8fafc"
+                    size 24
+                    line_spacing 5
 
 
 screen choice(items):
@@ -116,15 +157,15 @@ screen objective_overlay():
 
     frame:
         xalign 0.02
-        yalign 0.02
-        xmaximum 620
-        padding (12, 8)
-        background "#020617cc"
+        yalign 0.025
+        xmaximum 520
+        padding (12, 7)
+        background "#020617d8"
 
         vbox:
             spacing 2
             text "現在の目的" color "#67e8f9" size 14
-            text current_objective color "#f8fafc" size 17 xmaximum 585
+            text current_objective color "#f8fafc" size 15 xmaximum 480
 
 
 screen confirm(message, yes_action, no_action):

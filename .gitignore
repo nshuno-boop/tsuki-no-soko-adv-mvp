@@ -3,6 +3,7 @@ game/cache/
 game/saves/
 game/**.rpyc
 game/**.rpymc
+log.txt
 
 # Build outputs
 build/

@@ -32,7 +32,7 @@ No existing anime, movie, game, celebrity, or known character references. No dir
 | キャラ | 用途 | 推奨サイズ | プロンプト |
 | --- | --- | --- | --- |
 | 佐伯澪 | 立ち絵 | 900x1400 transparent PNG | Young Earth audit officer, practical inspection jacket, calm but inexperienced, neat short-to-medium dark hair, subtle tired eyes, grounded near-future lunar mystery ADV character sprite, simple readable silhouette. Expressions: neutral, thinking, surprised, pained. |
-| 雨宮セナ | 立ち絵 | 900x1400 transparent PNG | Representative of Shirowa lunar city, composed woman in restrained formal operations suit, gentle public face with hidden pressure, elegant but not decorative, cool palette with slight warm accent. Expressions: neutral, smile, calm, shaken, broken. |
+| 雨宮セナ | 立ち絵 | 900x1400 transparent PNG | Representative of Shirowa lunar city, early-to-mid 30s, soft oval face, tired gentle amber-brown eyes with slightly downturned corners, long warm chestnut-brown hair partly tied back with loose side strands, refined ivory/taupe civic coat over muted teal high-collar dress, subtle amber administrative accents, calm public face with hidden pressure. Must not look like a recolor of Mio; change face shape, eye shape, hairstyle, silhouette, and outfit role. Expressions: neutral, smile, calm, shaken, broken. |
 | 檜山徹 | 立ち絵 | 900x1400 transparent PNG | Life support chief, honest exhausted engineer, utility uniform, signs of long work in oxygen systems, kind eyes, recorded-message variant, grounded design. Expressions: neutral, tired, gentle, recording. |
 | 北条リツ | 立ち絵 | 900x1400 transparent PNG | AI systems engineer for ALMA, practical work vest, tablet or maintenance tools, precise nervous energy, short hair, cool blue accents. Expressions: neutral, anxious, angry, relieved. |
 | ルカ・ナディム | 立ち絵 | 900x1400 transparent PNG | Mining chief from the Shadow Well, rugged lunar workwear, dust marks, direct gaze, sarcastic posture, practical safety gear. Expressions: neutral, sarcastic, angry, sad. |
@@ -99,7 +99,7 @@ Reference Polishでは、生成済みの画面モックを基準に、澪の監�
 ### Character anchors
 
 - Mio: young Earth auditor, clean audit jacket, observant, slightly stiff.
-- Sena: city representative, gentle public face, tired responsibility, controlled collapse.
+- Sena: city representative, distinct from Mio by face shape, downturned amber eyes, long chestnut hair, ivory civic coat, tired responsibility, controlled collapse.
 - Toru: life-support engineer, practical workwear, sincere and exhausted.
 - Ritsu: ALMA engineer, nervous honesty, terminal device, blue technical accents.
 - Luka: mining worker, dusty utility clothing, sarcasm with warmth.
