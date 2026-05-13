@@ -69,3 +69,39 @@ No existing anime, movie, game, celebrity, or known character references. No dir
 ## ファイル名対応表
 
 背景、立ち絵、ALMA、UI、アイコンの現在のファイル名は `docs/ASSET_MANIFEST.md` を正とする。
+
+## Phase 6 Playable Art Prompt Notes
+
+Phase 6では、実際のPNGアセットを生成して組み込んだ。今後さらにAI画像生成や外部制作へ渡す場合は、以下を基準にする。
+
+### 共通スタイル
+
+- Japanese mystery visual novel, late-2050s lunar city, clean but lived-in, restrained near-future design.
+- Cold navy, blue-gray, white, pale cyan, limited amber warning lights.
+- Not cyberpunk, not neon-heavy, not toy-like, no large embedded labels.
+- Keep the lower 30 percent readable for dialogue UI.
+- Keep left and right sides calm enough for character sprites.
+
+### Background anchors
+
+- Lander interior: cramped cockpit, moon ridge outside, transport labels, quiet arrival tension.
+- Shirowa hab ring: residential railings, repair tape, personal traces, human life inside a closed city.
+- Core: ALMA operation wall, server rings, waveform panels, silent machine intelligence.
+- Oxygen workshop R-7: oxygen tanks, pressure doors, frost, warning amber and muted red.
+- Outer port: suit racks, airlock, moon dust, subtle footprints, cold white-blue lighting.
+- Medbay: tired medical equipment, low-gravity child charts, soft clinical light.
+- Sena office: orderly corporate room, water/resource map, warm desk light, quiet pressure.
+- Dawn window: thin lunar dawn, large window frame, distant light, restrained hope.
+- Shadow well: mining shaft, cables, frost, powder, deep vertical darkness.
+
+### Character anchors
+
+- Mio: young Earth auditor, clean audit jacket, observant, slightly stiff.
+- Sena: city representative, gentle public face, tired responsibility, controlled collapse.
+- Toru: life-support engineer, practical workwear, sincere and exhausted.
+- Ritsu: ALMA engineer, nervous honesty, terminal device, blue technical accents.
+- Luka: mining worker, dusty utility clothing, sarcasm with warmth.
+- Akari: doctor, calm and tired, medical layer over utility wear.
+- Noah: lunar-born youth, defensive softness, lightweight utility hoodie.
+- Jin: corporate legal PR, neat suit, warm-gray and orange corporate accents.
+- ALMA: non-human interface, ring/waveform/light state, never mascot-like.

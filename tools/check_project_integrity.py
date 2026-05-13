@@ -36,7 +36,14 @@ REQUIRED_FILES = [
     "tools/generate_placeholder_assets.py",
     "tools/check_project_integrity.py",
     "docs/PHASE5_PLAYTEST_QA.md",
+    "docs/PLAYABLE_ART_PASS_REPORT.md",
     ".github/workflows/static-check.yml",
+    "game/images/ui/title_background.png",
+    "game/images/ui/title_logo.png",
+    "game/images/cg/cg_r7_incident.png",
+    "game/images/cg/cg_dawn_window_ending.png",
+    "game/images/cg/cg_toru_recording.png",
+    "game/images/cg/cg_outer_port_reveal.png",
 ]
 
 REQUIRED_EVIDENCE_IDS = [
@@ -161,6 +168,9 @@ def check_image_definitions(errors: list[str]) -> None:
         "image sena broken",
         "image noah tears",
         "image alma speaking",
+        "image title background",
+        "image cg r7_incident",
+        "image cg dawn_window_ending",
     ]
     for image_def in required_defs:
         if image_def not in images_text:

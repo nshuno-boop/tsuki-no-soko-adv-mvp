@@ -33,6 +33,83 @@ style alma_log_text:
     size 20
 
 
+style playable_menu_button:
+    background Frame("images/ui/ui_choice_button.png", 24, 24)
+    hover_background "#164e63"
+    padding (18, 10)
+    xminimum 280
+
+style playable_menu_button_text:
+    color "#f8fafc"
+    hover_color "#ffffff"
+    size 24
+
+
+screen main_menu():
+    tag menu
+
+    add "title background"
+    add Solid("#02061788")
+
+    frame:
+        background None
+        xalign 0.08
+        yalign 0.42
+        xsize 760
+
+        vbox:
+            spacing 18
+            add "title logo"
+            text "SHIROWA AUDIT FILE / v0.5-alpha" color "#67e8f9" size 18
+            text "月面都市の空気は、記録より先に嘘を吸い込んでいた。" color "#cbd5e1" size 22 xmaximum 690
+
+            null height 12
+
+            textbutton "はじめる" action Start() style "playable_menu_button"
+            textbutton "終了" action Quit(confirm=True) style "playable_menu_button"
+
+
+screen say(who, what):
+    zorder 10
+
+    window:
+        id "window"
+        background Frame("images/ui/ui_textbox.png", 34, 34)
+        xalign 0.5
+        yalign 0.985
+        xsize 1160
+        ysize 190
+        padding (38, 28)
+
+        if who is not None:
+            window:
+                id "namebox"
+                background Frame("images/ui/ui_nameplate.png", 22, 22)
+                xpos 14
+                ypos -50
+                xsize 340
+                ysize 58
+                padding (22, 9)
+                text who id "who" color "#f8fafc" size 24
+
+        text what id "what" color "#f8fafc" size 24 xmaximum 1080 line_spacing 5
+
+
+screen choice(items):
+    zorder 100
+
+    vbox:
+        xalign 0.5
+        yalign 0.52
+        spacing 10
+
+        for item in items:
+            textbutton item.caption:
+                action item.action
+                style "playable_menu_button"
+                xsize 760
+
+
 screen objective_overlay():
     zorder 5
 

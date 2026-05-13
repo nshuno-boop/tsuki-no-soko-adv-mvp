@@ -1,16 +1,24 @@
-# Phase 2 placeholder image definitions.
-# 実素材化するときも、ファイル名と image 名はなるべく維持する。
+# Phase 6 playable art image definitions.
+# File names and image names stay stable so story, evidence, and route logic are not affected by art swaps.
+
+# Title / CG
+image title background = im.Scale("images/ui/title_background.png", 1280, 720)
+image title logo = "images/ui/title_logo.png"
+image cg r7_incident = im.Scale("images/cg/cg_r7_incident.png", 1280, 720)
+image cg dawn_window_ending = im.Scale("images/cg/cg_dawn_window_ending.png", 1280, 720)
+image cg toru_recording = im.Scale("images/cg/cg_toru_recording.png", 1280, 720)
+image cg outer_port_reveal = im.Scale("images/cg/cg_outer_port_reveal.png", 1280, 720)
 
 # Backgrounds
-image bg lander_interior = "images/bg/bg_lander_interior.png"
-image bg shirowa_hab_ring = "images/bg/bg_shirowa_hab_ring.png"
-image bg core = "images/bg/bg_core.png"
-image bg oxygen_workshop_r7 = "images/bg/bg_oxygen_workshop_r7.png"
-image bg outer_port = "images/bg/bg_outer_port.png"
-image bg medbay = "images/bg/bg_medbay.png"
-image bg sena_office = "images/bg/bg_sena_office.png"
-image bg dawn_window = "images/bg/bg_dawn_window.png"
-image bg shadow_well = "images/bg/bg_shadow_well.png"
+image bg lander_interior = im.Scale("images/bg/bg_lander_interior.png", 1280, 720)
+image bg shirowa_hab_ring = im.Scale("images/bg/bg_shirowa_hab_ring.png", 1280, 720)
+image bg core = im.Scale("images/bg/bg_core.png", 1280, 720)
+image bg oxygen_workshop_r7 = im.Scale("images/bg/bg_oxygen_workshop_r7.png", 1280, 720)
+image bg outer_port = im.Scale("images/bg/bg_outer_port.png", 1280, 720)
+image bg medbay = im.Scale("images/bg/bg_medbay.png", 1280, 720)
+image bg sena_office = im.Scale("images/bg/bg_sena_office.png", 1280, 720)
+image bg dawn_window = im.Scale("images/bg/bg_dawn_window.png", 1280, 720)
+image bg shadow_well = im.Scale("images/bg/bg_shadow_well.png", 1280, 720)
 
 # Characters
 image mio neutral = "images/chars/mio_neutral.png"
@@ -57,4 +65,3 @@ image jin defeated = "images/chars/jin_defeated.png"
 image alma idle = "images/chars/alma_idle.png"
 image alma alert = "images/chars/alma_alert.png"
 image alma speaking = "images/chars/alma_speaking.png"
-

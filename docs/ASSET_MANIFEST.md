@@ -1,14 +1,15 @@
 # ASSET MANIFEST
 
-Phase 5 / v0.5-alpha時点では、通しプレイMVPで参照している画像はすべて placeholder のまま運用する。
+Phase 6 Playable Art Pass時点では、通しプレイMVPで参照している主要画像を playable art として更新した。
 
-MVP表示基準は1280x720。仮背景は1280x720、仮立ち絵とALMA UI画像は520x760で生成する。本素材は16:9を維持すれば、1920x1080などへ差し替え可能。
+MVP表示基準は1280x720。背景とCGは1920x1080で制作し、Ren'Py側で1280x720へスケールして表示する。立ち絵とALMA UI画像は520x760の透明PNGとして維持する。
 
-本素材化前には、各背景の固有モチーフ、キャラクターの輪郭差、ALMA差分の発光・波形密度を優先して整理する。
+今回の素材は商業完成版の最終素材ではないが、プレイテスト中にplaceholder感が主役にならない水準を目指した。
 
 状態:
 
 - placeholder: 今回生成した仮素材
+- playable: 本素材寄りのプレイテスト用素材
 - needed: まだ必要
 - final: 本素材化済み
 - unused: 未使用候補
@@ -17,54 +18,66 @@ MVP表示基準は1280x720。仮背景は1280x720、仮立ち絵とALMA UI画像
 
 | File | Description | Status |
 | --- | --- | --- |
-| game/images/bg/bg_lander_interior.png | 月面降下船内部 | placeholder |
-| game/images/bg/bg_shirowa_hab_ring.png | シロワ中央居住環 | placeholder |
-| game/images/bg/bg_core.png | コア | placeholder |
-| game/images/bg/bg_oxygen_workshop_r7.png | 酸素工房R-7 | placeholder |
-| game/images/bg/bg_outer_port.png | 外口 | placeholder |
-| game/images/bg/bg_medbay.png | 医療室 | placeholder |
-| game/images/bg/bg_sena_office.png | セナ執務室 | placeholder |
-| game/images/bg/bg_dawn_window.png | 夜明けの窓 | placeholder |
-| game/images/bg/bg_shadow_well.png | 影井戸 | placeholder |
+| game/images/bg/bg_lander_interior.png | 月面降下船内部 | playable |
+| game/images/bg/bg_shirowa_hab_ring.png | シロワ中央居住環 | playable |
+| game/images/bg/bg_core.png | コア | playable |
+| game/images/bg/bg_oxygen_workshop_r7.png | 酸素工房R-7 | playable |
+| game/images/bg/bg_outer_port.png | 外口 | playable |
+| game/images/bg/bg_medbay.png | 医療室 | playable |
+| game/images/bg/bg_sena_office.png | セナ執務室 | playable |
+| game/images/bg/bg_dawn_window.png | 夜明けの窓 | playable |
+| game/images/bg/bg_shadow_well.png | 影井戸 | playable |
+
+## CG
+
+| File | Description | Status |
+| --- | --- | --- |
+| game/images/cg/cg_r7_incident.png | R-7事故直後 | playable |
+| game/images/cg/cg_dawn_window_ending.png | True Ending夜明け | playable |
+| game/images/cg/cg_toru_recording.png | 徹の監査ファイル復号 | playable |
+| game/images/cg/cg_outer_port_reveal.png | 白兎3号検証 | playable |
 
 ## Character Sprites
 
 | Character | Files | Status |
 | --- | --- | --- |
-| 佐伯澪 | mio_neutral.png, mio_thinking.png, mio_surprised.png, mio_pained.png | placeholder |
-| 雨宮セナ | sena_neutral.png, sena_smile.png, sena_calm.png, sena_shaken.png, sena_broken.png | placeholder |
-| 檜山徹 | toru_neutral.png, toru_tired.png, toru_gentle.png, toru_recording.png | placeholder |
-| 北条リツ | ritsu_neutral.png, ritsu_anxious.png, ritsu_angry.png, ritsu_relieved.png | placeholder |
-| ルカ・ナディム | luka_neutral.png, luka_sarcastic.png, luka_angry.png, luka_sad.png | placeholder |
-| 白石アカリ | akari_neutral.png, akari_doctor.png, akari_worried.png | placeholder |
-| 雨宮ノア | noah_neutral.png, noah_rebellious.png, noah_tears.png, noah_smile.png | placeholder |
-| 鷹峰ジン | jin_neutral.png, jin_business_smile.png, jin_irritated.png, jin_defeated.png | placeholder |
-| ALMA | alma_idle.png, alma_alert.png, alma_speaking.png | placeholder |
+| 佐伯澪 | mio_neutral.png, mio_thinking.png, mio_surprised.png, mio_pained.png | playable |
+| 雨宮セナ | sena_neutral.png, sena_smile.png, sena_calm.png, sena_shaken.png, sena_broken.png | playable |
+| 檜山徹 | toru_neutral.png, toru_tired.png, toru_gentle.png, toru_recording.png | playable |
+| 北条リツ | ritsu_neutral.png, ritsu_anxious.png, ritsu_angry.png, ritsu_relieved.png | playable |
+| ルカ・ナディム | luka_neutral.png, luka_sarcastic.png, luka_angry.png, luka_sad.png | playable |
+| 白石アカリ | akari_neutral.png, akari_doctor.png, akari_worried.png | playable |
+| 雨宮ノア | noah_neutral.png, noah_rebellious.png, noah_tears.png, noah_smile.png | playable |
+| 鷹峰ジン | jin_neutral.png, jin_business_smile.png, jin_irritated.png, jin_defeated.png | playable |
+| ALMA | alma_idle.png, alma_alert.png, alma_speaking.png | playable |
 
 ## UI
 
 | File | Description | Status |
 | --- | --- | --- |
-| game/images/ui/ui_textbox.png | テキストボックス | placeholder |
-| game/images/ui/ui_nameplate.png | 名前表示 | placeholder |
-| game/images/ui/ui_evidence_card.png | 証拠カード | placeholder |
-| game/images/ui/ui_log_panel.png | ログパネル | placeholder |
-| game/images/ui/ui_choice_button.png | 選択ボタン | placeholder |
-| game/images/ui/ui_timeline_panel.png | タイムラインパネル | placeholder |
-| game/images/ui/ui_alma_panel.png | ALMAパネル | placeholder |
+| game/images/ui/title_background.png | タイトル背景 | playable |
+| game/images/ui/title_logo.png | タイトルロゴ | playable |
+| game/images/ui/ui_textbox.png | テキストボックス | playable |
+| game/images/ui/ui_nameplate.png | 名前表示 | playable |
+| game/images/ui/ui_evidence_card.png | 証拠カード | playable |
+| game/images/ui/ui_log_panel.png | ログパネル | playable |
+| game/images/ui/ui_choice_button.png | 選択ボタン | playable |
+| game/images/ui/ui_timeline_panel.png | タイムラインパネル | playable |
+| game/images/ui/ui_alma_panel.png | ALMAパネル | playable |
+| game/images/ui/ui_menu_background.png | メニュー背景 | playable |
 
 ## Icons
 
 | File | Description | Status |
 | --- | --- | --- |
-| game/images/icons/icon_evidence_log.png | ログ証拠 | placeholder |
-| game/images/icons/icon_evidence_suit.png | 宇宙服証拠 | placeholder |
-| game/images/icons/icon_evidence_audio.png | 音声証拠 | placeholder |
-| game/images/icons/icon_evidence_medical.png | 医療証拠 | placeholder |
-| game/images/icons/icon_evidence_key.png | 鍵証拠 | placeholder |
-| game/images/icons/icon_person.png | 人物 | placeholder |
-| game/images/icons/icon_location.png | 場所 | placeholder |
-| game/images/icons/icon_warning.png | 警告 | placeholder |
+| game/images/icons/icon_evidence_log.png | ログ証拠 | playable |
+| game/images/icons/icon_evidence_suit.png | 宇宙服証拠 | playable |
+| game/images/icons/icon_evidence_audio.png | 音声証拠 | playable |
+| game/images/icons/icon_evidence_medical.png | 医療証拠 | playable |
+| game/images/icons/icon_evidence_key.png | 鍵証拠 | playable |
+| game/images/icons/icon_person.png | 人物 | playable |
+| game/images/icons/icon_location.png | 場所 | playable |
+| game/images/icons/icon_warning.png | 警告 | playable |
 
 ## Fonts
 
