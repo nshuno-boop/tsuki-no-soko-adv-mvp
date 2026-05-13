@@ -246,19 +246,49 @@ screen evidence_screen():
                 hbox:
                     spacing 22
 
-                    viewport:
-                        xsize 450
-                        ysize 490
-                        mousewheel True
-                        scrollbars "vertical"
+                    frame:
+                        style "tsuki_panel"
+                        xsize 500
+                        yfill True
 
-                        vbox:
+                        hbox:
                             spacing 8
-                            for evidence_id in ordered_unlocked_evidence():
-                                $ item = evidence_catalog[evidence_id]
-                                textbutton item["short_name"]:
-                                    action SetScreenVariable("selected_id", evidence_id)
-                                    xfill True
+                            vbox:
+                                spacing 4
+                                xsize 235
+                                if has_evidence("e_r7_decompression_log"):
+                                    textbutton "R-7減圧ログ" action SetScreenVariable("selected_id", "e_r7_decompression_log") xfill True
+                                if has_evidence("e_personnel_location_log"):
+                                    textbutton "位置ログ" action SetScreenVariable("selected_id", "e_personnel_location_log") xfill True
+                                if has_evidence("e_autopsy_record"):
+                                    textbutton "検案記録" action SetScreenVariable("selected_id", "e_autopsy_record") xfill True
+                                if has_evidence("e_manual_bulkhead_blood"):
+                                    textbutton "隔壁の血痕" action SetScreenVariable("selected_id", "e_manual_bulkhead_blood") xfill True
+                                if has_evidence("e_white_rabbit_usage_log"):
+                                    textbutton "白兎使用ログ" action SetScreenVariable("selected_id", "e_white_rabbit_usage_log") xfill True
+                                if has_evidence("e_white_rabbit_co2_absorber"):
+                                    textbutton "CO2吸収材" action SetScreenVariable("selected_id", "e_white_rabbit_co2_absorber") xfill True
+                                if has_evidence("e_white_rabbit_dust_test"):
+                                    textbutton "関節粉塵検査" action SetScreenVariable("selected_id", "e_white_rabbit_dust_test") xfill True
+                                if has_evidence("e_thermal_sensor_frost"):
+                                    textbutton "氷霜成分" action SetScreenVariable("selected_id", "e_thermal_sensor_frost") xfill True
+                            vbox:
+                                spacing 4
+                                xsize 235
+                                if has_evidence("e_manual_valve_scratch"):
+                                    textbutton "補助弁の傷" action SetScreenVariable("selected_id", "e_manual_valve_scratch") xfill True
+                                if has_evidence("e_maintenance_admin_log"):
+                                    textbutton "保守モード記録" action SetScreenVariable("selected_id", "e_maintenance_admin_log") xfill True
+                                if has_evidence("e_earth_meeting_audio"):
+                                    textbutton "会議音声" action SetScreenVariable("selected_id", "e_earth_meeting_audio") xfill True
+                                if has_evidence("e_noah_testimony"):
+                                    textbutton "ノア証言" action SetScreenVariable("selected_id", "e_noah_testimony") xfill True
+                                if has_evidence("e_toru_audit_file"):
+                                    textbutton "監査ファイル" action SetScreenVariable("selected_id", "e_toru_audit_file") xfill True
+                                if has_evidence("e_lunarborn_medical_report"):
+                                    textbutton "月生まれ医療評価" action SetScreenVariable("selected_id", "e_lunarborn_medical_report") xfill True
+                                if has_evidence("e_sena_dust_trace"):
+                                    textbutton "袖口の粉塵" action SetScreenVariable("selected_id", "e_sena_dust_trace") xfill True
 
                     frame:
                         style "tsuki_panel"
@@ -311,20 +341,20 @@ screen person_memo_screen():
             hbox:
                 spacing 22
 
-                viewport:
+                vbox:
+                    spacing 8
                     xsize 360
                     ysize 560
-                    mousewheel True
-                    scrollbars "vertical"
-
-                    vbox:
-                        spacing 8
-                        text "人物メモ" style "tsuki_title_text"
-                        for person_id in PERSON_ORDER:
-                            $ person = person_profiles[person_id]
-                            textbutton person["name"]:
-                                action SetScreenVariable("selected_person", person_id)
-                                xfill True
+                    text "人物メモ" style "tsuki_title_text"
+                    textbutton "佐伯 澪" action SetScreenVariable("selected_person", "mio") xfill True
+                    textbutton "雨宮 セナ" action SetScreenVariable("selected_person", "sena") xfill True
+                    textbutton "檜山 徹" action SetScreenVariable("selected_person", "toru") xfill True
+                    textbutton "北条 リツ" action SetScreenVariable("selected_person", "ritsu") xfill True
+                    textbutton "ルカ・ナディム" action SetScreenVariable("selected_person", "luka") xfill True
+                    textbutton "白石 アカリ" action SetScreenVariable("selected_person", "akari") xfill True
+                    textbutton "雨宮 ノア" action SetScreenVariable("selected_person", "noah") xfill True
+                    textbutton "鷹峰 ジン" action SetScreenVariable("selected_person", "jin") xfill True
+                    textbutton "ALMA" action SetScreenVariable("selected_person", "alma") xfill True
 
                 frame:
                     style "tsuki_panel"
@@ -375,36 +405,44 @@ screen evidence_choice_screen(question, hint_text):
             if len(evidence_unlocked) == 0:
                 text "提示できる証拠がありません。調査に戻って、証拠品一覧や聞き込みを確認してください。" color "#fecaca" size 20 xmaximum 1020
             else:
-                viewport:
-                    xfill True
-                    ysize 455
-                    mousewheel True
-                    scrollbars "vertical"
-
+                hbox:
+                    spacing 10
                     vbox:
-                        spacing 10
-                        for evidence_id in ordered_unlocked_evidence():
-                            $ item = evidence_catalog[evidence_id]
-                            $ related_character = item["related_character"]
-                            $ related_location = item["related_location"]
-                            frame:
-                                style "tsuki_panel"
-                                xfill True
-                                background Frame("images/ui/ui_choice_button.png", 20, 20)
-
-                                hbox:
-                                    spacing 16
-                                    add item["icon"] xysize (46, 46)
-                                    vbox:
-                                        xfill True
-                                        spacing 5
-                                        text item["name"] size 20 color "#f8fafc" xmaximum 760
-                                        text item["description"] color "#cbd5e1" size 17 xmaximum 760
-                                        text "[related_character] / [related_location]" color "#67e8f9" size 16
-
-                                    textbutton "提示":
-                                        action Return(evidence_id)
-                                        xminimum 100
+                        spacing 4
+                        xsize 545
+                        if has_evidence("e_r7_decompression_log"):
+                            textbutton "R-7減圧ログ: 酸素工房R-7緊急減圧ログ" action Return("e_r7_decompression_log") xfill True
+                        if has_evidence("e_personnel_location_log"):
+                            textbutton "位置ログ: 人員位置ログ" action Return("e_personnel_location_log") xfill True
+                        if has_evidence("e_autopsy_record"):
+                            textbutton "検案記録: 徹の遺体検案記録" action Return("e_autopsy_record") xfill True
+                        if has_evidence("e_manual_bulkhead_blood"):
+                            textbutton "隔壁の血痕: 手動隔壁レバーの血痕" action Return("e_manual_bulkhead_blood") xfill True
+                        if has_evidence("e_white_rabbit_usage_log"):
+                            textbutton "白兎使用ログ: 白兎3号の使用ログ" action Return("e_white_rabbit_usage_log") xfill True
+                        if has_evidence("e_white_rabbit_co2_absorber"):
+                            textbutton "CO2吸収材: 白兎3号のCO2吸収材" action Return("e_white_rabbit_co2_absorber") xfill True
+                        if has_evidence("e_white_rabbit_dust_test"):
+                            textbutton "関節粉塵検査: 白兎3号関節部の粉塵検査" action Return("e_white_rabbit_dust_test") xfill True
+                        if has_evidence("e_thermal_sensor_frost"):
+                            textbutton "氷霜成分: 熱センサーの氷霜成分" action Return("e_thermal_sensor_frost") xfill True
+                    vbox:
+                        spacing 4
+                        xsize 545
+                        if has_evidence("e_manual_valve_scratch"):
+                            textbutton "補助弁の傷: 手動補助弁の微細傷" action Return("e_manual_valve_scratch") xfill True
+                        if has_evidence("e_maintenance_admin_log"):
+                            textbutton "保守モード記録: 管理者権限の保守モード記録" action Return("e_maintenance_admin_log") xfill True
+                        if has_evidence("e_earth_meeting_audio"):
+                            textbutton "会議音声: 地球会議の音声記録" action Return("e_earth_meeting_audio") xfill True
+                        if has_evidence("e_noah_testimony"):
+                            textbutton "ノア証言: ノアの証言メモ" action Return("e_noah_testimony") xfill True
+                        if has_evidence("e_toru_audit_file"):
+                            textbutton "監査ファイル: 徹の暗号化監査ファイル" action Return("e_toru_audit_file") xfill True
+                        if has_evidence("e_lunarborn_medical_report"):
+                            textbutton "月生まれ医療評価: 月面生まれ世代の医療評価" action Return("e_lunarborn_medical_report") xfill True
+                        if has_evidence("e_sena_dust_trace"):
+                            textbutton "袖口の粉塵: セナの袖口に残る極地粉塵" action Return("e_sena_dust_trace") xfill True
 
             hbox:
                 spacing 12
@@ -441,41 +479,44 @@ screen multi_evidence_choice_screen(question, hint_text):
                 text "提示できる証拠がありません。調査に戻って、必要な証拠を集めてください。" color "#fecaca" size 20 xmaximum 1020
                 null height 360
             else:
-                viewport:
-                    xfill True
-                    ysize 455
-                    mousewheel True
-                    scrollbars "vertical"
-
+                hbox:
+                    spacing 10
                     vbox:
-                        spacing 8
-                        for evidence_id in ordered_unlocked_evidence():
-                            $ item = evidence_catalog[evidence_id]
-                            $ selected = evidence_id in selected_ids
-                            $ choice_label = "選択中" if selected else "選択"
-                            $ related_character = item["related_character"]
-                            $ related_location = item["related_location"]
-                            frame:
-                                style "tsuki_panel"
-                                xfill True
-                                background ("#0e7490dd" if selected else "#020617dd")
-
-                                hbox:
-                                    spacing 14
-                                    add item["icon"] xysize (42, 42)
-                                    vbox:
-                                        xfill True
-                                        spacing 4
-                                        text item["name"] size 19 color "#f8fafc" xmaximum 760
-                                        text item["description"] color "#cbd5e1" size 16 xmaximum 760
-                                        text "[related_character] / [related_location]" color "#67e8f9" size 15
-                                    textbutton choice_label:
-                                        action If(
-                                            evidence_id in selected_ids,
-                                            SetScreenVariable("selected_ids", selected_ids - set([evidence_id])),
-                                            SetScreenVariable("selected_ids", selected_ids | set([evidence_id])),
-                                        )
-                                        xminimum 100
+                        spacing 4
+                        xsize 545
+                        if has_evidence("e_r7_decompression_log"):
+                            textbutton ("選択中: R-7減圧ログ" if "e_r7_decompression_log" in selected_ids else "R-7減圧ログ") action If("e_r7_decompression_log" in selected_ids, SetScreenVariable("selected_ids", selected_ids - set(["e_r7_decompression_log"])), SetScreenVariable("selected_ids", selected_ids | set(["e_r7_decompression_log"]))) xfill True
+                        if has_evidence("e_personnel_location_log"):
+                            textbutton ("選択中: 位置ログ" if "e_personnel_location_log" in selected_ids else "位置ログ") action If("e_personnel_location_log" in selected_ids, SetScreenVariable("selected_ids", selected_ids - set(["e_personnel_location_log"])), SetScreenVariable("selected_ids", selected_ids | set(["e_personnel_location_log"]))) xfill True
+                        if has_evidence("e_autopsy_record"):
+                            textbutton ("選択中: 検案記録" if "e_autopsy_record" in selected_ids else "検案記録") action If("e_autopsy_record" in selected_ids, SetScreenVariable("selected_ids", selected_ids - set(["e_autopsy_record"])), SetScreenVariable("selected_ids", selected_ids | set(["e_autopsy_record"]))) xfill True
+                        if has_evidence("e_manual_bulkhead_blood"):
+                            textbutton ("選択中: 隔壁の血痕" if "e_manual_bulkhead_blood" in selected_ids else "隔壁の血痕") action If("e_manual_bulkhead_blood" in selected_ids, SetScreenVariable("selected_ids", selected_ids - set(["e_manual_bulkhead_blood"])), SetScreenVariable("selected_ids", selected_ids | set(["e_manual_bulkhead_blood"]))) xfill True
+                        if has_evidence("e_white_rabbit_usage_log"):
+                            textbutton ("選択中: 白兎使用ログ" if "e_white_rabbit_usage_log" in selected_ids else "白兎使用ログ") action If("e_white_rabbit_usage_log" in selected_ids, SetScreenVariable("selected_ids", selected_ids - set(["e_white_rabbit_usage_log"])), SetScreenVariable("selected_ids", selected_ids | set(["e_white_rabbit_usage_log"]))) xfill True
+                        if has_evidence("e_white_rabbit_co2_absorber"):
+                            textbutton ("選択中: CO2吸収材" if "e_white_rabbit_co2_absorber" in selected_ids else "CO2吸収材") action If("e_white_rabbit_co2_absorber" in selected_ids, SetScreenVariable("selected_ids", selected_ids - set(["e_white_rabbit_co2_absorber"])), SetScreenVariable("selected_ids", selected_ids | set(["e_white_rabbit_co2_absorber"]))) xfill True
+                        if has_evidence("e_white_rabbit_dust_test"):
+                            textbutton ("選択中: 関節粉塵検査" if "e_white_rabbit_dust_test" in selected_ids else "関節粉塵検査") action If("e_white_rabbit_dust_test" in selected_ids, SetScreenVariable("selected_ids", selected_ids - set(["e_white_rabbit_dust_test"])), SetScreenVariable("selected_ids", selected_ids | set(["e_white_rabbit_dust_test"]))) xfill True
+                        if has_evidence("e_thermal_sensor_frost"):
+                            textbutton ("選択中: 氷霜成分" if "e_thermal_sensor_frost" in selected_ids else "氷霜成分") action If("e_thermal_sensor_frost" in selected_ids, SetScreenVariable("selected_ids", selected_ids - set(["e_thermal_sensor_frost"])), SetScreenVariable("selected_ids", selected_ids | set(["e_thermal_sensor_frost"]))) xfill True
+                    vbox:
+                        spacing 4
+                        xsize 545
+                        if has_evidence("e_manual_valve_scratch"):
+                            textbutton ("選択中: 補助弁の傷" if "e_manual_valve_scratch" in selected_ids else "補助弁の傷") action If("e_manual_valve_scratch" in selected_ids, SetScreenVariable("selected_ids", selected_ids - set(["e_manual_valve_scratch"])), SetScreenVariable("selected_ids", selected_ids | set(["e_manual_valve_scratch"]))) xfill True
+                        if has_evidence("e_maintenance_admin_log"):
+                            textbutton ("選択中: 保守モード記録" if "e_maintenance_admin_log" in selected_ids else "保守モード記録") action If("e_maintenance_admin_log" in selected_ids, SetScreenVariable("selected_ids", selected_ids - set(["e_maintenance_admin_log"])), SetScreenVariable("selected_ids", selected_ids | set(["e_maintenance_admin_log"]))) xfill True
+                        if has_evidence("e_earth_meeting_audio"):
+                            textbutton ("選択中: 会議音声" if "e_earth_meeting_audio" in selected_ids else "会議音声") action If("e_earth_meeting_audio" in selected_ids, SetScreenVariable("selected_ids", selected_ids - set(["e_earth_meeting_audio"])), SetScreenVariable("selected_ids", selected_ids | set(["e_earth_meeting_audio"]))) xfill True
+                        if has_evidence("e_noah_testimony"):
+                            textbutton ("選択中: ノア証言" if "e_noah_testimony" in selected_ids else "ノア証言") action If("e_noah_testimony" in selected_ids, SetScreenVariable("selected_ids", selected_ids - set(["e_noah_testimony"])), SetScreenVariable("selected_ids", selected_ids | set(["e_noah_testimony"]))) xfill True
+                        if has_evidence("e_toru_audit_file"):
+                            textbutton ("選択中: 監査ファイル" if "e_toru_audit_file" in selected_ids else "監査ファイル") action If("e_toru_audit_file" in selected_ids, SetScreenVariable("selected_ids", selected_ids - set(["e_toru_audit_file"])), SetScreenVariable("selected_ids", selected_ids | set(["e_toru_audit_file"]))) xfill True
+                        if has_evidence("e_lunarborn_medical_report"):
+                            textbutton ("選択中: 月生まれ医療評価" if "e_lunarborn_medical_report" in selected_ids else "月生まれ医療評価") action If("e_lunarborn_medical_report" in selected_ids, SetScreenVariable("selected_ids", selected_ids - set(["e_lunarborn_medical_report"])), SetScreenVariable("selected_ids", selected_ids | set(["e_lunarborn_medical_report"]))) xfill True
+                        if has_evidence("e_sena_dust_trace"):
+                            textbutton ("選択中: 袖口の粉塵" if "e_sena_dust_trace" in selected_ids else "袖口の粉塵") action If("e_sena_dust_trace" in selected_ids, SetScreenVariable("selected_ids", selected_ids - set(["e_sena_dust_trace"])), SetScreenVariable("selected_ids", selected_ids | set(["e_sena_dust_trace"]))) xfill True
 
             hbox:
                 spacing 12
@@ -513,22 +554,60 @@ screen person_choice_screen(question, hint_text):
 
             grid 2 3:
                 spacing 12
-                for person_id in INTERVIEW_TARGETS:
-                    $ person = person_profiles[person_id]
-                    frame:
-                        style "tsuki_panel"
-                        xsize 490
-                        ysize 145
-
-                        hbox:
-                            spacing 12
-                            add person["image"] xysize (74, 112)
-                            vbox:
-                                spacing 4
-                                text person["name"] color "#f8fafc" size 20
-                                text person["label"] color "#93c5fd" size 15
-                                textbutton "指摘する":
-                                    action Return(person_id)
+                frame:
+                    style "tsuki_panel"
+                    xsize 490
+                    ysize 145
+                    vbox:
+                        spacing 4
+                        text "雨宮 セナ" color "#f8fafc" size 20
+                        text "シロワの代表" color "#93c5fd" size 15
+                        textbutton "指摘する" action Return("sena")
+                frame:
+                    style "tsuki_panel"
+                    xsize 490
+                    ysize 145
+                    vbox:
+                        spacing 4
+                        text "北条 リツ" color "#f8fafc" size 20
+                        text "アルマの技師" color "#93c5fd" size 15
+                        textbutton "指摘する" action Return("ritsu")
+                frame:
+                    style "tsuki_panel"
+                    xsize 490
+                    ysize 145
+                    vbox:
+                        spacing 4
+                        text "ルカ・ナディム" color "#f8fafc" size 20
+                        text "影井戸の採掘屋" color "#93c5fd" size 15
+                        textbutton "指摘する" action Return("luka")
+                frame:
+                    style "tsuki_panel"
+                    xsize 490
+                    ysize 145
+                    vbox:
+                        spacing 4
+                        text "白石 アカリ" color "#f8fafc" size 20
+                        text "月生まれを診る医師" color "#93c5fd" size 15
+                        textbutton "指摘する" action Return("akari")
+                frame:
+                    style "tsuki_panel"
+                    xsize 490
+                    ysize 145
+                    vbox:
+                        spacing 4
+                        text "雨宮 ノア" color "#f8fafc" size 20
+                        text "月で生まれた娘" color "#93c5fd" size 15
+                        textbutton "指摘する" action Return("noah")
+                frame:
+                    style "tsuki_panel"
+                    xsize 490
+                    ysize 145
+                    vbox:
+                        spacing 4
+                        text "鷹峰 ジン" color "#f8fafc" size 20
+                        text "セレネ社の広報法務" color "#93c5fd" size 15
+                        textbutton "指摘する" action Return("jin")
 
             hbox:
                 spacing 12
@@ -562,37 +641,22 @@ screen timeline_screen():
                 xfill True
                 text "事件タイムライン" style "tsuki_title_text"
                 text chapter_title xalign 1.0 color "#cbd5e1"
-            text "入手済み証拠に応じて、関連証拠名が表示されます。" color "#94a3b8" size 18
+            text "事件の流れを時刻順に確認できます。" color "#94a3b8" size 18
 
-            viewport:
-                xfill True
-                ysize 505
-                mousewheel True
-                scrollbars "vertical"
-
-                vbox:
-                    spacing 10
-                    for event in case_timeline:
-                        $ related_ids = event["related_evidence"]
-                        $ missing_related = [evidence_id for evidence_id in related_ids if evidence_id not in evidence_unlocked]
-                        frame:
-                            style "tsuki_panel"
-                            xfill True
-
-                            vbox:
-                                spacing 4
-                                hbox:
-                                    spacing 12
-                                    text event["time"] color "#67e8f9" size 22
-                                    text event["title"] color "#f8fafc" size 22
-                                text event["description"] color "#cbd5e1" size 16 xmaximum 1030
-                                if len(related_ids) == 0:
-                                    text "関連証拠: なし" color "#64748b" size 15
-                                elif len(missing_related) > 0:
-                                    text "未入手の関連証拠あり" color "#64748b" size 15
-                                else:
-                                    $ related_names = " / ".join(evidence_catalog[evidence_id]["short_name"] for evidence_id in related_ids)
-                                    text "関連証拠: [related_names]" color "#fbbf24" size 15
+            vbox:
+                spacing 5
+                text "19:10  澪がシロワに到着 - 地球から来た監査官として白環市に入る。" color "#cbd5e1" size 17
+                text "19:40  セナが監査予定を確認 - 都市停止リスクを理由に調査短縮を求める。" color "#cbd5e1" size 17
+                text "20:20  徹とルカが口論 - 影井戸の採掘量報告をめぐって対立。" color "#cbd5e1" size 17
+                text "21:05  ALMA保守モード開始 - 管理者権限で監視優先順位が切り替わる。" color "#cbd5e1" size 17
+                text "21:32  熱センサーに氷霜 - 自然結露では説明しにくい成分が残る。" color "#cbd5e1" size 17
+                text "21:46  手動補助弁が操作 - R-7の補助弁に新しい工具傷が残る。" color "#cbd5e1" size 17
+                text "21:52  ノアが外口付近で足音を聞く - 母に似た歩き方だった。" color "#cbd5e1" size 17
+                text "22:05  地球会議の長い空白 - セナの遠隔出席に移動の余地が残る。" color "#cbd5e1" size 17
+                text "22:14  酸素工房R-7が緊急減圧 - ALMAは無人区画と判断した。" color "#cbd5e1" size 17
+                text "22:18  徹が隔壁レバーへ手を伸ばす - 隣接区画を守ろうとした。" color "#cbd5e1" size 17
+                text "22:31  徹の死亡を確認 - 死因は真空暴露による急性低酸素。" color "#cbd5e1" size 17
+                text "翌朝   白兎3号の未使用痕跡 - 船外活動は偽装だったと分かる。" color "#cbd5e1" size 17
 
             textbutton "閉じる":
                 action Return()
@@ -617,15 +681,11 @@ screen missing_evidence_screen(missing_names):
             text "このまま最終推理へ進むと、重要な真相に届かない可能性があります。" color "#fecaca"
             text "不足している重要証拠:" color "#fbbf24"
 
-            viewport:
-                ysize 280
-                mousewheel True
-                scrollbars "vertical"
-
-                vbox:
-                    spacing 6
-                    for evidence_name in missing_names:
-                        text "・[evidence_name]" color "#e5e7eb"
+            $ missing_text = "、".join(missing_names)
+            if missing_text == "":
+                text "不足証拠の名前を取得できませんでした。調査ハブへ戻って証拠品一覧を確認してください。" color "#e5e7eb" size 18 xmaximum 880
+            else:
+                text missing_text color "#e5e7eb" size 18 xmaximum 880
 
             hbox:
                 spacing 12
