@@ -1,6 +1,6 @@
 # ASSET MANIFEST
 
-Phase 6 Playable Art Pass時点では、通しプレイMVPで参照している主要画像を playable art として更新した。追加のReference Polishでは、提示された生成画像の方向性をもとに、澪とセナの立ち絵、背景、タイトル/メニュー背景、推理画面背景、UIフレーム、証拠アイコンを再ブラッシュアップした。さらにPlayer View QA後、セナは澪の色替えに見えないよう、顔立ち、髪型、衣装シルエットを作り直した。
+Phase 6 Playable Art Pass時点では、通しプレイMVPで参照している主要画像を playable art として更新した。追加のReference Polishでは、提示された生成画像の方向性をもとに、澪とセナの立ち絵、背景、タイトル/メニュー背景、推理画面背景、UIフレーム、証拠アイコンを再ブラッシュアップした。さらにPlayer View QA後、澪は腰上寄りに再生成し、セナは澪の色替えに見えないよう、顔立ち、髪型、衣装シルエットを作り直した。
 
 MVP表示基準は1280x720。背景とCGは1920x1080で制作し、Ren'Py側で1280x720へスケールして表示する。立ち絵とALMA UI画像は520x760の透明PNGとして維持する。
 
@@ -42,7 +42,7 @@ MVP表示基準は1280x720。背景とCGは1920x1080で制作し、Ren'Py側で1
 
 | Character | Files | Status |
 | --- | --- | --- |
-| 佐伯澪 | mio_neutral.png, mio_thinking.png, mio_surprised.png, mio_pained.png | reference-polished |
+| 佐伯澪 | mio_neutral.png, mio_thinking.png, mio_surprised.png, mio_pained.png | reference-polished / waist-up redesign |
 | 雨宮セナ | sena_neutral.png, sena_smile.png, sena_calm.png, sena_shaken.png, sena_broken.png | reference-polished / redesigned face |
 | 檜山徹 | toru_neutral.png, toru_tired.png, toru_gentle.png, toru_recording.png | playable |
 | 北条リツ | ritsu_neutral.png, ritsu_anxious.png, ritsu_angry.png, ritsu_relieved.png | playable |

@@ -95,7 +95,7 @@ screen say(who, what):
         background Frame("images/ui/ui_textbox.png", 34, 34)
         xalign 0.5
         yalign 0.985
-        xsize 1120
+        xsize 1080
         ysize 190
         padding (0, 0)
 
@@ -107,7 +107,7 @@ screen say(who, what):
                 window:
                     id "namebox"
                     background Frame("images/ui/ui_nameplate.png", 22, 22)
-                    xpos 38
+                    xpos 205
                     ypos -48
                     xsize 306
                     ysize 58
@@ -115,23 +115,23 @@ screen say(who, what):
                     text who id "who" color "#f8fafc" size 23
 
                 add speaker_portrait(who):
-                    xpos 928
+                    xpos 46
                     ypos 18
                     xysize (132, 132)
 
                 text what id "what":
-                    xpos 42
+                    xpos 205
                     ypos 54
-                    xmaximum 840
+                    xmaximum 820
                     color "#f8fafc"
                     size 24
                     line_spacing 5
 
             else:
                 text what id "what":
-                    xpos 42
+                    xpos 62
                     ypos 46
-                    xmaximum 1030
+                    xmaximum 960
                     color "#f8fafc"
                     size 24
                     line_spacing 5
