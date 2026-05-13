@@ -1,6 +1,6 @@
 # ASSET MANIFEST
 
-Phase 6 Playable Art Pass時点では、通しプレイMVPで参照している主要画像を playable art として更新した。
+Phase 6 Playable Art Pass時点では、通しプレイMVPで参照している主要画像を playable art として更新した。追加のReference Polishでは、提示された生成画像の方向性をもとに、澪の立ち絵、タイトル/メニュー背景、推理画面背景、UIフレーム、証拠アイコンを再ブラッシュアップした。
 
 MVP表示基準は1280x720。背景とCGは1920x1080で制作し、Ren'Py側で1280x720へスケールして表示する。立ち絵とALMA UI画像は520x760の透明PNGとして維持する。
 
@@ -41,7 +41,7 @@ MVP表示基準は1280x720。背景とCGは1920x1080で制作し、Ren'Py側で1
 
 | Character | Files | Status |
 | --- | --- | --- |
-| 佐伯澪 | mio_neutral.png, mio_thinking.png, mio_surprised.png, mio_pained.png | playable |
+| 佐伯澪 | mio_neutral.png, mio_thinking.png, mio_surprised.png, mio_pained.png | reference-polished |
 | 雨宮セナ | sena_neutral.png, sena_smile.png, sena_calm.png, sena_shaken.png, sena_broken.png | playable |
 | 檜山徹 | toru_neutral.png, toru_tired.png, toru_gentle.png, toru_recording.png | playable |
 | 北条リツ | ritsu_neutral.png, ritsu_anxious.png, ritsu_angry.png, ritsu_relieved.png | playable |
@@ -65,6 +65,7 @@ MVP表示基準は1280x720。背景とCGは1920x1080で制作し、Ren'Py側で1
 | game/images/ui/ui_timeline_panel.png | タイムラインパネル | playable |
 | game/images/ui/ui_alma_panel.png | ALMAパネル | playable |
 | game/images/ui/ui_menu_background.png | メニュー背景 | playable |
+| game/images/ui/ui_deduction_background.png | 最終推理/証拠提示背景 | reference-polished |
 
 ## Icons
 

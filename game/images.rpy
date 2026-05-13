@@ -4,6 +4,8 @@
 # Title / CG
 image title background = im.Scale("images/ui/title_background.png", 1280, 720)
 image title logo = "images/ui/title_logo.png"
+image ui_menu_background = im.Scale("images/ui/ui_menu_background.png", 1280, 720)
+image ui_deduction_background = im.Scale("images/ui/ui_deduction_background.png", 1280, 720)
 image cg r7_incident = im.Scale("images/cg/cg_r7_incident.png", 1280, 720)
 image cg dawn_window_ending = im.Scale("images/cg/cg_dawn_window_ending.png", 1280, 720)
 image cg toru_recording = im.Scale("images/cg/cg_toru_recording.png", 1280, 720)

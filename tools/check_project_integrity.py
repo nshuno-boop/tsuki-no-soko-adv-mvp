@@ -40,6 +40,8 @@ REQUIRED_FILES = [
     ".github/workflows/static-check.yml",
     "game/images/ui/title_background.png",
     "game/images/ui/title_logo.png",
+    "game/images/ui/ui_menu_background.png",
+    "game/images/ui/ui_deduction_background.png",
     "game/images/cg/cg_r7_incident.png",
     "game/images/cg/cg_dawn_window_ending.png",
     "game/images/cg/cg_toru_recording.png",
@@ -169,6 +171,8 @@ def check_image_definitions(errors: list[str]) -> None:
         "image noah tears",
         "image alma speaking",
         "image title background",
+        "image ui_menu_background",
+        "image ui_deduction_background",
         "image cg r7_incident",
         "image cg dawn_window_ending",
     ]

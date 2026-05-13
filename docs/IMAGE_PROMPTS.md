@@ -74,6 +74,8 @@ No existing anime, movie, game, celebrity, or known character references. No dir
 
 Phase 6では、実際のPNGアセットを生成して組み込んだ。今後さらにAI画像生成や外部制作へ渡す場合は、以下を基準にする。
 
+Reference Polishでは、生成済みの画面モックを基準に、澪の監査官デザイン、タイトル/調査ハブ/最終推理の情報密度、透明パネルUIの質感を強化した。以後の追加生成では、この方向をanchorとして扱う。
+
 ### 共通スタイル
 
 - Japanese mystery visual novel, late-2050s lunar city, clean but lived-in, restrained near-future design.

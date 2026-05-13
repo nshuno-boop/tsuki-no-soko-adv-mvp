@@ -2,11 +2,11 @@
 # 冷たい月面都市風の見た目に寄せつつ、Ren'Py標準機能だけで読める画面を優先する。
 
 style tsuki_frame:
-    background "#111827ee"
+    background Frame("images/ui/ui_log_panel.png", 34, 34)
     padding (24, 20)
 
 style tsuki_panel:
-    background "#020617dd"
+    background Frame("images/ui/ui_evidence_card.png", 24, 24)
     padding (16, 14)
 
 style tsuki_title_text:
@@ -18,7 +18,7 @@ style tsuki_subtle_text:
     size 18
 
 style tsuki_button:
-    background "#1f2937"
+    background Frame("images/ui/ui_choice_button.png", 24, 24)
     hover_background "#164e63"
     selected_background "#0e7490"
     padding (12, 9)
@@ -49,19 +49,20 @@ screen main_menu():
     tag menu
 
     add "title background"
-    add Solid("#02061788")
+    add Solid("#02061766")
 
     frame:
-        background None
-        xalign 0.08
-        yalign 0.42
-        xsize 760
+        background Frame("images/ui/ui_log_panel.png", 34, 34)
+        xalign 0.07
+        yalign 0.45
+        xsize 620
+        padding (28, 26)
 
         vbox:
-            spacing 18
-            add "title logo"
+            spacing 16
+            add "title logo" xysize (540, 130)
             text "SHIROWA AUDIT FILE / v0.5-alpha" color "#67e8f9" size 18
-            text "月面都市の空気は、記録より先に嘘を吸い込んでいた。" color "#cbd5e1" size 22 xmaximum 690
+            text "月面都市の空気は、記録より先に嘘を吸い込んでいた。" color "#cbd5e1" size 21 xmaximum 550
 
             null height 12
 
@@ -153,7 +154,8 @@ screen investigation_hub_screen():
     zorder 20
     modal True
 
-    add Solid("#030712")
+    add "ui_menu_background"
+    add Solid("#02061799")
 
     frame:
         style "tsuki_frame"
@@ -326,7 +328,8 @@ screen evidence_screen():
     modal True
     default selected_id = None
 
-    add Solid("#030712")
+    add "ui_menu_background"
+    add Solid("#020617aa")
 
     frame:
         style "tsuki_frame"
@@ -436,7 +439,8 @@ screen person_memo_screen():
     modal True
     default selected_person = "mio"
 
-    add Solid("#020617")
+    add "ui_menu_background"
+    add Solid("#020617aa")
 
     frame:
         style "tsuki_frame"
@@ -497,7 +501,8 @@ screen evidence_choice_screen(question, hint_text):
     zorder 30
     modal True
 
-    add Solid("#020617")
+    add "ui_deduction_background"
+    add Solid("#02061799")
 
     frame:
         style "tsuki_frame"
@@ -571,7 +576,8 @@ screen multi_evidence_choice_screen(question, hint_text, required_count=0):
     modal True
     default selected_ids = set()
 
-    add Solid("#020617")
+    add "ui_deduction_background"
+    add Solid("#02061799")
 
     frame:
         style "tsuki_frame"
@@ -656,7 +662,8 @@ screen person_choice_screen(question, hint_text):
     zorder 30
     modal True
 
-    add Solid("#020617")
+    add "ui_deduction_background"
+    add Solid("#02061799")
 
     frame:
         style "tsuki_frame"
@@ -744,7 +751,8 @@ screen timeline_screen():
     zorder 20
     modal True
 
-    add Solid("#020617")
+    add "ui_menu_background"
+    add Solid("#020617aa")
 
     frame:
         style "tsuki_frame"
@@ -786,7 +794,8 @@ screen missing_evidence_screen(missing_names):
     zorder 20
     modal True
 
-    add Solid("#020617")
+    add "ui_deduction_background"
+    add Solid("#020617aa")
 
     frame:
         style "tsuki_frame"
@@ -819,7 +828,8 @@ screen interview_progress_warning_screen(done_count, required_count, missing_nam
     zorder 20
     modal True
 
-    add Solid("#020617")
+    add "ui_menu_background"
+    add Solid("#020617aa")
 
     frame:
         style "tsuki_frame"
@@ -847,7 +857,8 @@ screen deduction_result_screen(result_text, ending_name):
     zorder 20
     modal True
 
-    add Solid("#020617")
+    add "ui_deduction_background"
+    add Solid("#02061799")
 
     frame:
         style "tsuki_frame"
@@ -876,7 +887,8 @@ screen alma_log_screen(title, lines):
     zorder 20
     modal True
 
-    add Solid("#01050a")
+    add "ui_menu_background"
+    add Solid("#01050abb")
 
     frame:
         xalign 0.5
