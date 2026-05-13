@@ -35,6 +35,7 @@ REQUIRED_FILES = [
     "docs/PHASE5_REVIEW_REPORT.md",
     "tools/generate_placeholder_assets.py",
     "tools/check_project_integrity.py",
+    "docs/PHASE5_PLAYTEST_QA.md",
     ".github/workflows/static-check.yml",
 ]
 
@@ -84,6 +85,7 @@ OLD_TERMS = [
 
 REQUIRED_SCREENS = [
     "objective_overlay",
+    "confirm",
     "investigation_hub_screen",
     "evidence_screen",
     "person_memo_screen",
@@ -196,6 +198,11 @@ def check_screens_and_labels(errors: list[str]) -> None:
     for screen_name in called_screens:
         if screen_name not in defined_screens:
             errors.append(f"script calls missing screen: {screen_name}")
+
+    shown_screens = set(re.findall(r"show\s+screen\s+([A-Za-z_][A-Za-z0-9_]*)", script_text))
+    for screen_name in shown_screens:
+        if screen_name not in defined_screens:
+            errors.append(f"script shows missing screen: {screen_name}")
 
     labels = set(re.findall(r"^label\s+([A-Za-z_][A-Za-z0-9_]*)(?:\s*\([^)]*\))?\s*:", script_text, re.MULTILINE))
     called_labels = set(re.findall(r"^\s*call\s+(?!screen\b)([A-Za-z_][A-Za-z0-9_]*)", script_text, re.MULTILINE))

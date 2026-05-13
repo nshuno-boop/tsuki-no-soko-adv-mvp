@@ -49,6 +49,29 @@ screen objective_overlay():
             text current_objective color "#f8fafc" size 17 xmaximum 585
 
 
+screen confirm(message, yes_action, no_action):
+    zorder 200
+    modal True
+
+    add Solid("#020617dd")
+
+    frame:
+        style "tsuki_frame"
+        xalign 0.5
+        yalign 0.5
+        xsize 720
+
+        vbox:
+            spacing 18
+            text message color "#f8fafc" size 22 xmaximum 660
+
+            hbox:
+                spacing 12
+                xalign 1.0
+                textbutton "はい" action yes_action
+                textbutton "いいえ" action no_action
+
+
 screen investigation_hub_screen():
     zorder 20
     modal True
@@ -488,7 +511,10 @@ screen multi_evidence_choice_screen(question, hint_text, required_count=0):
             else:
                 text "この問題は複数の証拠を組み合わせます。関係する証拠だけを選んで提示してください。" color "#cbd5e1" size 18
             $ selected_count = len(selected_ids)
-            text "選択中: [selected_count]件" color "#fbbf24" size 17
+            if required_count > 0:
+                text "選択中: [selected_count] / [required_count]件" color "#fbbf24" size 17
+            else:
+                text "選択中: [selected_count]件" color "#fbbf24" size 17
 
             if len(evidence_unlocked) == 0:
                 text "提示できる証拠がありません。調査に戻って、必要な証拠を集めてください。" color "#fecaca" size 20 xmaximum 1020
@@ -695,7 +721,7 @@ screen missing_evidence_screen(missing_names):
         vbox:
             spacing 14
             text "証拠が不足しています" style "tsuki_title_text"
-            text "このまま最終推理へ進むと、重要な真相に届かない可能性があります。" color "#fecaca"
+            text "このまま進むとBad Endingへ分岐します。戻って不足証拠を確認できます。" color "#fecaca" size 19 xmaximum 880
             text "不足している重要証拠:" color "#fbbf24"
 
             $ missing_text = "、".join(missing_names)
@@ -706,7 +732,7 @@ screen missing_evidence_screen(missing_names):
 
             hbox:
                 spacing 12
-                textbutton "聞き込みに戻る":
+                textbutton "調査に戻る":
                     action Return("back")
                 textbutton "証拠不足のまま進む":
                     action Return("continue")

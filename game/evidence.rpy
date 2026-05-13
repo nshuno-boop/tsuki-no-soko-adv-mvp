@@ -344,7 +344,10 @@ init python:
                 return "おすすめ: 白石アカリにもう一度話を聞き、月面生まれ世代の医療評価を確認する。"
             return "おすすめ: 証拠品一覧を確認してから、白兎3号の調査へ進む。"
         if chapter >= 5:
-            if len(missing_final_evidence()) > 0:
+            missing_ids = missing_final_evidence()
+            if len(missing_ids) > 0:
+                if "e_lunarborn_medical_report" in missing_ids:
+                    return "おすすめ: 白石アカリにもう一度話を聞き、月生まれ世代の医療評価を確認する。"
                 return "おすすめ: 不足している重要証拠を確認し、人物メモと証拠品一覧を見直す。"
             return "おすすめ: セナのアリバイ、動機、徹の最後の行動を証拠品一覧で整理する。"
         if chapter == 4:
@@ -492,10 +495,10 @@ init python:
         {
             "id": "q2",
             "kind": "evidence",
-            "prompt": "Q2. ALMAがR-7を無人だと信じた根拠は？",
+            "prompt": "Q2. ALMAがR-7を無人だと信じた判断材料は？",
             "answers": ["e_personnel_location_log", "e_white_rabbit_usage_log"],
             "hint": "ALMAが見ていたのは、現場そのものではなく位置と運用の入力だ。",
-            "success": "ALMAは位置情報と白兎3号の記録から、徹がR-7にいないと判断した。",
+            "success": "ALMAは位置や白兎3号の運用記録を材料に、徹がR-7にいないと判断した。",
             "failure": "ALMAを責める前に、ALMAが何を材料に判断したかを示そう。",
             "key": True,
         },
@@ -534,7 +537,7 @@ init python:
             "kind": "multi_evidence",
             "prompt": "Q6. セナが会議中ずっと執務室にいた、というアリバイを崩す組み合わせは？",
             "required_answers": ["e_earth_meeting_audio", "e_noah_testimony", "e_sena_dust_trace"],
-            "hint": "音声の空白、足音の記憶、衣服の痕跡をつなげる。",
+            "hint": "ひとつの記録だけではなく、時間の空白と現場に残った痕跡を重ねて見る。",
             "success": "会議の空白、ノアの証言、袖口の粉塵が、セナの移動を浮かび上がらせた。",
             "failure": "ひとつでは足りない。セナが外口へ行けたことを、別々の角度から重ねよう。",
             "key": True,
@@ -545,7 +548,7 @@ init python:
             "prompt": "Q7. 動機の全体像は次に詰める。まず、権限と移動痕跡が指す実行者は誰か？",
             "answer_person": "sena",
             "hint": "権限、動機、移動の痕跡が同じ人物に集まっている。",
-            "success": "雨宮セナ。都市を守る立場の人間が、都市のために徹を殺した。",
+            "success": "雨宮セナ。権限と移動痕跡は、実行者として彼女を指している。",
             "failure": "疑わしさだけでは足りない。権限、動機、アリバイ崩しが揃う人物を選ぼう。",
             "key": True,
         },
@@ -555,7 +558,7 @@ init python:
             "prompt": "Q8. セナがそこまで追い詰められた理由を示す組み合わせは？",
             "required_answers": ["e_toru_audit_file", "e_lunarborn_medical_report"],
             "hint": "都市の嘘と、月で生まれた子どもたちの身体。その両方を見る。",
-            "success": "監査ファイルと医療評価が、セナの恐れを事件の動機として結びつけた。",
+            "success": "監査ファイルと医療評価が、セナの恐れを動機として説明する。ただし、それは罪を軽くするものではない。",
             "failure": "手口ではなく、セナが何を恐れていたかを示す証拠を組み合わせよう。",
             "key": True,
         },
@@ -564,7 +567,7 @@ init python:
             "kind": "evidence",
             "prompt": "Q9. 徹が最後に守ろうとしたものを示す証拠は？",
             "answers": ["e_manual_bulkhead_blood"],
-            "hint": "彼が逃げるためではなく、閉じるために手を伸ばした場所を思い出す。",
+            "hint": "徹が最後に向かったのは、逃げ道ではなく、被害を止めるための場所だった。",
             "success": "徹は最後に、自分ではなく隣の区画の空気を守ろうとしていた。",
             "failure": "徹の本心は、最後の行動に残っている。手が届いた場所を見よう。",
             "key": True,

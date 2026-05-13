@@ -217,7 +217,7 @@ label chapter5_hub:
     if synced_count > 0:
         sysmsg "章の進行に合わせて、これまでの調査記録を証拠品一覧に同期した。"
     sysmsg "管制核。証拠はそろいつつある。あとは、誰のために空気が奪われたのかを示すだけだ。"
-    sysmsg "セナを追及するには、手口だけでは足りない。動機と、徹が最後に守ろうとしたものまで示す必要がある。"
+    sysmsg "セナを追及するには、手口だけでは足りない。"
 
     call screen investigation_hub_screen
     $ hub_choice = _return
@@ -443,7 +443,7 @@ label final_reasoning:
     show sena neutral at right
     show alma speaking at center
     sysmsg "最終推理を開始します。問題ごとに、対応する証拠または人物を提示してください。"
-    sysmsg "これは犯人当てでは終わらない。ALMAが見た現実、セナが隠した恐れ、徹が守ろうとした空気を、順に組み立てる。"
+    sysmsg "これは犯人当てでは終わらない。"
 
     $ question_index = 0
     while question_index < len(deduction_questions):
@@ -566,7 +566,7 @@ label true_ending:
     alma "檜山徹。生命維持主任。最終作業、居住区隔壁保護。記録しました。"
     noah "……ひとりぶん、忘れないで。"
     alma "記録しました。"
-    sysmsg "シロワは閉鎖されず、住民自治と安全監査の道へ進む。夜明けの窓に、細い光が差した。"
+    sysmsg "夜明けの窓に、細い光が差した。誰もすぐには話さず、ただ同じ空気を吸った。"
     sysmsg "月の底で、人々はもう一度、嘘のない空気を吸う練習を始める。"
     return
 
@@ -578,6 +578,7 @@ label normal_ending:
     sysmsg "Normal Ending: 白い報告書"
     m "犯人と手口は示せた。けれど、徹さんが何を守ろうとしたのかまでは届かなかった。"
     sysmsg "ノアは報告書を閉じたまま、父の名前だけを何度も見ていた。"
+    sysmsg "澪はページをめくれず、薄い紙の重さだけを指先に感じていた。"
     sysmsg "セナは拘束される。だが、セレネ社の責任追及は曖昧なまま、シロワの住民には重い沈黙が残った。"
     sysmsg "事件は解決した。それでも、夜明けの窓に立つ人々の呼吸は、まだ少し浅い。"
     return
@@ -591,6 +592,7 @@ label bad_ending:
     alma "R-7事故はALMA運用上の重大エラーとして処理されます。停止手続きに入ります。"
     sysmsg "真犯人は明らかにならない。外口の床に残る粉塵を、ノアだけが見つめていた。"
     noah "……母さんの足跡、どうしてここにあるの。"
+    sysmsg "誰も答えないまま、警告灯だけが白い床を赤く染めていた。"
     sysmsg "外口の足跡も、ノアの疑問も、シロワの公式記録には残らない。"
     return
 
