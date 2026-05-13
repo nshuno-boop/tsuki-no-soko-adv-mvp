@@ -44,7 +44,7 @@ MVP表示基準は1280x720。背景とCGは1920x1080で制作し、Ren'Py側で1
 | --- | --- | --- |
 | 佐伯澪 | mio_neutral.png, mio_thinking.png, mio_surprised.png, mio_pained.png | reference-polished / waist-up redesign |
 | 雨宮セナ | sena_neutral.png, sena_smile.png, sena_calm.png, sena_shaken.png, sena_broken.png | reference-polished / redesigned face |
-| 檜山徹 | toru_neutral.png, toru_tired.png, toru_gentle.png, toru_recording.png | playable |
+| 檜山徹 | toru_neutral.png, toru_tired.png, toru_gentle.png, toru_recording.png | reference-polished |
 | 北条リツ | ritsu_neutral.png, ritsu_anxious.png, ritsu_angry.png, ritsu_relieved.png | playable |
 | ルカ・ナディム | luka_neutral.png, luka_sarcastic.png, luka_angry.png, luka_sad.png | playable |
 | 白石アカリ | akari_neutral.png, akari_doctor.png, akari_worried.png | playable |
@@ -58,7 +58,7 @@ MVP表示基準は1280x720。背景とCGは1920x1080で制作し、Ren'Py側で1
 | --- | --- | --- |
 | game/images/portraits/portrait_mio.png | 会話窓用・澪顔アップ | playable |
 | game/images/portraits/portrait_sena.png | 会話窓用・セナ顔アップ | reference-polished |
-| game/images/portraits/portrait_toru.png | 会話窓用・徹顔アップ | playable |
+| game/images/portraits/portrait_toru.png | 会話窓用・徹顔アップ | reference-polished |
 | game/images/portraits/portrait_ritsu.png | 会話窓用・リツ顔アップ | playable |
 | game/images/portraits/portrait_luka.png | 会話窓用・ルカ顔アップ | playable |
 | game/images/portraits/portrait_akari.png | 会話窓用・アカリ顔アップ | playable |
