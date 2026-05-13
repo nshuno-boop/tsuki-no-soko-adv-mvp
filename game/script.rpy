@@ -9,8 +9,11 @@ label start:
     show mio neutral at left
     show alma idle at right
     sysmsg "2056年。月面南極都市《白環市》。住民たちはその街を、短く『シロワ』と呼ぶ。"
+    sysmsg "降下船の窓の外で、太陽の光が氷の尾根を白く削っていた。ここでは、夜明けさえ機械の許可を待っている。"
     alma "ようこそ、佐伯監査官。都市管理AI、ALMAです。読みはアルマ。調査権限を確認しました。"
-    m "ここでは、空気も水も記録も、誰かが守り続けているんですね。"
+    m "声は落ち着いているのに、街全体から返事をされたみたいですね。"
+    alma "生命維持、交通、区画圧、記録保全。私はそれらを管理します。判断は規定に従います。"
+    m "ここでは、空気も水も記録も、誰かが守り続けている。……そういう街なんですね。"
 
     scene bg shirowa_hab_ring
     show mio neutral at left
@@ -18,13 +21,15 @@ label start:
     sena "シロワへようこそ。地球の監査官を迎えるには、少し狭い街ですが。"
     m "佐伯澪です。監査は手短に、でも正確に進めます。"
     sena "正確さは大切です。ここでは、小さな誤差が人の呼吸を止めますから。"
+    sysmsg "セナの笑みは柔らかい。けれど、その奥には都市全体を抱えて眠れない人の疲れがあった。"
 
     scene bg core
     show toru gentle at center
     t "佐伯監査官。生命維持主任の檜山徹です。今夜22:30、少し話せませんか。"
     t "ALMAのログは正しい。けれど、正しいログだけでは見えないものがあります。"
     m "それは、監査に関わる話ですか？"
-    t "シロワの空気に関わる話です。"
+    t "シロワの空気に関わる話です。嘘の混じった空気は、いつか誰かの肺を傷つける。"
+    sysmsg "徹は冗談のように笑った。だが、その目だけは笑っていなかった。"
 
     jump chapter1
 
@@ -36,17 +41,20 @@ label chapter1:
     show mio pained at left
     show alma alert at right
     sysmsg "22:31。酸素工房R-7で緊急減圧が発生。檜山徹は死亡した。"
+    sysmsg "警報灯の赤が、白い壁を脈のように染めている。誰も叫ばない。ただ、空気だけが奪われた痕を残していた。"
     $ r7_log_lines = ["AREA: OXYGEN WORKSHOP R-7", "STATUS: DEPRESSURIZATION APPROVED", "HUMAN PRESENCE: NONE", "FATALITY: HIYAMA TORU"]
     call screen alma_log_screen("R-7 EMERGENCY EVENT", r7_log_lines)
     $ add_evidence("e_r7_decompression_log")
 
     m "R-7は無人判定。なのに、徹さんはここで死んでいる。"
+    m "事故なら、記録と現場が同じ方向を向くはず。これは、どちらかが嘘をついている。"
     $ add_evidence("e_personnel_location_log")
 
     scene bg medbay
     show mio pained at left
     show akari doctor at right
     akari "死因は真空暴露による急性低酸素。外で倒れたのではなく、区画の中で空気を奪われた身体です。"
+    akari "月の死は静かです。だから、記録より先に身体が話してくれることがあります。"
     $ add_evidence("e_autopsy_record")
 
     scene bg oxygen_workshop_r7
@@ -54,6 +62,8 @@ label chapter1:
     sysmsg "手動隔壁レバーの根元に、乾いた血痕が残っていた。"
     m "徹さんは、最後に逃げようとしたんじゃない。隔壁を閉じようとした。"
     $ add_evidence("e_manual_bulkhead_blood")
+    sysmsg "調査まとめ: 徹の死は減圧事故に見える。だが、位置ログと遺体の場所が噛み合わない。"
+    sysmsg "調査まとめ: ALMAの判断そのものより、ALMAに届いた入力情報を疑う必要がある。"
 
     jump chapter2
 
@@ -66,6 +76,7 @@ label chapter2:
     show ritsu neutral at right
     show alma speaking at center
     ritsu "ALMAの中核コードに改ざんはありません。アルマさんは規定通り動いています。"
+    ritsu "だから厄介なんです。壊れていれば直せる。正しく動いた結果なら、何を正しいと見せられたかを見ないといけない。"
     alma "記録上、檜山徹のビーコンは外口側へ移動。R-7内は無人と判定されました。"
     $ add_evidence("e_white_rabbit_usage_log")
 
@@ -80,6 +91,8 @@ label chapter2:
     $ add_evidence("e_thermal_sensor_frost")
     ritsu "それと、手動補助弁に新しい工具傷があります。自然故障だけでは説明できません。"
     $ add_evidence("e_manual_valve_scratch")
+    sysmsg "調査まとめ: ALMAは嘘をついたのではなく、嘘の入力を正しく処理した可能性が高い。"
+    sysmsg "調査まとめ: 保守モード、ビーコン優先、R-7の物理痕跡。この3つが同じ方向を示している。"
 
     jump chapter3_hub
 
@@ -91,6 +104,7 @@ label chapter3_hub:
     scene bg shirowa_hab_ring
     show mio neutral at left
     sysmsg "徹が残した違和感は、シロワの人間関係と資源問題へつながっていく。"
+    sysmsg "この街では、全員が空気を分け合っている。だからこそ、誰かの沈黙もまた、全員の肺に少しずつ溜まっていく。"
     if synced_count > 0:
         sysmsg "これまでの調査記録を証拠品一覧に同期した。"
 
@@ -98,6 +112,7 @@ label chapter3_hub:
         scene bg core
         show toru recording at center
         sysmsg "聞き込みで得た断片がつながり、徹の暗号化監査ファイルの一部が復号された。"
+        sysmsg "ファイルには採掘量不足、セレネ社の圧力、そしてシロワを閉鎖させないための再建案が並んでいた。"
         $ add_evidence("e_toru_audit_file")
         scene bg shirowa_hab_ring
         show mio neutral at left
@@ -152,6 +167,8 @@ label chapter3_hub:
 label chapter4:
     $ set_chapter(4, "第4章：白兎は外へ出なかった", "白兎3号が本当に外へ出たのか確かめる")
     $ synced_count = sync_story_evidence_for_chapter(4)
+    sysmsg "調査まとめ: 住民たちの証言はばらばらに見えたが、徹が都市を壊そうとしていなかったことだけは一致している。"
+    sysmsg "調査まとめ: 次に確かめるべきは、ALMAに見えていた『徹の居場所』そのものだ。"
 
     scene bg outer_port
     show mio thinking at left
@@ -159,7 +176,9 @@ label chapter4:
     if synced_count > 0:
         sysmsg "これまでの調査記録を証拠品一覧に同期した。"
     sysmsg "外口。正式型番HAKU-3、通称『白兎3号』は、事故当時に船外活動へ出たことになっている。"
+    sysmsg "白いスーツは、使われたもののように記録されていた。だが表面は、あまりにも静かだった。"
     ritsu "CO2吸収材は未使用に近い。白兎3号は、徹さんを守るほど動いていません。"
+    m "ログの上では外へ出た。でも、スーツの中では誰も息をしていない。"
     $ add_evidence("e_white_rabbit_co2_absorber")
     $ add_evidence("e_white_rabbit_dust_test")
 
@@ -167,12 +186,14 @@ label chapter4:
     show mio neutral at left
     show jin irritated at right
     jin "地球会議の音声です。セレネ社としては、これ以上の提供はかなり譲歩しています。"
+    jin "ただし、録音の空白まで当社の責任にされては困ります。沈黙は発言ではありませんから。"
     $ add_evidence("e_earth_meeting_audio")
 
     scene bg outer_port
     show mio thinking at left
     show noah tears at right
     noah "外口の近くで、足音を聞いた。母さんの歩き方に似てた。でも、言いたくなかった。"
+    noah "言ったら、全部が壊れると思った。父さんのことも、母さんのことも、シロワのことも。"
     $ add_evidence("e_noah_testimony")
 
     scene bg shadow_well
@@ -180,6 +201,8 @@ label chapter4:
     show luka sad at right
     luka "この粉塵は影井戸側のものだ。執務室だけにいた人間の袖につく粉じゃない。"
     $ add_evidence("e_sena_dust_trace")
+    sysmsg "調査まとめ: 白兎3号は外へ出ていない。徹の居場所を示した入力は、誰かが作った偽の現実だった。"
+    sysmsg "調査まとめ: 会議音声、ノアの証言、袖口の粉塵が、セナのアリバイに同じ傷をつけている。"
 
     jump chapter5_hub
 
@@ -194,6 +217,7 @@ label chapter5_hub:
     if synced_count > 0:
         sysmsg "章の進行に合わせて、これまでの調査記録を証拠品一覧に同期した。"
     sysmsg "管制核。証拠はそろいつつある。あとは、誰のために空気が奪われたのかを示すだけだ。"
+    sysmsg "セナを追及するには、手口だけでは足りない。動機と、徹が最後に守ろうとしたものまで示す必要がある。"
 
     call screen investigation_hub_screen
     $ hub_choice = _return
@@ -244,11 +268,13 @@ label interview_sena:
         sena "事故として処理できるなら、それが一番です。シロワに長い停止は許されません。"
         m "事故と決めるには早すぎます。徹さんは22:30に、私へ話したいと言っていました。"
         sena "……檜山さんは、いつも空気の薄い話をする人でした。"
+        sena "でも、この街では薄い空気でも吸い続けるしかない。綺麗な正論だけでは、人は守れません。"
         $ interview_flags.add("sena_initial")
         $ interview_done.add("sena")
     elif "sena_additional" not in interview_flags and has_evidence("e_toru_audit_file"):
         sena "檜山さんが告発を準備していたことは知っていました。ですが、告発は都市を救うとは限りません。"
         m "隠すことも、救うこととは限らない。"
+        sena "分かっています。分かっているからこそ、私は代表の顔を外せなかった。"
         $ interview_flags.add("sena_additional")
     elif chapter >= 5 and "sena_core" not in interview_flags:
         show sena shaken at right
@@ -294,6 +320,7 @@ label interview_luka:
         luka "徹とは口論したよ。影井戸の採掘量を盛るなって、あいつは何度も言った。"
         m "あなたには、徹さんを黙らせる理由があった？"
         luka "あったかもな。でも殺す理由はない。空気を守るやつを殺して、誰が得する。"
+        luka "俺は数字を誤魔化した。徹はそれを嫌った。だからって、あいつが嫌いだったわけじゃない。"
         $ interview_flags.add("luka_initial")
         $ interview_done.add("luka")
     elif "luka_additional" not in interview_flags and has_evidence("e_toru_audit_file"):
@@ -321,6 +348,7 @@ label interview_akari:
         $ interview_done.add("akari")
     elif "akari_additional" not in interview_flags:
         akari "月面生まれの世代は、急な地球移住に耐えられない子がいます。ノアも、その評価対象です。"
+        akari "代表が恐れているのは、政治的な失点だけではありません。子どもたちの身体が、地球を拒むかもしれないんです。"
         $ add_evidence("e_lunarborn_medical_report")
         $ interview_flags.add("akari_additional")
     elif chapter >= 5 and "akari_core" not in interview_flags:
@@ -339,6 +367,7 @@ label interview_noah:
     if "noah_initial" not in interview_flags:
         noah "父さんはシロワを壊そうとしてた。母さんは街を守ってる。だから、わたしは母さんの味方。"
         m "徹さんが本当に壊そうとしていたのは、街ではなく嘘かもしれない。"
+        noah "嘘でも、街が残るならいいじゃん。……そう思っちゃだめなの？"
         $ interview_flags.add("noah_initial")
         $ interview_done.add("noah")
     elif "noah_additional" not in interview_flags and has_evidence("e_earth_meeting_audio"):
@@ -363,6 +392,7 @@ label interview_jin:
     if "jin_initial" not in interview_flags:
         jin "セレネ資源開発としては、事故調査に全面的に協力します。企業責任とは別の話ですが。"
         m "その線引きで、人が死んでも？"
+        jin "線を引かなければ、会社は何も認められません。認めた瞬間、ここにある生活全部が訴訟の材料になる。"
         $ interview_flags.add("jin_initial")
         $ interview_done.add("jin")
     elif "jin_additional" not in interview_flags and has_evidence("e_toru_audit_file"):
@@ -413,6 +443,7 @@ label final_reasoning:
     show sena neutral at right
     show alma speaking at center
     sysmsg "最終推理を開始します。問題ごとに、対応する証拠または人物を提示してください。"
+    sysmsg "これは犯人当てでは終わらない。ALMAが見た現実、セナが隠した恐れ、徹が守ろうとした空気を、順に組み立てる。"
 
     $ question_index = 0
     while question_index < len(deduction_questions):
@@ -524,6 +555,7 @@ label true_ending:
     sysmsg "True Ending: 月の底で、息をする"
     m "ALMAは殺していない。あなたは、ALMAに偽の現実を見せた。"
     sena "都市が閉じれば、ノアたちは生きる場所を失う。私は、それが怖かった。"
+    sena "怖さを理由にして、取り返しのつかないことをした。代表としても、母親としても。"
     sysmsg "徹の監査ファイルには、最後の一文が残されていた。"
     t "シロワを告発する。シロワを終わらせるためではない。嘘の上では、誰も長く息をできないから。"
     noah "父さんは、シロワを壊そうとしてたんじゃないんだね。"
@@ -533,6 +565,7 @@ label true_ending:
     noah "……ひとりぶん、忘れないで。"
     alma "記録しました。"
     sysmsg "シロワは閉鎖されず、住民自治と安全監査の道へ進む。夜明けの窓に、細い光が差した。"
+    sysmsg "月の底で、人々はもう一度、嘘のない空気を吸う練習を始める。"
     return
 
 
@@ -543,6 +576,7 @@ label normal_ending:
     sysmsg "Normal Ending: 白い報告書"
     m "犯人と手口は示せた。けれど、徹さんが何を守ろうとしたのかまでは届かなかった。"
     sysmsg "セナは拘束される。だが、セレネ社の責任追及は曖昧なまま、シロワの住民には重い沈黙が残った。"
+    sysmsg "事件は解決した。それでも、夜明けの窓に立つ人々の呼吸は、まだ少し浅い。"
     return
 
 
@@ -554,7 +588,7 @@ label bad_ending:
     alma "R-7事故はALMA運用上の重大エラーとして処理されます。停止手続きに入ります。"
     sysmsg "真犯人は明らかにならない。外口の床に残る粉塵を、ノアだけが見つめていた。"
     noah "……母さんの足跡、どうしてここにあるの。"
-    sysmsg "プレイヤーだけが、届かなかった真相の形を知っている。"
+    sysmsg "プレイヤーだけが、届かなかった真相の形を知っている。けれど、シロワの記録には何も残らない。"
     return
 
 

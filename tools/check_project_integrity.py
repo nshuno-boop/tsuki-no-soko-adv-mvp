@@ -27,6 +27,8 @@ REQUIRED_FILES = [
     "game/fonts/NotoSansJP-Bold.otf",
     "docs/ASSET_MANIFEST.md",
     "docs/ART_DIRECTION.md",
+    "docs/ALPHA_GOALS.md",
+    "docs/CREDITS.md",
     "docs/FONT_LICENSE.md",
     "docs/IMAGE_PROMPTS.md",
     "docs/PLAYTEST_CHECKLIST.md",
@@ -246,7 +248,7 @@ def check_data_hygiene(warnings: list[str]) -> None:
 
 def check_readme(errors: list[str]) -> None:
     readme = read_text("README.md")
-    for term in ["Phase 3", "Phase 4", "通しプレイMVP", "git remote", "check_project_integrity.py", "GitHub Actions"]:
+    for term in ["Phase 3", "Phase 4", "Phase 5", "v0.5-alpha", "通しプレイMVP", "git remote", "check_project_integrity.py", "GitHub Actions"]:
         if term not in readme:
             errors.append(f"README missing Phase 3 note: {term}")
 

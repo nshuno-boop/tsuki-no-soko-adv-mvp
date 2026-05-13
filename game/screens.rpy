@@ -67,6 +67,7 @@ screen investigation_hub_screen():
             $ done_count = interview_done_count()
             $ required_count = 4
             $ missing_names = missing_interview_names()
+            $ recommended_action = recommended_action_text()
 
             hbox:
                 xfill True
@@ -75,6 +76,7 @@ screen investigation_hub_screen():
                     text "聞き込み / 調査メニュー" style "tsuki_title_text"
                     text chapter_title style "tsuki_subtle_text"
                     text "目的: [current_objective]" color "#f8fafc" size 17 xmaximum 700
+                    text recommended_action color "#fbbf24" size 15 xmaximum 740
                 text "SHIROWA AUDIT" xalign 1.0 color "#67e8f9" size 18
 
             hbox:
@@ -189,10 +191,10 @@ screen investigation_hub_screen():
                 vbox:
                     spacing 10
                     xsize 330
-                    textbutton "証拠品一覧":
+                    textbutton "証拠品を確認":
                         action Return("evidence")
                         xfill True
-                    textbutton "人物メモ":
+                    textbutton "人物メモを見る":
                         action Return("people")
                         xfill True
                     textbutton "ALMAログ":
@@ -203,7 +205,7 @@ screen investigation_hub_screen():
                         xfill True
                     null height 12
                     if chapter < 4:
-                        textbutton "次の調査へ進む":
+                        textbutton "白兎3号を調べる":
                             action Return("final")
                             xfill True
                         if chapter == 3 and done_count < required_count:
@@ -278,15 +280,15 @@ screen evidence_screen():
                                 if has_evidence("e_manual_valve_scratch"):
                                     textbutton "補助弁の傷" action SetScreenVariable("selected_id", "e_manual_valve_scratch") xfill True
                                 if has_evidence("e_maintenance_admin_log"):
-                                    textbutton "保守モード記録" action SetScreenVariable("selected_id", "e_maintenance_admin_log") xfill True
+                                    textbutton "重要: 保守モード記録" action SetScreenVariable("selected_id", "e_maintenance_admin_log") xfill True
                                 if has_evidence("e_earth_meeting_audio"):
                                     textbutton "会議音声" action SetScreenVariable("selected_id", "e_earth_meeting_audio") xfill True
                                 if has_evidence("e_noah_testimony"):
-                                    textbutton "ノア証言" action SetScreenVariable("selected_id", "e_noah_testimony") xfill True
+                                    textbutton "重要: ノア証言" action SetScreenVariable("selected_id", "e_noah_testimony") xfill True
                                 if has_evidence("e_toru_audit_file"):
-                                    textbutton "監査ファイル" action SetScreenVariable("selected_id", "e_toru_audit_file") xfill True
+                                    textbutton "重要: 監査ファイル" action SetScreenVariable("selected_id", "e_toru_audit_file") xfill True
                                 if has_evidence("e_lunarborn_medical_report"):
-                                    textbutton "月生まれ医療評価" action SetScreenVariable("selected_id", "e_lunarborn_medical_report") xfill True
+                                    textbutton "重要: 月生まれ医療評価" action SetScreenVariable("selected_id", "e_lunarborn_medical_report") xfill True
                                 if has_evidence("e_sena_dust_trace"):
                                     textbutton "袖口の粉塵" action SetScreenVariable("selected_id", "e_sena_dust_trace") xfill True
 
@@ -304,6 +306,7 @@ screen evidence_screen():
                             $ selected_category = selected["category"]
                             $ selected_character = selected["related_character"]
                             $ selected_location = selected["related_location"]
+                            $ selected_is_key = selected_id in FINAL_REQUIRED_EVIDENCE
                             vbox:
                                 spacing 12
                                 hbox:
@@ -312,6 +315,8 @@ screen evidence_screen():
                                     vbox:
                                         text selected["name"] size 25 color "#f8fafc" xmaximum 560
                                         text "入手章: 第[selected_chapter]章 / [selected_category]" color "#93c5fd" size 17
+                                        if selected_is_key:
+                                            text "重要証拠: 最終推理の核心に関わる" color "#fbbf24" size 16
                                 text selected["description"] color "#e5e7eb" size 18 xmaximum 600
                                 text selected["detail"] color "#cbd5e1" size 17 xmaximum 600
                                 null height 4
@@ -362,6 +367,7 @@ screen person_memo_screen():
                     yfill True
 
                     $ person = person_profiles[selected_person]
+                    $ person_focus = person["focus"]
                     hbox:
                         spacing 22
                         add person["image"] xysize (250, 390)
@@ -370,6 +376,7 @@ screen person_memo_screen():
                             text person["name"] size 30 color "#f8fafc"
                             text person["label"] size 20 color "#67e8f9"
                             text person["memo"] color "#cbd5e1" size 18 xmaximum 485
+                            text "現在の印象: [person_focus]" color "#fbbf24" size 17 xmaximum 500
                             if selected_person in interview_done:
                                 text "聞き込み済み" color "#fbbf24"
                             elif selected_person in INTERVIEW_TARGETS:
