@@ -19,3 +19,7 @@ The files are renamed inside this project for clarity. Do not replace them with 
 
 If Japanese text appears as tofu boxes in Ren'Py, confirm that these files exist and that `game/font_config.rpy` points to them.
 
+## 日本語メモ
+
+文字化け対策として、OFLライセンスのNoto Sans CJK JP系フォントだけを同梱します。Meiryo、MS Gothic、Yu GothicなどのOS付属フォントは、このリポジトリには入れません。
+

@@ -49,7 +49,31 @@ screen objective_overlay():
             text current_objective color "#f8fafc" size 17 xmaximum 585
 
 
+screen confirm(message, yes_action, no_action):
+    zorder 200
+    modal True
+
+    add Solid("#020617dd")
+
+    frame:
+        style "tsuki_frame"
+        xalign 0.5
+        yalign 0.5
+        xsize 720
+
+        vbox:
+            spacing 18
+            text message color "#f8fafc" size 22 xmaximum 660
+
+            hbox:
+                spacing 12
+                xalign 1.0
+                textbutton "はい" action yes_action
+                textbutton "いいえ" action no_action
+
+
 screen investigation_hub_screen():
+    zorder 20
     modal True
 
     add Solid("#030712")
@@ -65,8 +89,9 @@ screen investigation_hub_screen():
             spacing 14
 
             $ done_count = interview_done_count()
-            $ required_count = 4
+            $ required_count = CHAPTER4_REQUIRED_INTERVIEWS
             $ missing_names = missing_interview_names()
+            $ recommended_action = recommended_action_text()
 
             hbox:
                 xfill True
@@ -75,6 +100,7 @@ screen investigation_hub_screen():
                     text "聞き込み / 調査メニュー" style "tsuki_title_text"
                     text chapter_title style "tsuki_subtle_text"
                     text "目的: [current_objective]" color "#f8fafc" size 17 xmaximum 700
+                    text recommended_action color "#fbbf24" size 15 xmaximum 740
                 text "SHIROWA AUDIT" xalign 1.0 color "#67e8f9" size 18
 
             hbox:
@@ -189,10 +215,10 @@ screen investigation_hub_screen():
                 vbox:
                     spacing 10
                     xsize 330
-                    textbutton "証拠品一覧":
+                    textbutton "証拠品を確認":
                         action Return("evidence")
                         xfill True
-                    textbutton "人物メモ":
+                    textbutton "人物メモを見る":
                         action Return("people")
                         xfill True
                     textbutton "ALMAログ":
@@ -203,7 +229,7 @@ screen investigation_hub_screen():
                         xfill True
                     null height 12
                     if chapter < 4:
-                        textbutton "次の調査へ進む":
+                        textbutton "第4章へ進む: 白兎3号を調べる":
                             action Return("final")
                             xfill True
                         if chapter == 3 and done_count < required_count:
@@ -219,6 +245,7 @@ screen investigation_hub_screen():
 
 screen evidence_screen():
     tag menu
+    zorder 20
     modal True
     default selected_id = None
 
@@ -278,15 +305,15 @@ screen evidence_screen():
                                 if has_evidence("e_manual_valve_scratch"):
                                     textbutton "補助弁の傷" action SetScreenVariable("selected_id", "e_manual_valve_scratch") xfill True
                                 if has_evidence("e_maintenance_admin_log"):
-                                    textbutton "保守モード記録" action SetScreenVariable("selected_id", "e_maintenance_admin_log") xfill True
+                                    textbutton "重要: 保守モード記録" action SetScreenVariable("selected_id", "e_maintenance_admin_log") xfill True
                                 if has_evidence("e_earth_meeting_audio"):
                                     textbutton "会議音声" action SetScreenVariable("selected_id", "e_earth_meeting_audio") xfill True
                                 if has_evidence("e_noah_testimony"):
-                                    textbutton "ノア証言" action SetScreenVariable("selected_id", "e_noah_testimony") xfill True
+                                    textbutton "重要: ノア証言" action SetScreenVariable("selected_id", "e_noah_testimony") xfill True
                                 if has_evidence("e_toru_audit_file"):
-                                    textbutton "監査ファイル" action SetScreenVariable("selected_id", "e_toru_audit_file") xfill True
+                                    textbutton "重要: 監査ファイル" action SetScreenVariable("selected_id", "e_toru_audit_file") xfill True
                                 if has_evidence("e_lunarborn_medical_report"):
-                                    textbutton "月生まれ医療評価" action SetScreenVariable("selected_id", "e_lunarborn_medical_report") xfill True
+                                    textbutton "重要: 月生まれ医療評価" action SetScreenVariable("selected_id", "e_lunarborn_medical_report") xfill True
                                 if has_evidence("e_sena_dust_trace"):
                                     textbutton "袖口の粉塵" action SetScreenVariable("selected_id", "e_sena_dust_trace") xfill True
 
@@ -304,6 +331,7 @@ screen evidence_screen():
                             $ selected_category = selected["category"]
                             $ selected_character = selected["related_character"]
                             $ selected_location = selected["related_location"]
+                            $ selected_is_key = selected_id in FINAL_REQUIRED_EVIDENCE
                             vbox:
                                 spacing 12
                                 hbox:
@@ -312,6 +340,8 @@ screen evidence_screen():
                                     vbox:
                                         text selected["name"] size 25 color "#f8fafc" xmaximum 560
                                         text "入手章: 第[selected_chapter]章 / [selected_category]" color "#93c5fd" size 17
+                                        if selected_is_key:
+                                            text "重要証拠: 最終推理の核心に関わる" color "#fbbf24" size 16
                                 text selected["description"] color "#e5e7eb" size 18 xmaximum 600
                                 text selected["detail"] color "#cbd5e1" size 17 xmaximum 600
                                 null height 4
@@ -325,6 +355,7 @@ screen evidence_screen():
 
 screen person_memo_screen():
     tag menu
+    zorder 20
     modal True
     default selected_person = "mio"
 
@@ -362,6 +393,7 @@ screen person_memo_screen():
                     yfill True
 
                     $ person = person_profiles[selected_person]
+                    $ person_focus = person["focus"]
                     hbox:
                         spacing 22
                         add person["image"] xysize (250, 390)
@@ -370,6 +402,7 @@ screen person_memo_screen():
                             text person["name"] size 30 color "#f8fafc"
                             text person["label"] size 20 color "#67e8f9"
                             text person["memo"] color "#cbd5e1" size 18 xmaximum 485
+                            text "現在の印象: [person_focus]" color "#fbbf24" size 17 xmaximum 500
                             if selected_person in interview_done:
                                 text "聞き込み済み" color "#fbbf24"
                             elif selected_person in INTERVIEW_TARGETS:
@@ -456,7 +489,7 @@ screen evidence_choice_screen(question, hint_text):
                     action Return("__back_to_investigation__")
 
 
-screen multi_evidence_choice_screen(question, hint_text):
+screen multi_evidence_choice_screen(question, hint_text, required_count=0):
     zorder 30
     modal True
     default selected_ids = set()
@@ -473,7 +506,15 @@ screen multi_evidence_choice_screen(question, hint_text):
         vbox:
             spacing 14
             text question size 24 color "#f8fafc" xmaximum 1080
-            text "必要な証拠をすべて選んでから提示してください。余計な証拠を含めると不正解です。" color "#cbd5e1" size 18
+            if required_count > 0:
+                text "この問題は[required_count]つの証拠を組み合わせます。関係する証拠だけを選んで提示してください。" color "#cbd5e1" size 18
+            else:
+                text "この問題は複数の証拠を組み合わせます。関係する証拠だけを選んで提示してください。" color "#cbd5e1" size 18
+            $ selected_count = len(selected_ids)
+            if required_count > 0:
+                text "選択中: [selected_count] / [required_count]件" color "#fbbf24" size 17
+            else:
+                text "選択中: [selected_count]件" color "#fbbf24" size 17
 
             if len(evidence_unlocked) == 0:
                 text "提示できる証拠がありません。調査に戻って、必要な証拠を集めてください。" color "#fecaca" size 20 xmaximum 1020
@@ -623,6 +664,7 @@ screen person_choice_screen(question, hint_text):
 
 screen timeline_screen():
     tag menu
+    zorder 20
     modal True
 
     add Solid("#020617")
@@ -652,10 +694,10 @@ screen timeline_screen():
                 text "21:32  熱センサーに氷霜 - 自然結露では説明しにくい成分が残る。" color "#cbd5e1" size 17
                 text "21:46  手動補助弁が操作 - R-7の補助弁に新しい工具傷が残る。" color "#cbd5e1" size 17
                 text "21:52  ノアが外口付近で足音を聞く - 母に似た歩き方だった。" color "#cbd5e1" size 17
-                text "22:05  地球会議の長い空白 - セナの遠隔出席に移動の余地が残る。" color "#cbd5e1" size 17
-                text "22:14  酸素工房R-7が緊急減圧 - ALMAは無人区画と判断した。" color "#cbd5e1" size 17
-                text "22:18  徹が隔壁レバーへ手を伸ばす - 隣接区画を守ろうとした。" color "#cbd5e1" size 17
-                text "22:31  徹の死亡を確認 - 死因は真空暴露による急性低酸素。" color "#cbd5e1" size 17
+                text "22:08  地球会議の長い空白 - セナの遠隔出席に移動の余地が残る。" color "#cbd5e1" size 17
+                text "22:31  酸素工房R-7が緊急減圧 - ALMAは無人区画と判断した。" color "#cbd5e1" size 17
+                text "22:32  徹が隔壁レバーへ手を伸ばす - 隣接区画を守ろうとした。" color "#cbd5e1" size 17
+                text "22:34  徹の死亡を確認 - 死因は真空暴露による急性低酸素。" color "#cbd5e1" size 17
                 text "翌朝   白兎3号の未使用痕跡 - 船外活動は偽装だったと分かる。" color "#cbd5e1" size 17
 
             textbutton "閉じる":
@@ -664,6 +706,7 @@ screen timeline_screen():
 
 
 screen missing_evidence_screen(missing_names):
+    zorder 20
     modal True
 
     add Solid("#020617")
@@ -678,7 +721,7 @@ screen missing_evidence_screen(missing_names):
         vbox:
             spacing 14
             text "証拠が不足しています" style "tsuki_title_text"
-            text "このまま最終推理へ進むと、重要な真相に届かない可能性があります。" color "#fecaca"
+            text "このまま進むとBad Endingへ分岐します。戻って不足証拠を確認できます。" color "#fecaca" size 19 xmaximum 880
             text "不足している重要証拠:" color "#fbbf24"
 
             $ missing_text = "、".join(missing_names)
@@ -689,13 +732,14 @@ screen missing_evidence_screen(missing_names):
 
             hbox:
                 spacing 12
-                textbutton "聞き込みに戻る":
+                textbutton "調査に戻る":
                     action Return("back")
                 textbutton "証拠不足のまま進む":
                     action Return("continue")
 
 
 screen interview_progress_warning_screen(done_count, required_count, missing_names):
+    zorder 20
     modal True
 
     add Solid("#020617")
@@ -723,6 +767,7 @@ screen interview_progress_warning_screen(done_count, required_count, missing_nam
 
 
 screen deduction_result_screen(result_text, ending_name):
+    zorder 20
     modal True
 
     add Solid("#020617")
@@ -751,6 +796,7 @@ screen deduction_result_screen(result_text, ending_name):
 
 
 screen alma_log_screen(title, lines):
+    zorder 20
     modal True
 
     add Solid("#01050a")
