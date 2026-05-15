@@ -108,11 +108,15 @@ screen say(who, what):
                     id "namebox"
                     background Frame("images/ui/ui_nameplate.png", 22, 22)
                     xpos 205
-                    ypos 14
-                    xsize 306
-                    ysize 44
-                    padding (22, 5)
-                    text who id "who" color "#f8fafc" size 22
+                    ypos 18
+                    xsize 334
+                    ysize 38
+                    padding (20, 0)
+                    text who id "who":
+                        color "#dff7ff"
+                        size 18
+                        font gui.text_font
+                        yalign 0.5
 
                 add speaker_portrait(who):
                     xpos 46
@@ -121,20 +125,20 @@ screen say(who, what):
 
                 text what id "what":
                     xpos 205
-                    ypos 76
+                    ypos 64
                     xmaximum 820
                     color "#f8fafc"
                     size 24
-                    line_spacing 5
+                    line_spacing 4
 
             else:
                 text what id "what":
                     xpos 62
-                    ypos 46
+                    ypos 42
                     xmaximum 960
                     color "#f8fafc"
                     size 24
-                    line_spacing 5
+                    line_spacing 4
 
 
 screen choice(items):

@@ -50,7 +50,7 @@ MVP表示基準は1280x720。背景とCGは1920x1080で制作し、Ren'Py側で1
 | 白石アカリ | akari_neutral.png, akari_doctor.png, akari_worried.png | playable |
 | 雨宮ノア | noah_neutral.png, noah_rebellious.png, noah_tears.png, noah_smile.png | playable |
 | 鷹峰ジン | jin_neutral.png, jin_business_smile.png, jin_irritated.png, jin_defeated.png | playable |
-| ALMA | alma_idle.png, alma_alert.png, alma_speaking.png | playable |
+| ALMA | alma_idle.png, alma_alert.png, alma_speaking.png | reference-polished |
 
 ## Dialogue Portraits
 
@@ -64,7 +64,7 @@ MVP表示基準は1280x720。背景とCGは1920x1080で制作し、Ren'Py側で1
 | game/images/portraits/portrait_akari.png | 会話窓用・アカリ顔アップ | playable |
 | game/images/portraits/portrait_noah.png | 会話窓用・ノア顔アップ | playable |
 | game/images/portraits/portrait_jin.png | 会話窓用・ジン顔アップ | playable |
-| game/images/portraits/portrait_alma.png | 会話窓用・ALMA表示 | playable |
+| game/images/portraits/portrait_alma.png | 会話窓用・ALMA表示 | reference-polished |
 | game/images/portraits/portrait_system.png | 会話窓用・システム表示 | playable |
 
 ## UI
