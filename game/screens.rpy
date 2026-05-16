@@ -69,27 +69,19 @@ screen main_menu():
     add Solid("#02061733")
 
     add "title logo":
-        xpos 56
-        ypos 54
-
-    text "月の底で、息をする":
-        xpos 92
-        ypos 166
-        color "#f8fafc"
-        size 52
-        font gui.name_text_font
-        outlines [(2, "#0e749099", 0, 0)]
+        xpos 70
+        ypos 58
 
     text "月面都市シロワの空気は、記録より先に嘘を吸い込んでいた。":
         xpos 98
-        ypos 250
+        ypos 292
         xmaximum 640
         color "#cbd5e1"
         size 22
 
     vbox:
         xpos 96
-        ypos 440
+        ypos 448
         spacing 12
         textbutton "はじめる" action Start() style "playable_menu_button" xsize 320
         textbutton "終了" action Quit(confirm=True) style "playable_menu_button" xsize 320
@@ -219,12 +211,12 @@ screen investigation_hub_screen():
     frame:
         style "tsuki_frame"
         xalign 0.5
-        yalign 0.5
-        xsize 1180
-        ysize 650
+        yalign 0.47
+        xsize 1138
+        ysize 604
 
         vbox:
-            spacing 14
+            spacing 8
 
             $ done_count = interview_done_count()
             $ required_count = CHAPTER4_REQUIRED_INTERVIEWS
@@ -242,117 +234,121 @@ screen investigation_hub_screen():
                 text "SHIROWA AUDIT" xalign 1.0 color "#67e8f9" size 18
 
             hbox:
-                spacing 18
+                spacing 14
 
                 frame:
                     style "tsuki_panel"
-                    xsize 790
-                    ysize 500
+                    xsize 760
+                    ysize 430
 
                     vbox:
-                        spacing 7
-                        text "聞き込み対象" color "#f8fafc" size 24
-                        text "聞き込み進捗: [done_count] / [required_count]" color "#fbbf24" size 17
+                        spacing 4
+                        text "聞き込み対象" color "#f8fafc" size 21
+                        text "聞き込み進捗: [done_count] / [required_count]" color "#fbbf24" size 15
                         if chapter == 3:
-                            text "第4章へ進むには4人以上への初回聞き込みが必要です。" color "#cbd5e1" size 15 xmaximum 730
+                            text "第4章へ進むには4人以上への初回聞き込みが必要です。" color "#cbd5e1" size 13 xmaximum 700
                         else:
-                            text "最終推理前に、核心に近い話も確認できます。" color "#cbd5e1" size 15 xmaximum 730
-
-                        null height 2
+                            text "最終推理前に、核心に近い話も確認できます。" color "#cbd5e1" size 13 xmaximum 700
 
                         frame:
                             background "#0f172acc"
-                            padding (10, 6)
+                            padding (8, 4)
                             xfill True
+                            ysize 48
                             hbox:
-                                spacing 10
+                                spacing 8
                                 vbox:
-                                    xsize 570
-                                    spacing 1
-                                    text "雨宮 セナ" color "#f8fafc" size 18
-                                    text "シロワの代表 / [interview_status_text('sena')]" color "#93c5fd" size 14
+                                    xsize 560
+                                    spacing 0
+                                    text "雨宮 セナ" color "#f8fafc" size 16
+                                    text "シロワの代表 / [interview_status_text('sena')]" color "#93c5fd" size 12
                                 textbutton "聞く":
                                     action Return("interview:sena")
-                                    xminimum 92
+                                    xminimum 74
 
                         frame:
                             background "#0f172acc"
-                            padding (10, 6)
+                            padding (8, 4)
                             xfill True
+                            ysize 48
                             hbox:
-                                spacing 10
+                                spacing 8
                                 vbox:
-                                    xsize 570
-                                    spacing 1
-                                    text "北条 リツ" color "#f8fafc" size 18
-                                    text "アルマの技師 / [interview_status_text('ritsu')]" color "#93c5fd" size 14
+                                    xsize 560
+                                    spacing 0
+                                    text "北条 リツ" color "#f8fafc" size 16
+                                    text "アルマの技師 / [interview_status_text('ritsu')]" color "#93c5fd" size 12
                                 textbutton "聞く":
                                     action Return("interview:ritsu")
-                                    xminimum 92
+                                    xminimum 74
 
                         frame:
                             background "#0f172acc"
-                            padding (10, 6)
+                            padding (8, 4)
                             xfill True
+                            ysize 48
                             hbox:
-                                spacing 10
+                                spacing 8
                                 vbox:
-                                    xsize 570
-                                    spacing 1
-                                    text "ルカ・ナディム" color "#f8fafc" size 18
-                                    text "影井戸の採掘屋 / [interview_status_text('luka')]" color "#93c5fd" size 14
+                                    xsize 560
+                                    spacing 0
+                                    text "ルカ・ナディム" color "#f8fafc" size 16
+                                    text "影井戸の採掘屋 / [interview_status_text('luka')]" color "#93c5fd" size 12
                                 textbutton "聞く":
                                     action Return("interview:luka")
-                                    xminimum 92
+                                    xminimum 74
 
                         frame:
                             background "#0f172acc"
-                            padding (10, 6)
+                            padding (8, 4)
                             xfill True
+                            ysize 48
                             hbox:
-                                spacing 10
+                                spacing 8
                                 vbox:
-                                    xsize 570
-                                    spacing 1
-                                    text "白石 アカリ" color "#f8fafc" size 18
-                                    text "月生まれを診る医師 / [interview_status_text('akari')]" color "#93c5fd" size 14
+                                    xsize 560
+                                    spacing 0
+                                    text "白石 アカリ" color "#f8fafc" size 16
+                                    text "月生まれを診る医師 / [interview_status_text('akari')]" color "#93c5fd" size 12
                                 textbutton "聞く":
                                     action Return("interview:akari")
-                                    xminimum 92
+                                    xminimum 74
 
                         frame:
                             background "#0f172acc"
-                            padding (10, 6)
+                            padding (8, 4)
                             xfill True
+                            ysize 48
                             hbox:
-                                spacing 10
+                                spacing 8
                                 vbox:
-                                    xsize 570
-                                    spacing 1
-                                    text "雨宮 ノア" color "#f8fafc" size 18
-                                    text "月で生まれた娘 / [interview_status_text('noah')]" color "#93c5fd" size 14
+                                    xsize 560
+                                    spacing 0
+                                    text "雨宮 ノア" color "#f8fafc" size 16
+                                    text "月で生まれた娘 / [interview_status_text('noah')]" color "#93c5fd" size 12
                                 textbutton "聞く":
                                     action Return("interview:noah")
-                                    xminimum 92
+                                    xminimum 74
 
                         frame:
                             background "#0f172acc"
-                            padding (10, 6)
+                            padding (8, 4)
                             xfill True
+                            ysize 48
                             hbox:
-                                spacing 10
+                                spacing 8
                                 vbox:
-                                    xsize 570
-                                    spacing 1
-                                    text "鷹峰 ジン" color "#f8fafc" size 18
-                                    text "セレネ社の広報法務 / [interview_status_text('jin')]" color "#93c5fd" size 14
+                                    xsize 560
+                                    spacing 0
+                                    text "鷹峰 ジン" color "#f8fafc" size 16
+                                    text "セレネ社の広報法務 / [interview_status_text('jin')]" color "#93c5fd" size 12
                                 textbutton "聞く":
                                     action Return("interview:jin")
-                                    xminimum 92
+                                    xminimum 74
 
                 vbox:
-                    spacing 10
-                    xsize 330
+                    spacing 8
+                    xsize 310
                     textbutton "証拠品を確認":
                         action Return("evidence")
                         xfill True
@@ -365,7 +361,7 @@ screen investigation_hub_screen():
                     textbutton "事件タイムライン":
                         action Return("timeline")
                         xfill True
-                    null height 12
+                    null height 4
                     if chapter < 4:
                         textbutton "第4章へ進む: 白兎3号を調べる":
                             action Return("final")

@@ -48,7 +48,7 @@ MVP表示基準は1280x720。背景とCGは1920x1080で制作し、Ren'Py側で1
 | 北条リツ | ritsu_neutral.png, ritsu_anxious.png, ritsu_angry.png, ritsu_relieved.png | reference-polished |
 | ルカ・ナディム | luka_neutral.png, luka_sarcastic.png, luka_angry.png, luka_sad.png | reference-polished / long-braid redesign |
 | 白石アカリ | akari_neutral.png, akari_doctor.png, akari_worried.png | reference-polished / doctor arm artifact fixed |
-| 雨宮ノア | noah_neutral.png, noah_rebellious.png, noah_tears.png, noah_smile.png | playable |
+| 雨宮ノア | noah_neutral.png, noah_rebellious.png, noah_tears.png, noah_smile.png | reference-polished |
 | 鷹峰ジン | jin_neutral.png, jin_business_smile.png, jin_irritated.png, jin_defeated.png | playable |
 | ALMA | alma_idle.png, alma_alert.png, alma_speaking.png | reference-polished |
 
@@ -62,7 +62,7 @@ MVP表示基準は1280x720。背景とCGは1920x1080で制作し、Ren'Py側で1
 | game/images/portraits/portrait_ritsu.png | 会話窓用・リツ顔アップ | reference-polished |
 | game/images/portraits/portrait_luka.png | 会話窓用・ルカ顔アップ | reference-polished |
 | game/images/portraits/portrait_akari.png | 会話窓用・アカリ顔アップ | playable |
-| game/images/portraits/portrait_noah.png | 会話窓用・ノア顔アップ | playable |
+| game/images/portraits/portrait_noah.png | 会話窓用・ノア顔アップ | reference-polished |
 | game/images/portraits/portrait_jin.png | 会話窓用・ジン顔アップ | playable |
 | game/images/portraits/portrait_alma.png | 会話窓用・ALMA表示 | reference-polished |
 | game/images/portraits/portrait_system.png | 会話窓用・システム表示 | playable |
