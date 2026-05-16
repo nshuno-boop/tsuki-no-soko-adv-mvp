@@ -102,6 +102,7 @@ Player View QA後の追加修正では、目的表示と左立ち絵の顔が重
 - `ui_deduction_background.png`
 - `portraits/portrait_*.png` 10点
 - 証拠・人物・場所・警告アイコン8点
+- `app_icon.png`, `game/gui/window_icon.png`, `TsukiNoSoko.ico`
 
 ## 画面ごとの改善点
 

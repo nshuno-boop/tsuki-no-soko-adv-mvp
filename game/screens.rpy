@@ -66,25 +66,39 @@ screen main_menu():
     tag menu
 
     add "title background"
-    add Solid("#02061766")
+    add Solid("#02061733")
 
-    frame:
-        background Frame("images/ui/ui_log_panel.png", 34, 34)
-        xalign 0.07
-        yalign 0.45
-        xsize 620
-        padding (28, 26)
+    add "title logo":
+        xpos 56
+        ypos 54
 
-        vbox:
-            spacing 16
-            add "title logo" xysize (540, 130)
-            text "SHIROWA AUDIT FILE / v0.5-alpha" color "#67e8f9" size 18
-            text "月面都市の空気は、記録より先に嘘を吸い込んでいた。" color "#cbd5e1" size 21 xmaximum 550
+    text "月の底で、息をする":
+        xpos 92
+        ypos 166
+        color "#f8fafc"
+        size 52
+        font gui.name_text_font
+        outlines [(2, "#0e749099", 0, 0)]
 
-            null height 12
+    text "月面都市シロワの空気は、記録より先に嘘を吸い込んでいた。":
+        xpos 98
+        ypos 250
+        xmaximum 640
+        color "#cbd5e1"
+        size 22
 
-            textbutton "はじめる" action Start() style "playable_menu_button"
-            textbutton "終了" action Quit(confirm=True) style "playable_menu_button"
+    vbox:
+        xpos 96
+        ypos 440
+        spacing 12
+        textbutton "はじめる" action Start() style "playable_menu_button" xsize 320
+        textbutton "終了" action Quit(confirm=True) style "playable_menu_button" xsize 320
+
+    text "PLAYABLE ART PASS / DRAFT":
+        xpos 98
+        ypos 642
+        color "#67e8f9"
+        size 15
 
 
 screen say(who, what):

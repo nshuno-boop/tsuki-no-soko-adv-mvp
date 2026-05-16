@@ -1,6 +1,10 @@
 # 『月の底で、息をする』Phase 3 MVP。
 # プロローグから3エンディングまで、仮素材で通しプレイできる骨組み。
 
+label splashscreen:
+    return
+
+
 label start:
     show screen objective_overlay
     $ set_chapter(0, "プロローグ：シロワへようこそ", "徹との約束の時間まで、シロワの中を確認する")

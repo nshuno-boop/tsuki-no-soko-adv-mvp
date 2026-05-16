@@ -46,8 +46,8 @@ MVP表示基準は1280x720。背景とCGは1920x1080で制作し、Ren'Py側で1
 | 雨宮セナ | sena_neutral.png, sena_smile.png, sena_calm.png, sena_shaken.png, sena_broken.png | reference-polished / redesigned face |
 | 檜山徹 | toru_neutral.png, toru_tired.png, toru_gentle.png, toru_recording.png | reference-polished |
 | 北条リツ | ritsu_neutral.png, ritsu_anxious.png, ritsu_angry.png, ritsu_relieved.png | reference-polished |
-| ルカ・ナディム | luka_neutral.png, luka_sarcastic.png, luka_angry.png, luka_sad.png | playable |
-| 白石アカリ | akari_neutral.png, akari_doctor.png, akari_worried.png | playable |
+| ルカ・ナディム | luka_neutral.png, luka_sarcastic.png, luka_angry.png, luka_sad.png | reference-polished / long-braid redesign |
+| 白石アカリ | akari_neutral.png, akari_doctor.png, akari_worried.png | reference-polished / doctor arm artifact fixed |
 | 雨宮ノア | noah_neutral.png, noah_rebellious.png, noah_tears.png, noah_smile.png | playable |
 | 鷹峰ジン | jin_neutral.png, jin_business_smile.png, jin_irritated.png, jin_defeated.png | playable |
 | ALMA | alma_idle.png, alma_alert.png, alma_speaking.png | reference-polished |
@@ -60,7 +60,7 @@ MVP表示基準は1280x720。背景とCGは1920x1080で制作し、Ren'Py側で1
 | game/images/portraits/portrait_sena.png | 会話窓用・セナ顔アップ | reference-polished |
 | game/images/portraits/portrait_toru.png | 会話窓用・徹顔アップ | reference-polished |
 | game/images/portraits/portrait_ritsu.png | 会話窓用・リツ顔アップ | reference-polished |
-| game/images/portraits/portrait_luka.png | 会話窓用・ルカ顔アップ | playable |
+| game/images/portraits/portrait_luka.png | 会話窓用・ルカ顔アップ | reference-polished |
 | game/images/portraits/portrait_akari.png | 会話窓用・アカリ顔アップ | playable |
 | game/images/portraits/portrait_noah.png | 会話窓用・ノア顔アップ | playable |
 | game/images/portraits/portrait_jin.png | 会話窓用・ジン顔アップ | playable |
@@ -71,8 +71,8 @@ MVP表示基準は1280x720。背景とCGは1920x1080で制作し、Ren'Py側で1
 
 | File | Description | Status |
 | --- | --- | --- |
-| game/images/ui/title_background.png | タイトル背景 | playable |
-| game/images/ui/title_logo.png | タイトルロゴ | playable |
+| game/images/ui/title_background.png | タイトル背景 | reference-polished |
+| game/images/ui/title_logo.png | タイトルロゴ | reference-polished |
 | game/images/ui/ui_textbox.png | テキストボックス | reference-polished |
 | game/images/ui/ui_nameplate.png | 名前表示 | reference-polished |
 | game/images/ui/ui_evidence_card.png | 証拠カード | playable |
@@ -82,6 +82,10 @@ MVP表示基準は1280x720。背景とCGは1920x1080で制作し、Ren'Py側で1
 | game/images/ui/ui_alma_panel.png | ALMAパネル | playable |
 | game/images/ui/ui_menu_background.png | メニュー背景 | playable |
 | game/images/ui/ui_deduction_background.png | 最終推理/証拠提示背景 | reference-polished |
+| game/images/ui/app_icon.png | アプリ/ショートカット用アイコン元画像 | reference-polished |
+| game/gui/window_icon.png | Ren'Pyウィンドウアイコン | reference-polished |
+| TsukiNoSoko.ico | Windowsデスクトップショートカット用アイコン | reference-polished |
+| tools/create_desktop_shortcut.ps1 | デスクトップショートカット再作成スクリプト | reference-polished |
 
 ## Icons
 

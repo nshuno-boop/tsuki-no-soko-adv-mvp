@@ -126,6 +126,8 @@ tsuki-no-soko-adv-mvp/
     fonts/
       NotoSansJP-Regular.otf
       NotoSansJP-Bold.otf
+    gui/
+      window_icon.png
     images/
       bg/
       chars/
@@ -149,8 +151,10 @@ tsuki-no-soko-adv-mvp/
     PHASE5_REVIEW_REPORT.md
   tools/
     check_project_integrity.py
+    create_desktop_shortcut.ps1
     generate_placeholder_assets.py
   Start_TsukiNoSoko_ADV_MVP.cmd
+  TsukiNoSoko.ico
   .github/
     workflows/
       static-check.yml
@@ -159,6 +163,14 @@ tsuki-no-soko-adv-mvp/
 ## ローカル起動ショートカット
 
 Windowsでは、ルートにある `Start_TsukiNoSoko_ADV_MVP.cmd` からRen'Py SDKを探して起動します。デスクトップショートカットを作っている場合も、このcmdを呼び出す想定です。
+
+Phase 6.4で、タイトル背景素材をもとにした `TsukiNoSoko.ico` と `game/gui/window_icon.png` を追加しました。起動時は通常のタイトル画面から始まるようにしています。
+
+デスクトップショートカットを作り直す場合は、PowerShellで以下を実行します。
+
+```powershell
+powershell -ExecutionPolicy Bypass -File tools/create_desktop_shortcut.ps1
+```
 
 Ren'Py SDKを移動した場合は、cmd内のSDK探索パスを確認してください。
 
@@ -272,6 +284,8 @@ Player View QA後、目的表示と立ち絵の重なりを解消するため、
 - タイトル背景、タイトルロゴ、会話UI、選択肢、証拠カード、ログ/タイムライン/ALMAパネルを更新
 - 会話窓の名前欄見切れを修正し、話者別の顔アップ表示と一体化した名前欄へ調整
 - セリフ欄内の白い括弧状装飾と破線を整理し、本文に干渉しない外枠中心のUIへ更新
+- ルカを長い片側編み込みの採掘現場監督として再設計し、檜山と遠目の髪型・衣装シルエットが被らないよう調整
+- アカリdoctor差分の腕数崩れを修正し、タイトル画面起動とアプリ/ショートカット用アイコンを追加
 - R-7事故、徹の監査ファイル、白兎3号検証、True Ending夜明けのCGを追加
 - `game/images.rpy` で背景とCGを1280x720表示へスケール
 - `tools/generate_placeholder_assets.py` は既存PNGを上書きせず、欠損補完用に変更
