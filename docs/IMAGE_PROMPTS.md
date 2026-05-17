@@ -11,6 +11,7 @@ No existing anime, movie, game, celebrity, or known character references. No dir
 - 背景は下部テキストボックス領域を暗く潰しすぎず、左右に立ち絵を置いても主要モチーフが隠れない構図にする。
 - 中央には調査対象や奥行きの焦点を置き、左右端は人物表示用の余白を残す。
 - キャラクター立ち絵は同一キャラ内で顔・体格・服の比率を固定し、transparent PNG、足元または腰位置のアンカーを揃える。
+- キャラクター生成時は、既存キャラとの差別化を明示する。顔型、目の形、髪型、姿勢、シルエット、職能小物を変え、色替えや近い美形顔に寄せない。
 - ALMA UIは no eyes, no mouth, no mascot, no humanoid assistant avatar を必ず入れる。
 
 ## 背景プロンプト
@@ -32,9 +33,9 @@ No existing anime, movie, game, celebrity, or known character references. No dir
 | キャラ | 用途 | 推奨サイズ | プロンプト |
 | --- | --- | --- | --- |
 | 佐伯澪 | 立ち絵 | 900x1400 transparent PNG | Young Earth audit officer, practical inspection jacket, calm but inexperienced, neat short-to-medium dark hair, subtle tired eyes, grounded near-future lunar mystery ADV character sprite, simple readable silhouette. Expressions: neutral, thinking, surprised, pained. |
-| 雨宮セナ | 立ち絵 | 900x1400 transparent PNG | Representative of Shirowa lunar city, composed woman in restrained formal operations suit, gentle public face with hidden pressure, elegant but not decorative, cool palette with slight warm accent. Expressions: neutral, smile, calm, shaken, broken. |
+| 雨宮セナ | 立ち絵 | 900x1400 transparent PNG | Representative of Shirowa lunar city, early-to-mid 30s, soft oval face, tired gentle amber-brown eyes with slightly downturned corners, long warm chestnut-brown hair partly tied back with loose side strands, refined ivory/taupe civic coat over muted teal high-collar dress, subtle amber administrative accents, calm public face with hidden pressure. Must not look like a recolor of Mio; change face shape, eye shape, hairstyle, silhouette, and outfit role. Expressions: neutral, smile, calm, shaken, broken. |
 | 檜山徹 | 立ち絵 | 900x1400 transparent PNG | Life support chief, honest exhausted engineer, utility uniform, signs of long work in oxygen systems, kind eyes, recorded-message variant, grounded design. Expressions: neutral, tired, gentle, recording. |
-| 北条リツ | 立ち絵 | 900x1400 transparent PNG | AI systems engineer for ALMA, practical work vest, tablet or maintenance tools, precise nervous energy, short hair, cool blue accents. Expressions: neutral, anxious, angry, relieved. |
+| 北条リツ | 立ち絵 | 900x1400 transparent PNG | ALMA systems engineer, distinct from Mio: angular narrow face, thin tired eyes, rectangular glasses, short ash-gray/blue-gray undercut pixie hair, forward-hunched nervous posture, slate technical jumpsuit, utility vest, wrist terminal, cable probe, tool pouch, cyan diagnostic accents. More engineer than investigator, not a black-haired bob, not a tablet-holding Mio silhouette. Expressions: neutral, anxious, angry, relieved. |
 | ルカ・ナディム | 立ち絵 | 900x1400 transparent PNG | Mining chief from the Shadow Well, rugged lunar workwear, dust marks, direct gaze, sarcastic posture, practical safety gear. Expressions: neutral, sarcastic, angry, sad. |
 | 白石アカリ | 立ち絵 | 900x1400 transparent PNG | Medical chief caring for moon-born residents, clean medical coat over practical clothes, calm fatigue, gentle but firm expression, pale blue-white palette. Expressions: neutral, doctor, worried. |
 | 雨宮ノア | 立ち絵 | 900x1400 transparent PNG | Girl born on the moon, slightly rebellious, light utility hoodie, small personal charm, fragile strength, not overly cute, grounded sci-fi design. Expressions: neutral, rebellious, tears, smile. |
@@ -69,3 +70,69 @@ No existing anime, movie, game, celebrity, or known character references. No dir
 ## ファイル名対応表
 
 背景、立ち絵、ALMA、UI、アイコンの現在のファイル名は `docs/ASSET_MANIFEST.md` を正とする。
+
+## Phase 6 Playable Art Prompt Notes
+
+Phase 6では、実際のPNGアセットを生成して組み込んだ。今後さらにAI画像生成や外部制作へ渡す場合は、以下を基準にする。
+
+Reference Polishでは、生成済みの画面モックを基準に、澪の監査官デザイン、タイトル/調査ハブ/最終推理の情報密度、透明パネルUIの質感を強化した。以後の追加生成では、この方向をanchorとして扱う。
+
+### 共通スタイル
+
+- Japanese mystery visual novel, late-2050s lunar city, clean but lived-in, restrained near-future design.
+- Cold navy, blue-gray, white, pale cyan, limited amber warning lights.
+- Not cyberpunk, not neon-heavy, not toy-like, no large embedded labels.
+- Keep the lower 30 percent readable for dialogue UI.
+- Keep left and right sides calm enough for character sprites.
+
+### Background anchors
+
+- Lander interior: cramped cockpit, moon ridge outside, transport labels, quiet arrival tension.
+- Shirowa hab ring: residential railings, repair tape, personal traces, human life inside a closed city.
+- Core: ALMA operation wall, server rings, waveform panels, silent machine intelligence.
+- Oxygen workshop R-7: oxygen tanks, pressure doors, frost, warning amber and muted red.
+- Outer port: suit racks, airlock, moon dust, subtle footprints, cold white-blue lighting.
+- Medbay: tired medical equipment, low-gravity child charts, soft clinical light.
+- Sena office: orderly corporate room, water/resource map, warm desk light, quiet pressure.
+- Dawn window: thin lunar dawn, large window frame, distant light, restrained hope.
+- Shadow well: mining shaft, cables, frost, powder, deep vertical darkness.
+
+### Character anchors
+
+- Mio: young Earth auditor, clean audit jacket, observant, slightly stiff.
+- Sena: city representative, distinct from Mio by face shape, downturned amber eyes, long chestnut hair, ivory civic coat, tired responsibility, controlled collapse.
+- Toru: life-support engineer, practical workwear, sincere and exhausted.
+- Ritsu: ALMA engineer, angular face, short ash-gray undercut, glasses, nervous honesty, cable probe, wrist terminal, blue technical accents.
+- Luka: Shadow Well mining supervisor, warm brown skin, sharp cheekbones, long black side braid with silver-white woven strands, shaved temple markings, slight stubble, dusty ochre/black mining gear, respirator, harness, orange hazard accents, sarcasm with warmth. Avoid short spiky hair so he does not overlap with Toru/Hiyama.
+- Akari: doctor, calm and tired, distinct from Mio/Sena/Ritsu by soft rounded face, gray-green eyes, pale warm silver-brown low side bun, no glasses, blue-gray scrubs, pale blue-lined medical coat, scanner, and compact diagnostic tablet.
+- Noah: lunar-born teenage girl, defensive softness, short messy ash-chestnut wolf cut with pale teal streak, amber eyes inherited from Sena, star/moon hair clips, oversized off-white utility hoodie over dark lunar school/maintenance wear, small moon charm. Keep her younger and more vulnerable than Sena, not a civic-representative silhouette and not an investigator/doctor/engineer.
+- Jin: corporate legal PR, late 30s to early 40s, swept-back charcoal hair with subtle silver, polished charcoal/warm-gray lunar corporate suit, white high collar shirt, burnt-orange corporate accents, legal tablet folder, controlled smile that can crack into irritation or defeat. Avoid workwear, mining dust, civic robes, or youthful silhouettes.
+- ALMA: non-human city-operations interface, vertical holographic panel, orbital rings, waveform core, lunar-map traces, status nodes, never mascot-like and never humanoid.
+
+### Phase 6.2 Akari / Dialogue UI Notes
+
+- Akari sprites should keep a softer medical silhouette: rounded face, low side bun, clinical scrubs, and a scanner. Avoid black bob hair, tablet-holding audit poses, civic-representative robes, or ALMA engineer glasses.
+- Dialogue textbox art should favor a dense readable navy surface. Decorative brackets, dotted guide lines, and highly transparent fills must stay outside the main text-safe area.
+
+### Phase 6.3 ALMA / Dialogue Layout Notes
+
+- ALMA should read as an AI system surface, not a person: no face, no eyes, no mouth, no body, no mascot. Use rings, waveforms, diagnostic nodes, lunar contour data, and status-color shifts for emotion.
+- Dialogue text should sit high enough that two-line Japanese dialogue feels optically centered. Speaker labels should use a lighter weight and fit fully inside the nameplate.
+
+### Phase 6.4 Luka / Title Screen Notes
+
+- Luka should read as a field worker from the Shadow Well, not a clean city-office character. Keep dust, worn tools, respirator, harness, warm brown skin, silver hair streak, and amber hazard accents.
+- Title backgrounds should not bake Japanese text into the image. Generate a clean 16:9 lunar-city scene with left-side negative space, then let Ren'Py render the Japanese title with bundled fonts.
+- Desktop/window icons should reuse title-background material and a simple moon/diamond mark instead of text-heavy miniature logos.
+- Akari doctor variants must be checked specifically for arm count: exactly two arms/two hands, with one hand either fully hidden in a pocket or clearly visible.
+
+### Phase 6.5 Title / Hub / Noah Notes
+
+- Title readability should not depend only on Ren'Py text rendering; the title logo PNG may include the Japanese title using the bundled NotoSansJP font.
+- Investigation hub panels should keep at least 30 px of bottom margin at 1280x720 and avoid large fixed blocks that visually spill past the screen edge.
+- Noah should share a faint family resemblance with Sena through eye color, but use younger proportions, a short messy hairstyle, hoodie silhouette, and personal moon/star charms to stay distinct from the adult cast.
+
+### Phase 6.6 Startup Title / Jin Notes
+
+- If the standard Ren'Py main menu is skipped by a launch path, `label splashscreen` should still present a title landing screen before jumping to `start`.
+- Jin should read as corporate law/PR first: fitted suit, badge, tablet folder, orange brand accents, and a controlled public mask. He should not share Toru/Luka's field-worker silhouette or Sena's representative-coat softness.

@@ -22,6 +22,7 @@ REQUIRED_FILES = [
     "game/options.rpy",
     "game/font_config.rpy",
     "game/images.rpy",
+    "game/transforms.rpy",
     "game/fonts/README.md",
     "game/fonts/NotoSansJP-Regular.otf",
     "game/fonts/NotoSansJP-Bold.otf",
@@ -36,7 +37,26 @@ REQUIRED_FILES = [
     "tools/generate_placeholder_assets.py",
     "tools/check_project_integrity.py",
     "docs/PHASE5_PLAYTEST_QA.md",
+    "docs/PLAYABLE_ART_PASS_REPORT.md",
     ".github/workflows/static-check.yml",
+    "game/images/ui/title_background.png",
+    "game/images/ui/title_logo.png",
+    "game/images/ui/ui_menu_background.png",
+    "game/images/ui/ui_deduction_background.png",
+    "game/images/cg/cg_r7_incident.png",
+    "game/images/cg/cg_dawn_window_ending.png",
+    "game/images/cg/cg_toru_recording.png",
+    "game/images/cg/cg_outer_port_reveal.png",
+    "game/images/portraits/portrait_mio.png",
+    "game/images/portraits/portrait_sena.png",
+    "game/images/portraits/portrait_toru.png",
+    "game/images/portraits/portrait_ritsu.png",
+    "game/images/portraits/portrait_luka.png",
+    "game/images/portraits/portrait_akari.png",
+    "game/images/portraits/portrait_noah.png",
+    "game/images/portraits/portrait_jin.png",
+    "game/images/portraits/portrait_alma.png",
+    "game/images/portraits/portrait_system.png",
 ]
 
 REQUIRED_EVIDENCE_IDS = [
@@ -161,6 +181,11 @@ def check_image_definitions(errors: list[str]) -> None:
         "image sena broken",
         "image noah tears",
         "image alma speaking",
+        "image title background",
+        "image ui_menu_background",
+        "image ui_deduction_background",
+        "image cg r7_incident",
+        "image cg dawn_window_ending",
     ]
     for image_def in required_defs:
         if image_def not in images_text:
@@ -173,6 +198,23 @@ def check_manifest_assets(errors: list[str]) -> None:
     for path in paths:
         if not (ROOT / path).exists():
             errors.append(f"manifest asset missing: {path}")
+
+
+def check_say_portraits(errors: list[str]) -> None:
+    screens_text = read_text("game/screens.rpy")
+    if "def speaker_portrait" not in screens_text:
+        errors.append("say screen missing speaker portrait helper")
+    if "add speaker_portrait(who)" not in screens_text:
+        errors.append("say screen missing dialogue portrait display")
+    required_portrait_paths = [
+        "images/portraits/portrait_mio.png",
+        "images/portraits/portrait_sena.png",
+        "images/portraits/portrait_alma.png",
+        "images/portraits/portrait_system.png",
+    ]
+    for portrait_path in required_portrait_paths:
+        if portrait_path not in screens_text:
+            errors.append(f"speaker portrait map missing: {portrait_path}")
 
 
 def check_evidence_ids(errors: list[str]) -> None:
@@ -275,6 +317,7 @@ def main() -> int:
         check_font_config(errors, warnings)
         check_image_definitions(errors)
         check_manifest_assets(errors)
+        check_say_portraits(errors)
         check_evidence_ids(errors)
         check_screens_and_labels(errors)
         check_investigation_hub_routes(errors)

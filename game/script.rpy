@@ -1,6 +1,13 @@
 # 『月の底で、息をする』Phase 3 MVP。
 # プロローグから3エンディングまで、仮素材で通しプレイできる骨組み。
 
+label splashscreen:
+    call screen splash_title_screen
+    if _return == "quit":
+        $ renpy.quit()
+    jump start
+
+
 label start:
     show screen objective_overlay
     $ set_chapter(0, "プロローグ：シロワへようこそ", "徹との約束の時間まで、シロワの中を確認する")
@@ -36,6 +43,9 @@ label start:
 
 label chapter1:
     $ set_chapter(1, "第1章：息が止まった夜", "酸素工房R-7の事故現場を調べる")
+
+    scene cg r7_incident
+    sysmsg "22:31。酸素工房R-7で緊急減圧が発生。警報灯は、白い壁を赤く染めていた。"
 
     scene bg oxygen_workshop_r7
     show mio pained at left
@@ -109,8 +119,7 @@ label chapter3_hub:
         sysmsg "これまでの調査記録を証拠品一覧に同期した。"
 
     if has_enough_interviews_for_chapter4() and not has_evidence("e_toru_audit_file"):
-        scene bg core
-        show toru recording at center
+        scene cg toru_recording
         sysmsg "聞き込みで得た断片がつながり、徹の暗号化監査ファイルの一部が復号された。"
         sysmsg "ファイルには採掘量不足、セレネ社の圧力、そしてシロワを閉鎖させないための再建案が並んでいた。"
         $ add_evidence("e_toru_audit_file")
@@ -181,6 +190,8 @@ label chapter4:
     m "ログの上では外へ出た。でも、スーツの中では誰も息をしていない。"
     $ add_evidence("e_white_rabbit_co2_absorber")
     $ add_evidence("e_white_rabbit_dust_test")
+    scene cg outer_port_reveal
+    sysmsg "白兎3号の関節部は静かだった。外へ出たなら残るはずの月塵が、そこにはない。"
 
     scene bg sena_office
     show mio neutral at left
@@ -566,6 +577,7 @@ label true_ending:
     alma "檜山徹。生命維持主任。最終作業、居住区隔壁保護。記録しました。"
     noah "……ひとりぶん、忘れないで。"
     alma "記録しました。"
+    scene cg dawn_window_ending
     sysmsg "夜明けの窓に、細い光が差した。誰もすぐには話さず、ただ同じ空気を吸った。"
     sysmsg "月の底で、人々はもう一度、嘘のない空気を吸う練習を始める。"
     return

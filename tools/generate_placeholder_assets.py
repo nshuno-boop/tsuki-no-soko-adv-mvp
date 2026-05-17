@@ -20,6 +20,8 @@ ICON_DIR = ROOT / "game" / "images" / "icons"
 
 SCREEN_SIZE = (1280, 720)
 SPRITE_SIZE = (520, 760)
+GENERATED_COUNT = 0
+SKIPPED_COUNT = 0
 
 try:
     from PIL import Image, ImageDraw, ImageFont
@@ -124,7 +126,12 @@ def draw_label(draw, xy: tuple[int, int], text: str, fill: str, size: int = 44) 
 
 
 def make_background(filename: str, title: str, colors: tuple[str, str], accent: str) -> None:
+    global GENERATED_COUNT, SKIPPED_COUNT
     path = BG_DIR / filename
+    if path.exists():
+        SKIPPED_COUNT += 1
+        return
+    GENERATED_COUNT += 1
     width, height = SCREEN_SIZE
     if not HAS_PILLOW:
         fallback_image(path, width, height, colors[0])
@@ -161,7 +168,12 @@ def make_background(filename: str, title: str, colors: tuple[str, str], accent: 
 
 
 def make_character(name: str, expression: str, color: str) -> None:
+    global GENERATED_COUNT, SKIPPED_COUNT
     path = CHAR_DIR / f"{name}_{expression}.png"
+    if path.exists():
+        SKIPPED_COUNT += 1
+        return
+    GENERATED_COUNT += 1
     if not HAS_PILLOW:
         fallback_image(path, SPRITE_SIZE[0], SPRITE_SIZE[1], color, 220)
         return
@@ -234,7 +246,12 @@ def make_character(name: str, expression: str, color: str) -> None:
 
 
 def make_alma(state: str) -> None:
+    global GENERATED_COUNT, SKIPPED_COUNT
     path = CHAR_DIR / f"alma_{state}.png"
+    if path.exists():
+        SKIPPED_COUNT += 1
+        return
+    GENERATED_COUNT += 1
     if not HAS_PILLOW:
         fallback_image(path, SPRITE_SIZE[0], SPRITE_SIZE[1], "#22d3ee", 190)
         return
@@ -254,7 +271,12 @@ def make_alma(state: str) -> None:
 
 
 def make_ui(filename: str, size: tuple[int, int], fill: str, accent: str, label: str) -> None:
+    global GENERATED_COUNT, SKIPPED_COUNT
     path = UI_DIR / filename
+    if path.exists():
+        SKIPPED_COUNT += 1
+        return
+    GENERATED_COUNT += 1
     if not HAS_PILLOW:
         fallback_image(path, size[0], size[1], fill, 235)
         return
@@ -269,7 +291,12 @@ def make_ui(filename: str, size: tuple[int, int], fill: str, accent: str, label:
 
 
 def make_icon(filename: str, color: str, label: str) -> None:
+    global GENERATED_COUNT, SKIPPED_COUNT
     path = ICON_DIR / filename
+    if path.exists():
+        SKIPPED_COUNT += 1
+        return
+    GENERATED_COUNT += 1
     if not HAS_PILLOW:
         fallback_image(path, 256, 256, color, 255)
         return
@@ -327,9 +354,8 @@ def main() -> None:
     for filename, color, label in ICONS:
         make_icon(filename, color, label)
 
-    total = len(BACKGROUNDS) + sum(len(item[1]) for item in CHARACTERS) + len(ALMA_STATES) + len(UI_ASSETS) + len(ICONS)
     engine = "Pillow" if HAS_PILLOW else "standard library fallback"
-    print(f"Generated {total} placeholder PNG files using {engine}.")
+    print(f"Generated {GENERATED_COUNT} placeholder PNG files using {engine}. Skipped {SKIPPED_COUNT} existing assets.")
 
 
 if __name__ == "__main__":

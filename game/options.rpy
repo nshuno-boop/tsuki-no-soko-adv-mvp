@@ -5,6 +5,7 @@ define config.name = "月の底で、息をする"
 define config.version = "v0.5-alpha"
 define config.save_directory = "tsuki_no_soko_mvp"
 define config.window_title = "月の底で、息をする"
+define config.window_icon = "gui/window_icon.png"
 
 # 16:9 baseline. This keeps temporary backgrounds and investigation screens
 # predictable while prototyping.

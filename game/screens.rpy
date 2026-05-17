@@ -2,11 +2,11 @@
 # 冷たい月面都市風の見た目に寄せつつ、Ren'Py標準機能だけで読める画面を優先する。
 
 style tsuki_frame:
-    background "#111827ee"
+    background Frame("images/ui/ui_log_panel.png", 34, 34)
     padding (24, 20)
 
 style tsuki_panel:
-    background "#020617dd"
+    background Frame("images/ui/ui_evidence_card.png", 24, 24)
     padding (16, 14)
 
 style tsuki_title_text:
@@ -18,7 +18,7 @@ style tsuki_subtle_text:
     size 18
 
 style tsuki_button:
-    background "#1f2937"
+    background Frame("images/ui/ui_choice_button.png", 24, 24)
     hover_background "#164e63"
     selected_background "#0e7490"
     padding (12, 9)
@@ -33,20 +33,159 @@ style alma_log_text:
     size 20
 
 
+init python:
+    def speaker_portrait(who):
+        portrait_map = {
+            "佐伯 澪": "images/portraits/portrait_mio.png",
+            "雨宮 セナ": "images/portraits/portrait_sena.png",
+            "檜山 徹": "images/portraits/portrait_toru.png",
+            "北条 リツ": "images/portraits/portrait_ritsu.png",
+            "ルカ・ナディム": "images/portraits/portrait_luka.png",
+            "白石 アカリ": "images/portraits/portrait_akari.png",
+            "雨宮 ノア": "images/portraits/portrait_noah.png",
+            "鷹峰 ジン": "images/portraits/portrait_jin.png",
+            "ALMA": "images/portraits/portrait_alma.png",
+            "SYSTEM": "images/portraits/portrait_system.png",
+        }
+        return portrait_map.get(who, "images/portraits/portrait_system.png")
+
+
+style playable_menu_button:
+    background Frame("images/ui/ui_choice_button.png", 24, 24)
+    hover_background "#164e63"
+    padding (18, 10)
+    xminimum 280
+
+style playable_menu_button_text:
+    color "#f8fafc"
+    hover_color "#ffffff"
+    size 24
+
+
+screen title_landing(start_action, quit_action):
+    add "title background"
+    add Solid("#02061733")
+
+    add "title logo":
+        xpos 70
+        ypos 58
+
+    text "月面都市シロワの空気は、記録より先に嘘を吸い込んでいた。":
+        xpos 98
+        ypos 292
+        xmaximum 640
+        color "#cbd5e1"
+        size 22
+
+    vbox:
+        xpos 96
+        ypos 448
+        spacing 12
+        textbutton "はじめる" action start_action style "playable_menu_button" xsize 320
+        textbutton "終了" action quit_action style "playable_menu_button" xsize 320
+
+    text "PLAYABLE ART PASS / DRAFT":
+        xpos 98
+        ypos 642
+        color "#67e8f9"
+        size 15
+
+
+screen main_menu():
+    tag menu
+
+    use title_landing(Start(), Quit(confirm=True))
+
+
+screen splash_title_screen():
+    modal True
+
+    use title_landing(Return("start"), Return("quit"))
+
+
+screen say(who, what):
+    zorder 10
+
+    window:
+        id "window"
+        background Frame("images/ui/ui_textbox.png", 34, 34)
+        xalign 0.5
+        yalign 0.985
+        xsize 1080
+        ysize 190
+        padding (0, 0)
+
+        fixed:
+            xfill True
+            yfill True
+
+            if who is not None:
+                window:
+                    id "namebox"
+                    background Frame("images/ui/ui_nameplate.png", 22, 22)
+                    xpos 205
+                    ypos 18
+                    xsize 334
+                    ysize 38
+                    padding (20, 0)
+                    text who id "who":
+                        color "#dff7ff"
+                        size 18
+                        font gui.text_font
+                        yalign 0.5
+
+                add speaker_portrait(who):
+                    xpos 46
+                    ypos 18
+                    xysize (132, 132)
+
+                text what id "what":
+                    xpos 205
+                    ypos 64
+                    xmaximum 820
+                    color "#f8fafc"
+                    size 24
+                    line_spacing 4
+
+            else:
+                text what id "what":
+                    xpos 62
+                    ypos 42
+                    xmaximum 960
+                    color "#f8fafc"
+                    size 24
+                    line_spacing 4
+
+
+screen choice(items):
+    zorder 100
+
+    vbox:
+        xalign 0.5
+        yalign 0.52
+        spacing 10
+
+        for item in items:
+            textbutton item.caption:
+                action item.action
+                style "playable_menu_button"
+                xsize 760
+
+
 screen objective_overlay():
     zorder 5
 
     frame:
         xalign 0.02
-        yalign 0.02
-        xmaximum 620
-        padding (12, 8)
-        background "#020617cc"
+        yalign 0.025
+        xmaximum 520
+        padding (12, 7)
+        background "#020617d8"
 
         vbox:
             spacing 2
             text "現在の目的" color "#67e8f9" size 14
-            text current_objective color "#f8fafc" size 17 xmaximum 585
+            text current_objective color "#f8fafc" size 15 xmaximum 480
 
 
 screen confirm(message, yes_action, no_action):
@@ -76,17 +215,18 @@ screen investigation_hub_screen():
     zorder 20
     modal True
 
-    add Solid("#030712")
+    add "ui_menu_background"
+    add Solid("#02061799")
 
     frame:
         style "tsuki_frame"
         xalign 0.5
-        yalign 0.5
-        xsize 1180
-        ysize 650
+        yalign 0.47
+        xsize 1138
+        ysize 604
 
         vbox:
-            spacing 14
+            spacing 8
 
             $ done_count = interview_done_count()
             $ required_count = CHAPTER4_REQUIRED_INTERVIEWS
@@ -104,117 +244,121 @@ screen investigation_hub_screen():
                 text "SHIROWA AUDIT" xalign 1.0 color "#67e8f9" size 18
 
             hbox:
-                spacing 18
+                spacing 14
 
                 frame:
                     style "tsuki_panel"
-                    xsize 790
-                    ysize 500
+                    xsize 760
+                    ysize 430
 
                     vbox:
-                        spacing 7
-                        text "聞き込み対象" color "#f8fafc" size 24
-                        text "聞き込み進捗: [done_count] / [required_count]" color "#fbbf24" size 17
+                        spacing 4
+                        text "聞き込み対象" color "#f8fafc" size 21
+                        text "聞き込み進捗: [done_count] / [required_count]" color "#fbbf24" size 15
                         if chapter == 3:
-                            text "第4章へ進むには4人以上への初回聞き込みが必要です。" color "#cbd5e1" size 15 xmaximum 730
+                            text "第4章へ進むには4人以上への初回聞き込みが必要です。" color "#cbd5e1" size 13 xmaximum 700
                         else:
-                            text "最終推理前に、核心に近い話も確認できます。" color "#cbd5e1" size 15 xmaximum 730
-
-                        null height 2
+                            text "最終推理前に、核心に近い話も確認できます。" color "#cbd5e1" size 13 xmaximum 700
 
                         frame:
                             background "#0f172acc"
-                            padding (10, 6)
+                            padding (8, 4)
                             xfill True
+                            ysize 48
                             hbox:
-                                spacing 10
+                                spacing 8
                                 vbox:
-                                    xsize 570
-                                    spacing 1
-                                    text "雨宮 セナ" color "#f8fafc" size 18
-                                    text "シロワの代表 / [interview_status_text('sena')]" color "#93c5fd" size 14
+                                    xsize 560
+                                    spacing 0
+                                    text "雨宮 セナ" color "#f8fafc" size 16
+                                    text "シロワの代表 / [interview_status_text('sena')]" color "#93c5fd" size 12
                                 textbutton "聞く":
                                     action Return("interview:sena")
-                                    xminimum 92
+                                    xminimum 74
 
                         frame:
                             background "#0f172acc"
-                            padding (10, 6)
+                            padding (8, 4)
                             xfill True
+                            ysize 48
                             hbox:
-                                spacing 10
+                                spacing 8
                                 vbox:
-                                    xsize 570
-                                    spacing 1
-                                    text "北条 リツ" color "#f8fafc" size 18
-                                    text "アルマの技師 / [interview_status_text('ritsu')]" color "#93c5fd" size 14
+                                    xsize 560
+                                    spacing 0
+                                    text "北条 リツ" color "#f8fafc" size 16
+                                    text "アルマの技師 / [interview_status_text('ritsu')]" color "#93c5fd" size 12
                                 textbutton "聞く":
                                     action Return("interview:ritsu")
-                                    xminimum 92
+                                    xminimum 74
 
                         frame:
                             background "#0f172acc"
-                            padding (10, 6)
+                            padding (8, 4)
                             xfill True
+                            ysize 48
                             hbox:
-                                spacing 10
+                                spacing 8
                                 vbox:
-                                    xsize 570
-                                    spacing 1
-                                    text "ルカ・ナディム" color "#f8fafc" size 18
-                                    text "影井戸の採掘屋 / [interview_status_text('luka')]" color "#93c5fd" size 14
+                                    xsize 560
+                                    spacing 0
+                                    text "ルカ・ナディム" color "#f8fafc" size 16
+                                    text "影井戸の採掘屋 / [interview_status_text('luka')]" color "#93c5fd" size 12
                                 textbutton "聞く":
                                     action Return("interview:luka")
-                                    xminimum 92
+                                    xminimum 74
 
                         frame:
                             background "#0f172acc"
-                            padding (10, 6)
+                            padding (8, 4)
                             xfill True
+                            ysize 48
                             hbox:
-                                spacing 10
+                                spacing 8
                                 vbox:
-                                    xsize 570
-                                    spacing 1
-                                    text "白石 アカリ" color "#f8fafc" size 18
-                                    text "月生まれを診る医師 / [interview_status_text('akari')]" color "#93c5fd" size 14
+                                    xsize 560
+                                    spacing 0
+                                    text "白石 アカリ" color "#f8fafc" size 16
+                                    text "月生まれを診る医師 / [interview_status_text('akari')]" color "#93c5fd" size 12
                                 textbutton "聞く":
                                     action Return("interview:akari")
-                                    xminimum 92
+                                    xminimum 74
 
                         frame:
                             background "#0f172acc"
-                            padding (10, 6)
+                            padding (8, 4)
                             xfill True
+                            ysize 48
                             hbox:
-                                spacing 10
+                                spacing 8
                                 vbox:
-                                    xsize 570
-                                    spacing 1
-                                    text "雨宮 ノア" color "#f8fafc" size 18
-                                    text "月で生まれた娘 / [interview_status_text('noah')]" color "#93c5fd" size 14
+                                    xsize 560
+                                    spacing 0
+                                    text "雨宮 ノア" color "#f8fafc" size 16
+                                    text "月で生まれた娘 / [interview_status_text('noah')]" color "#93c5fd" size 12
                                 textbutton "聞く":
                                     action Return("interview:noah")
-                                    xminimum 92
+                                    xminimum 74
 
                         frame:
                             background "#0f172acc"
-                            padding (10, 6)
+                            padding (8, 4)
                             xfill True
+                            ysize 48
                             hbox:
-                                spacing 10
+                                spacing 8
                                 vbox:
-                                    xsize 570
-                                    spacing 1
-                                    text "鷹峰 ジン" color "#f8fafc" size 18
-                                    text "セレネ社の広報法務 / [interview_status_text('jin')]" color "#93c5fd" size 14
+                                    xsize 560
+                                    spacing 0
+                                    text "鷹峰 ジン" color "#f8fafc" size 16
+                                    text "セレネ社の広報法務 / [interview_status_text('jin')]" color "#93c5fd" size 12
                                 textbutton "聞く":
                                     action Return("interview:jin")
-                                    xminimum 92
+                                    xminimum 74
 
                 vbox:
-                    spacing 10
-                    xsize 330
+                    spacing 8
+                    xsize 310
                     textbutton "証拠品を確認":
                         action Return("evidence")
                         xfill True
@@ -227,7 +371,7 @@ screen investigation_hub_screen():
                     textbutton "事件タイムライン":
                         action Return("timeline")
                         xfill True
-                    null height 12
+                    null height 4
                     if chapter < 4:
                         textbutton "第4章へ進む: 白兎3号を調べる":
                             action Return("final")
@@ -249,7 +393,8 @@ screen evidence_screen():
     modal True
     default selected_id = None
 
-    add Solid("#030712")
+    add "ui_menu_background"
+    add Solid("#020617aa")
 
     frame:
         style "tsuki_frame"
@@ -359,7 +504,8 @@ screen person_memo_screen():
     modal True
     default selected_person = "mio"
 
-    add Solid("#020617")
+    add "ui_menu_background"
+    add Solid("#020617aa")
 
     frame:
         style "tsuki_frame"
@@ -420,7 +566,8 @@ screen evidence_choice_screen(question, hint_text):
     zorder 30
     modal True
 
-    add Solid("#020617")
+    add "ui_deduction_background"
+    add Solid("#02061799")
 
     frame:
         style "tsuki_frame"
@@ -494,7 +641,8 @@ screen multi_evidence_choice_screen(question, hint_text, required_count=0):
     modal True
     default selected_ids = set()
 
-    add Solid("#020617")
+    add "ui_deduction_background"
+    add Solid("#02061799")
 
     frame:
         style "tsuki_frame"
@@ -579,7 +727,8 @@ screen person_choice_screen(question, hint_text):
     zorder 30
     modal True
 
-    add Solid("#020617")
+    add "ui_deduction_background"
+    add Solid("#02061799")
 
     frame:
         style "tsuki_frame"
@@ -667,7 +816,8 @@ screen timeline_screen():
     zorder 20
     modal True
 
-    add Solid("#020617")
+    add "ui_menu_background"
+    add Solid("#020617aa")
 
     frame:
         style "tsuki_frame"
@@ -709,7 +859,8 @@ screen missing_evidence_screen(missing_names):
     zorder 20
     modal True
 
-    add Solid("#020617")
+    add "ui_deduction_background"
+    add Solid("#020617aa")
 
     frame:
         style "tsuki_frame"
@@ -742,7 +893,8 @@ screen interview_progress_warning_screen(done_count, required_count, missing_nam
     zorder 20
     modal True
 
-    add Solid("#020617")
+    add "ui_menu_background"
+    add Solid("#020617aa")
 
     frame:
         style "tsuki_frame"
@@ -770,7 +922,8 @@ screen deduction_result_screen(result_text, ending_name):
     zorder 20
     modal True
 
-    add Solid("#020617")
+    add "ui_deduction_background"
+    add Solid("#02061799")
 
     frame:
         style "tsuki_frame"
@@ -799,7 +952,8 @@ screen alma_log_screen(title, lines):
     zorder 20
     modal True
 
-    add Solid("#01050a")
+    add "ui_menu_background"
+    add Solid("#01050abb")
 
     frame:
         xalign 0.5
