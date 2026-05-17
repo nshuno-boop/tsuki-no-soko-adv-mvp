@@ -62,9 +62,7 @@ style playable_menu_button_text:
     size 24
 
 
-screen main_menu():
-    tag menu
-
+screen title_landing(start_action, quit_action):
     add "title background"
     add Solid("#02061733")
 
@@ -83,14 +81,26 @@ screen main_menu():
         xpos 96
         ypos 448
         spacing 12
-        textbutton "はじめる" action Start() style "playable_menu_button" xsize 320
-        textbutton "終了" action Quit(confirm=True) style "playable_menu_button" xsize 320
+        textbutton "はじめる" action start_action style "playable_menu_button" xsize 320
+        textbutton "終了" action quit_action style "playable_menu_button" xsize 320
 
     text "PLAYABLE ART PASS / DRAFT":
         xpos 98
         ypos 642
         color "#67e8f9"
         size 15
+
+
+screen main_menu():
+    tag menu
+
+    use title_landing(Start(), Quit(confirm=True))
+
+
+screen splash_title_screen():
+    modal True
+
+    use title_landing(Return("start"), Return("quit"))
 
 
 screen say(who, what):

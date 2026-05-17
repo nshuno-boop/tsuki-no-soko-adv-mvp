@@ -2,7 +2,10 @@
 # プロローグから3エンディングまで、仮素材で通しプレイできる骨組み。
 
 label splashscreen:
-    return
+    call screen splash_title_screen
+    if _return == "quit":
+        $ renpy.quit()
+    jump start
 
 
 label start:
